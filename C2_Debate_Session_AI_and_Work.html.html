@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>C2 Debate Session · AI & The Future of Work</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Inter:wght@300;400;500;600&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy:    #1a2e4a;
+    --blue:    #2563a8;
+    --steel:   #4a7cac;
+    --ice:     #e8f1f8;
+    --gold:    #c8973a;
+    --gold-bg: #fdf6e8;
+    --green:   #2a7a4b;
+    --green-bg:#edf7f1;
+    --red:     #b03030;
+    --red-bg:  #fdf0f0;
+    --grey:    #f5f5f5;
+    --mid:     #6b7280;
+    --text:    #1f2937;
+    --white:   #ffffff;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    color: var(--text);
+    background: #f0f4f8;
+    line-height: 1.7;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--navy);
+    color: var(--white);
+    padding: 64px 40px 56px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 70% 30%, rgba(37,99,168,0.4) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .hero-eyebrow {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 0.75rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    line-height: 1.15;
+    color: var(--white);
+    margin-bottom: 20px;
+    max-width: 780px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .hero-sub {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(1rem, 2.5vw, 1.2rem);
+    color: rgba(255,255,255,0.72);
+    max-width: 640px;
+    margin: 0 auto 32px;
+  }
+  .hero-meta {
+    display: inline-flex;
+    gap: 24px;
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.55);
+    letter-spacing: 0.04em;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .hero-meta span { display: flex; align-items: center; gap: 6px; }
+
+  /* ── LAYOUT ── */
+  .container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+  }
+
+  /* ── SECTION CARDS ── */
+  .section {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 40px 44px;
+    margin-top: 32px;
+    box-shadow: 0 2px 12px rgba(26,46,74,0.07);
+  }
+
+  .section-label {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold);
+    background: var(--gold-bg);
+    border: 1px solid #e8d5a8;
+    border-radius: 4px;
+    padding: 3px 10px;
+    margin-bottom: 14px;
+  }
+
+  .section h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.55rem;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 6px;
+    line-height: 1.25;
+  }
+
+  .section-intro {
+    color: var(--mid);
+    font-size: 0.92rem;
+    margin-bottom: 28px;
+    border-bottom: 1px solid #e8edf2;
+    padding-bottom: 18px;
+  }
+
+  /* ── VIDEO BOX ── */
+  .video-card {
+    background: var(--navy);
+    border-radius: 10px;
+    padding: 28px 32px;
+    color: var(--white);
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+  }
+  .video-icon {
+    font-size: 2.2rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .video-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    margin-bottom: 6px;
+    color: var(--white);
+  }
+  .video-meta { font-size: 0.83rem; color: rgba(255,255,255,0.58); margin-bottom: 14px; }
+  .video-card p { font-size: 0.9rem; color: rgba(255,255,255,0.82); line-height: 1.65; margin-bottom: 16px; }
+  .watch-btn {
+    display: inline-block;
+    background: var(--gold);
+    color: var(--navy);
+    font-weight: 600;
+    font-size: 0.85rem;
+    padding: 9px 20px;
+    border-radius: 6px;
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    transition: opacity 0.15s;
+  }
+  .watch-btn:hover { opacity: 0.88; }
+
+  .warm-up-qs { margin-top: 28px; }
+  .warm-up-qs h3 {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--navy);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 12px;
+  }
+
+  /* ── READING ── */
+  .reading-text {
+    background: var(--grey);
+    border-left: 4px solid var(--blue);
+    border-radius: 0 8px 8px 0;
+    padding: 28px 32px;
+    font-size: 0.94rem;
+    line-height: 1.8;
+  }
+  .reading-text h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    color: var(--navy);
+    margin-bottom: 18px;
+    letter-spacing: 0.01em;
+  }
+  .reading-text p { margin-bottom: 16px; }
+  .reading-text p:last-child { margin-bottom: 0; }
+  .reading-source {
+    font-size: 0.78rem;
+    color: var(--mid);
+    font-style: italic;
+    margin-top: 20px;
+    padding-top: 14px;
+    border-top: 1px solid #dde3ea;
+  }
+
+  .reading-qs { margin-top: 28px; }
+  .reading-qs h3 {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--navy);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 14px;
+  }
+
+  /* ── MOTION BOX ── */
+  .motion-box {
+    background: var(--gold-bg);
+    border: 2px solid var(--gold);
+    border-radius: 10px;
+    padding: 28px 32px;
+    margin-bottom: 32px;
+    text-align: center;
+  }
+  .motion-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 12px;
+  }
+  .motion-box blockquote {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1rem, 2.5vw, 1.2rem);
+    font-style: italic;
+    color: var(--navy);
+    line-height: 1.5;
+  }
+
+  /* ── FOR / AGAINST ── */
+  .positions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 36px;
+  }
+  @media (max-width: 600px) { .positions { grid-template-columns: 1fr; } }
+
+  .position-card {
+    border-radius: 8px;
+    padding: 20px 22px;
+  }
+  .position-card.for   { background: var(--green-bg); border: 1px solid #a8d8bc; }
+  .position-card.against { background: var(--red-bg); border: 1px solid #e0aaaa; }
+  .position-card h3 {
+    font-size: 0.88rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    letter-spacing: 0.02em;
+  }
+  .position-card.for h3 { color: var(--green); }
+  .position-card.against h3 { color: var(--red); }
+  .position-card p { font-size: 0.88rem; line-height: 1.6; color: var(--text); }
+
+  /* ── QUESTIONS ── */
+  .tier {
+    margin-bottom: 28px;
+  }
+  .tier h3 {
+    font-size: 0.82rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--steel);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .tier h3::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #dde3ea;
+  }
+
+  ol.qs { padding-left: 0; list-style: none; counter-reset: q-counter; }
+  ol.qs li {
+    counter-increment: q-counter;
+    display: flex;
+    gap: 14px;
+    margin-bottom: 12px;
+    font-size: 0.92rem;
+    line-height: 1.65;
+  }
+  ol.qs li::before {
+    content: counter(q-counter);
+    min-width: 26px;
+    height: 26px;
+    background: var(--ice);
+    color: var(--blue);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.75rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .spotlight-box {
+    background: var(--gold-bg);
+    border: 1px solid #e8d5a8;
+    border-radius: 8px;
+    padding: 22px 26px;
+    margin-top: 24px;
+    font-size: 0.92rem;
+    font-style: italic;
+    line-height: 1.7;
+    color: var(--navy);
+  }
+  .spotlight-box strong {
+    display: block;
+    font-style: normal;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+
+  /* ── VOCAB TABLE ── */
+  .vocab-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+  }
+  .vocab-table th {
+    background: var(--navy);
+    color: var(--white);
+    font-weight: 600;
+    font-size: 0.78rem;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    padding: 12px 16px;
+    text-align: left;
+  }
+  .vocab-table th:first-child { border-radius: 8px 0 0 0; }
+  .vocab-table th:last-child  { border-radius: 0 8px 0 0; }
+  .vocab-table td {
+    padding: 11px 16px;
+    border-bottom: 1px solid #e8edf2;
+    vertical-align: top;
+  }
+  .vocab-table tr:last-child td { border-bottom: none; }
+  .vocab-table tr:nth-child(even) td { background: var(--ice); }
+  .vocab-table .term {
+    font-weight: 600;
+    color: var(--blue);
+    white-space: nowrap;
+  }
+
+  /* ── RHETORIC ── */
+  .phrase-group { margin-bottom: 24px; }
+  .phrase-group h3 {
+    font-size: 0.82rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--steel);
+    margin-bottom: 12px;
+  }
+  .phrase {
+    background: var(--grey);
+    border-left: 3px solid var(--blue);
+    padding: 12px 18px;
+    border-radius: 0 6px 6px 0;
+    font-size: 0.9rem;
+    font-style: italic;
+    color: var(--navy);
+    margin-bottom: 8px;
+    line-height: 1.6;
+  }
+
+  /* ── EXIT ── */
+  .exit-box {
+    background: var(--navy);
+    color: var(--white);
+    border-radius: 10px;
+    padding: 32px 36px;
+    text-align: center;
+  }
+  .exit-box .exit-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 14px;
+  }
+  .exit-box blockquote {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: rgba(255,255,255,0.9);
+  }
+
+  /* ── UL generic ── */
+  ul.plain { list-style: none; padding: 0; }
+  ul.plain li {
+    padding: 6px 0 6px 22px;
+    position: relative;
+    font-size: 0.92rem;
+    line-height: 1.65;
+  }
+  ul.plain li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--gold);
+    font-weight: 600;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center;
+    padding: 32px 24px;
+    font-size: 0.78rem;
+    color: var(--mid);
+    letter-spacing: 0.03em;
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════════════ HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">C2 Proficiency · Debate Session</div>
+  <h1>AI &amp; The Future of Work</h1>
+  <p class="hero-sub">Will AI take more jobs than it creates — or is the real question who pays the price?</p>
+  <div class="hero-meta">
+    <span>⏱ 60–90 minutes</span>
+    <span>🗣 Communicative Approach</span>
+    <span>🔍 Critical Thinking</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- ══════════════════════════════════════════════════════════ STEP 1: VIDEO -->
+  <div class="section">
+    <div class="section-label">Step 1 · Warm-Up</div>
+    <h2>Watch &amp; React</h2>
+    <p class="section-intro">Before any discussion, watch the clip below. Keep a mental note of one thing you instinctively agreed with — and one thing you did not.</p>
+
+    <div class="video-card">
+      <div class="video-icon">▶</div>
+      <div>
+        <h3>"AI is Coming for Your Job. Now What?"</h3>
+        <div class="video-meta">Vlad Tenev · TED Talk · January 2026 · ~12 min</div>
+        <p>Tenev — CEO of Robinhood and a Silicon Valley insider — argues, perhaps counterintuitively, that mass AI displacement may ultimately <em>liberate</em> people from meaningless work. The argument is optimistic. It is also challengeable. Come ready to do both.</p>
+        <a class="watch-btn" href="https://www.youtube.com/watch?v=cJfKqKEyw1o" target="_blank">Watch on YouTube →</a>
+      </div>
+    </div>
+
+    <div class="warm-up-qs">
+      <h3>After watching — your immediate reactions</h3>
+      <ul class="plain">
+        <li>One word that captures your gut response to what Tenev argues.</li>
+        <li>One specific claim he made that you instinctively pushed back against — and why.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════ STEP 2: READING -->
+  <div class="section">
+    <div class="section-label">Step 2 · Reading</div>
+    <h2>Three Camps, One Crisis</h2>
+    <p class="section-intro">Read the text carefully. As you read, decide which of the three positions you find most persuasive — and, crucially, why.</p>
+
+    <div class="reading-text">
+      <h3>Three Camps, One Crisis</h3>
+
+      <p>The debate over AI and employment has crystallised into three distinct intellectual positions, each resting on different assumptions about the pace of technological change and the adaptability of human labour markets.</p>
+
+      <p><strong>The Alarmed</strong> argue that AI represents a qualitative rupture — not merely another wave of automation, but a technology capable of substituting for cognitive labour across virtually every white-collar profession. They point to a November 2025 Stanford pre-print showing that early-career workers aged 22 to 25 in the most AI-exposed occupations have already experienced a 16% relative decline in employment since ChatGPT's release. They note that this time, uniquely, it is not manual or low-skilled work that is threatened first, but the graduate professions: law, finance, software engineering, medicine. McKinsey estimates that today's AI — not a hypothetical future version — could automate 57% of current US work hours if deployed at scale.</p>
+
+      <p><strong>The Patient</strong> take a longer view. They acknowledge disruption but insist that history counsels caution: every major technological revolution from the printing press to electricity was greeted with apocalyptic predictions that ultimately proved unfounded. Deployment, they argue, is the binding constraint, not capability. It will take decades — not years — for AI to permeate institutions, regulatory frameworks and workplace cultures sufficiently to cause the displacement the alarmed anticipate.</p>
+
+      <p><strong>The Excited</strong> point to net creation. The World Economic Forum's 2025 Future of Jobs Report, drawing on surveys of over 1,000 employers across 55 economies, projected that while 92 million roles may be displaced by 2030, 170 million new ones will emerge — a net gain of 78 million jobs. AI development, cybersecurity and sustainability are identified as the fastest-growing categories.</p>
+
+      <p>What all three camps conspicuously avoid is the distributional question: not <em>how many</em> jobs, but <em>whose</em> jobs, in which countries, and with what social safety nets in place. A net global gain of 78 million positions is cold comfort if the losses fall on a 52-year-old data entry clerk in Seville and the gains accrue to a 28-year-old AI engineer in San Francisco.</p>
+
+      <p>The real debate, then, is not technological but political. And it has barely begun.</p>
+
+      <div class="reading-source">Adapted from Carnegie Endowment for International Peace, April 2026, and WEF Future of Jobs Report 2025</div>
+    </div>
+
+    <div class="reading-qs">
+      <h3>Questions on the text</h3>
+      <ol class="qs">
+        <li>Which of the three camps does the text ultimately favour, if any? What textual evidence supports your reading?</li>
+        <li>What does <em>distributional</em> mean in this context? Why does the author identify it as the question all three camps avoid?</li>
+        <li>The text ends: <em>"The real debate is not technological but political."</em> Do you agree? What would a political response to AI displacement actually look like?</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════ STEP 3: DEBATE -->
+  <div class="section">
+    <div class="section-label">Step 3 · Debate</div>
+    <h2>The Motion</h2>
+    <p class="section-intro">The debate is structured around the following proposition. You will be assigned a position — defend it rigorously, regardless of your personal view.</p>
+
+    <div class="motion-box">
+      <div class="motion-label">Motion</div>
+      <blockquote>"AI will not destroy jobs — it will destroy the people who refuse to adapt. That is not a technological revolution. It is a moral failure of society."</blockquote>
+    </div>
+
+    <div class="positions">
+      <div class="position-card for">
+        <h3>✅ For the motion</h3>
+        <p>Adaptation is always possible. Blaming technology is a way of evading individual and collective responsibility.</p>
+      </div>
+      <div class="position-card against">
+        <h3>❌ Against the motion</h3>
+        <p>Not everyone can adapt with equal ease. Structural inequalities mean the burden falls disproportionately on the most vulnerable.</p>
+      </div>
+    </div>
+
+    <div class="tier">
+      <h3>Opening questions</h3>
+      <ol class="qs">
+        <li>Have you personally felt the pressure of AI in your work or studies? Has it already changed what you do?</li>
+        <li>Can you think of a profession that AI genuinely cannot replace? What makes it irreplaceable — and for how long?</li>
+      </ol>
+    </div>
+
+    <div class="tier">
+      <h3>Going deeper</h3>
+      <ol class="qs">
+        <li>The Stanford study suggests it is entry-level <em>young</em> workers who are losing jobs first — not the experienced professionals initially predicted. What are the implications of that finding?</li>
+        <li>McKinsey says 57% of US work hours could theoretically be automated with current technology — but deployment is the limiting factor. Who controls that deployment? What are their incentives?</li>
+        <li>The WEF projects a net global gain of 78 million jobs by 2030. Is a net global figure a meaningful statistic when the distribution of losses and gains is so unequal geographically and socially?</li>
+      </ol>
+    </div>
+
+    <div class="tier">
+      <h3>Pushing further</h3>
+      <ol class="qs">
+        <li>Is there a moral difference between a company replacing workers with AI to cut costs versus to improve its product? Does intent matter ethically?</li>
+        <li>Economist Aaron Benanav argues it is not AI causing unemployment — it is slow economic growth. Could we be using AI as a scapegoat for structural failures of capitalism?</li>
+        <li>If AI eventually performs most of the cognitive work humans currently do — what is left for humans to contribute? Would that be liberation or loss?</li>
+        <li>Dario Amodei (Anthropic) has warned that AI could replace up to half of entry-level office jobs within five years. Jensen Huang (Nvidia) publicly disagreed at VivaTech 2025. Why might two of the most powerful figures in AI have such different public positions on the same question?</li>
+      </ol>
+    </div>
+
+    <div class="spotlight-box">
+      <strong>🔍 A question worth sitting with</strong>
+      From the inside — from the experience of actually working with these systems — does the picture look more alarming, more exciting, or more <em>boring</em> than the public debate suggests? And has your own professional role been affected yet? Do you believe it will be?
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════ STEP 4: VOCAB -->
+  <div class="section">
+    <div class="section-label">Step 4 · Language</div>
+    <h2>Vocabulary to Activate</h2>
+    <p class="section-intro">These terms appear in the reading and debate. At C2 level the goal is not recognition — it is precise, confident use in argument.</p>
+
+    <table class="vocab-table">
+      <thead>
+        <tr>
+          <th style="width:36%">Term</th>
+          <th>Meaning &amp; usage in context</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="term">to displace (workers)</td><td>To remove from a role — stronger and more formal than <em>replace</em>; implies systemic disruption, not simple substitution.</td></tr>
+        <tr><td class="term">the distributional question</td><td>Who receives the benefits or bears the costs — not merely the aggregate total. Central to any serious policy debate.</td></tr>
+        <tr><td class="term">a qualitative rupture</td><td>A break so fundamental it changes the nature of something, not merely its scale. Contrasted with incremental change.</td></tr>
+        <tr><td class="term">cognitive labour</td><td>Mental, intellectual work — contrasted with manual or physical labour. Key to understanding why AI threatens white-collar work.</td></tr>
+        <tr><td class="term">to permeate</td><td>To spread gradually through all parts of a system or society. Used here of AI diffusing through institutions.</td></tr>
+        <tr><td class="term">upskilling</td><td>Acquiring new competences to remain occupationally relevant. Widely used in policy discourse, often uncritically.</td></tr>
+        <tr><td class="term">to augment (vs. replace)</td><td>To enhance human capability rather than substitute for it. A key distinction in how AI advocates frame the technology.</td></tr>
+        <tr><td class="term">net gain / net displacement</td><td>The balance after both gains and losses are counted. Net figures can conceal profound distributional injustice.</td></tr>
+        <tr><td class="term">the binding constraint</td><td>The factor that actually limits what is possible, regardless of theoretical capacity. Here: deployment, not capability.</td></tr>
+        <tr><td class="term">structural inequality</td><td>Inequality embedded in systems and institutions — not caused by individual choices or failings.</td></tr>
+        <tr><td class="term">cold comfort</td><td>A consolation so small or abstract as to be nearly useless. <em>"A net gain is cold comfort if the losses fall on the most vulnerable."</em></td></tr>
+        <tr><td class="term">to accrue (to someone)</td><td>To accumulate gradually, especially benefits. Formal register. <em>"The gains accrue to a 28-year-old engineer in San Francisco."</em></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════ STEP 5: RHETORIC -->
+  <div class="section">
+    <div class="section-label">Step 5 · Rhetoric</div>
+    <h2>Arguing Well in English</h2>
+    <p class="section-intro">These are real argumentative moves — not phrases to memorise, but patterns to internalise and deploy with precision.</p>
+
+    <div class="phrase-group">
+      <h3>Conceding a point without losing ground</h3>
+      <div class="phrase">"That may well be true in aggregate, but the distributional picture tells a very different story."</div>
+      <div class="phrase">"I take your point entirely — and yet the evidence you cite says nothing about the pace of the transition."</div>
+    </div>
+
+    <div class="phrase-group">
+      <h3>Challenging a hidden assumption</h3>
+      <div class="phrase">"Underlying your argument is the assumption that adaptation is equally available to all — which I would strongly contest."</div>
+      <div class="phrase">"You're conflating technological capability with deployment. They are not the same thing, and the gap between them is where the real debate lives."</div>
+    </div>
+
+    <div class="phrase-group">
+      <h3>Raising the stakes</h3>
+      <div class="phrase">"The question isn't whether the net figure is positive. The question is who bears the cost of the transition — and whether they were ever consulted."</div>
+      <div class="phrase">"This isn't merely an economic debate. It is a question about what kind of society we want to be."</div>
+    </div>
+
+    <div class="phrase-group">
+      <h3>Appealing to lived or expert knowledge</h3>
+      <div class="phrase">"From your experience working with these systems — does this hold up technically, or is this another case of public discourse running ahead of the actual science?"</div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════ EXIT -->
+  <div class="section">
+    <div class="section-label">To close</div>
+    <h2>Exit Question</h2>
+    <p class="section-intro">Answer in two or three sentences — spoken, not written.</p>
+    <div class="exit-box">
+      <div class="exit-label">For everyone</div>
+      <blockquote>"Having heard everything discussed today — has your position shifted at all? If so, what specifically moved you? If not, what argument did you find hardest to rebut?"</blockquote>
+    </div>
+  </div>
+
+</div><!-- /container -->
+
+<footer>
+  C2 Proficiency · Debate Session · AI &amp; The Future of Work &nbsp;·&nbsp; For educational use
+</footer>
+
+</body>
+</html>
