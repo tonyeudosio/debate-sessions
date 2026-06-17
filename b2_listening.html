@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>B2 Listening Practice — Real Voices</title>
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F3F0E8;
+    --card:#FFFDF9;
+    --ink:#1F2A40;
+    --ink-soft:#5B6478;
+    --gold:#B8860B;
+    --gold-soft:#E9D9AE;
+    --good:#2F7355;
+    --good-bg:#E5F1EA;
+    --bad:#C1463D;
+    --bad-bg:#FBE9E7;
+    --line:#DCD6C6;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    padding-bottom:60px;
+  }
+  h1,h2,h3,.serif{font-family:'Fraunces',serif;}
+  a{color:var(--gold);}
+
+  /* ---------- HEADER ---------- */
+  .masthead{
+    background:var(--ink);
+    color:#F3F0E8;
+    padding:28px 20px 22px;
+    position:relative;
+    overflow:hidden;
+  }
+  .masthead::after{
+    content:"";
+    position:absolute; right:-40px; top:-60px;
+    width:200px; height:200px; border-radius:50%;
+    border:1px dashed rgba(243,240,232,0.18);
+  }
+  .masthead .eyebrow{
+    font-size:12px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--gold-soft); font-weight:600; margin-bottom:6px;
+  }
+  .masthead h1{
+    font-size:26px; margin:0 0 8px; font-weight:600; line-height:1.15;
+  }
+  .masthead p{
+    font-size:14.5px; color:#cfd4e0; margin:0; max-width:520px;
+  }
+
+  /* ---------- SCORE BAR ---------- */
+  .scorebar{
+    position:sticky; top:0; z-index:20;
+    background:rgba(243,240,232,0.97);
+    border-bottom:1px solid var(--line);
+    padding:10px 16px;
+    display:flex; align-items:center; justify-content:space-between;
+    backdrop-filter:blur(4px);
+  }
+  .scorebar .label{font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-soft); font-weight:600;}
+  .scorebar .total{font-family:'Fraunces',serif; font-size:20px; font-weight:600; color:var(--ink);}
+  .scorebar .total span{color:var(--gold);}
+
+  /* ---------- LAYOUT ---------- */
+  .wrap{max-width:680px; margin:0 auto; padding:18px 16px 0;}
+  .intro-card{
+    background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+    padding:16px 18px; margin-bottom:22px; font-size:14.5px; color:var(--ink-soft);
+  }
+  .intro-card strong{color:var(--ink);}
+  .intro-card ul{margin:8px 0 0; padding-left:18px;}
+  .intro-card li{margin-bottom:4px;}
+
+  /* ---------- PART HEADER ---------- */
+  .part{margin-bottom:38px;}
+  .part-head{display:flex; align-items:center; gap:12px; margin-bottom:6px;}
+  .badge{
+    width:40px; height:40px; flex:0 0 40px; border-radius:50%;
+    border:1.5px solid var(--gold);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Fraunces',serif; font-weight:600; font-size:17px; color:var(--gold);
+  }
+  .part-titles .eyebrow{font-size:11.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-soft); font-weight:600;}
+  .part-titles h2{font-size:19px; margin:1px 0 0; font-weight:600;}
+  .part-instructions{
+    font-size:13.5px; color:var(--ink-soft); border-left:3px solid var(--gold-soft);
+    padding:8px 12px; margin:12px 0 18px; background:rgba(184,134,11,0.05); border-radius:0 8px 8px 0;
+  }
+
+  /* ---------- CLIP CARD ---------- */
+  .clip{
+    background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+    padding:16px; margin-bottom:16px;
+  }
+  .clip-top{display:flex; align-items:baseline; justify-content:space-between; margin-bottom:10px;}
+  .clip-num{font-family:'Fraunces',serif; font-weight:600; color:var(--gold); font-size:15px;}
+  .clip-title{font-size:12.5px; color:var(--ink-soft);}
+  .video-frame{
+    position:relative; width:100%; padding-top:56.25%; border-radius:10px; overflow:hidden;
+    background:#0c1320; margin-bottom:12px;
+  }
+  .video-frame iframe{position:absolute; top:0; left:0; width:100%; height:100%; border:0;}
+  .question{font-size:15px; font-weight:500; margin-bottom:10px;}
+  .options label{
+    display:flex; gap:10px; align-items:flex-start; padding:9px 10px; border-radius:9px;
+    border:1px solid var(--line); margin-bottom:8px; font-size:14.5px; cursor:pointer;
+    transition:border-color .15s, background .15s;
+  }
+  .options label:hover{border-color:var(--gold);}
+  .options input{margin-top:3px; accent-color:var(--gold);}
+  .options label.correct{background:var(--good-bg); border-color:var(--good);}
+  .options label.incorrect{background:var(--bad-bg); border-color:var(--bad);}
+
+  /* gap fill */
+  .transcript-box{font-size:14.8px; line-height:1.7;}
+  .transcript-box input{
+    width:90px; border:none; border-bottom:2px solid var(--gold); background:transparent;
+    font-family:'Inter',sans-serif; font-size:14.8px; padding:1px 3px; color:var(--ink); text-align:center;
+  }
+  .transcript-box input.correct{border-bottom-color:var(--good); background:var(--good-bg);}
+  .transcript-box input.incorrect{border-bottom-color:var(--bad); background:var(--bad-bg);}
+  .gap-answer{font-size:12.5px; color:var(--ink-soft); margin-top:3px;}
+
+  /* matching part */
+  .match-row{display:flex; gap:10px; align-items:center; margin-bottom:10px;}
+  .match-row select{
+    flex:1; font-family:'Inter',sans-serif; font-size:14px; padding:9px 10px; border-radius:9px;
+    border:1px solid var(--line); background:#fff; color:var(--ink);
+  }
+  .match-row select.correct{border-color:var(--good); background:var(--good-bg);}
+  .match-row select.incorrect{border-color:var(--bad); background:var(--bad-bg);}
+  .options-box{
+    background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+    padding:14px 16px; margin-bottom:16px; font-size:13.8px; color:var(--ink-soft);
+  }
+  .options-box .opt-line{margin-bottom:6px;}
+  .options-box .opt-line b{color:var(--ink);}
+
+  /* ---------- BUTTONS ---------- */
+  .btn{
+    display:inline-block; background:var(--ink); color:#fff; border:none; border-radius:30px;
+    padding:12px 26px; font-family:'Inter',sans-serif; font-weight:600; font-size:14.5px;
+    cursor:pointer; margin:6px 0 4px;
+  }
+  .btn:active{transform:scale(0.98);}
+  .btn.secondary{background:transparent; color:var(--ink); border:1.5px solid var(--ink);}
+  .check-row{text-align:center; margin-top:6px;}
+  .part-result{
+    text-align:center; font-size:14px; color:var(--ink-soft); margin-top:8px; min-height:18px; font-weight:600;
+  }
+
+  /* ---------- FOOTER / FINAL ---------- */
+  .final-card{
+    background:var(--ink); color:#F3F0E8; border-radius:var(--radius); padding:24px 20px;
+    text-align:center; margin-bottom:30px;
+  }
+  .final-card .big{font-family:'Fraunces',serif; font-size:40px; font-weight:600; margin:6px 0;}
+  .final-card .big span{color:var(--gold-soft);}
+  .final-card p{font-size:13.5px; color:#cfd4e0; margin:4px 0 0;}
+
+  footer{
+    max-width:680px; margin:0 auto; padding:0 16px 30px; font-size:12px; color:var(--ink-soft); text-align:center;
+  }
+  footer a{color:var(--gold);}
+  hr.div{border:none; border-top:1px dashed var(--line); margin:36px 0;}
+</style>
+</head>
+<body>
+
+<div class="masthead">
+  <div class="eyebrow">B2 First-style · Listening practice</div>
+  <h1>Real Voices, Real Listening</h1>
+  <p>Four parts, real unscripted English from real people — no studio exam voices. Works on your phone, on the bus, anywhere with a signal. Headphones recommended.</p>
+</div>
+
+<div class="scorebar">
+  <span class="label">Score so far</span>
+  <span class="total"><span id="scoreNow">0</span> / <span id="scoreMax">26</span></span>
+</div>
+
+<div class="wrap">
+
+  <div class="intro-card">
+    <strong>How this works.</strong> Each part has real video clips from interviews, conversations and talks. Listen (twice, if you like — that's allowed in the real exam too), then answer. Press <strong>"Check this part"</strong> at the end of each part to see your score and the correct answers immediately.
+    <ul>
+      <li><strong>Part 1</strong> — 6 short extracts, one question each (gist / feeling / topic)</li>
+      <li><strong>Part 2</strong> — one longer story, complete the notes with the missing word</li>
+      <li><strong>Part 3</strong> — 5 speakers on a related theme, match each speaker to the right summary</li>
+      <li><strong>Part 4</strong> — one long talk, 7 multiple-choice questions</li>
+    </ul>
+  </div>
+
+  <!-- ============ PART 1 ============ -->
+  <div class="part" id="part1">
+    <div class="part-head">
+      <div class="badge">1</div>
+      <div class="part-titles">
+        <div class="eyebrow">Part 1 · Short extracts</div>
+        <h2>Six unrelated recordings</h2>
+      </div>
+    </div>
+    <div class="part-instructions">You will hear six different short recordings. For each one, choose the best answer, A, B or C.</div>
+
+    <!-- Clip 1 -->
+    <div class="clip" data-q="1">
+      <div class="clip-top"><span class="clip-num">1</span><span class="clip-title">"Threads of Love" — StoryCorps</span></div>
+      <div class="video-frame"><iframe src="https://www.youtube.com/embed/8aCNZuM69uo" loading="lazy" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
+      <div class="fallback-link" style="text-align:center;margin:-6px 0 12px;"><a href="https://www.youtube.com/watch?v=8aCNZuM69uo" target="_blank" style="font-size:12.5px;color:var(--ink-soft);text-decoration:underline;">Can't see the video? Open it directly on YouTube ↗</a></div>
+      <div class="question">1&nbsp;&nbsp;What is this conversation mainly about?</div>
+      <div class="options">
+        <label><input type="radio" name="q1" value="a"> A&nbsp; A father explaining why he and his wife decided to adopt their daughter</label>
+        <label><input type="radio" name="q1" value="b"> B&nbsp; A father planning a surprise party for his daughter</label>
+        <label><input type="radio" name="q1" value="c"> C&nbsp; A father asking his daughter about her plans for college</label>
+      </div>
+    </div>
+
+    <!-- Clip 2 -->
+    <div class="clip" data-q="2">
+      <div class="clip-top"><span class="clip-num">2</span><span class="clip-title">"Leading the Way" — StoryCorps</span></div>
+      <div class="video-frame"><iframe src="https://www.youtube.com/embed/tMnARQ3flrE" loading="lazy" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
+      <div class="fallback-link" style="text-align:center;margin:-6px 0 12px;"><a href="https://www.youtube.com/watch?v=tMnARQ3flrE" target="_blank" style="font-size:12.5px;color:var(--ink-soft);text-decoration:underline;">Can't see the video? Open it directly on YouTube ↗</a></div>
+      <div class="question">2&nbsp;&nbsp;How does the father feel about his children?</div>
+      <div class="options">
+        <label><input type="radio" name="q2" value="a"> A&nbsp; Disappointed that they didn't follow his career</label>
+        <label><input type="radio" name="q2" value="b"> B&nbsp; Proud of them, and he enjoys remembering funny family moments</label>
+        <label><input type="radio" name="q2" value="c"> C&nbsp; Worried that he wasn't a good enough parent</label>
+      </div>
+    </div>
+
+    <!-- Clip 3 -->
+    <div class="clip" data-q="3">
+      <div class="clip-top"><span class="clip-num">3</span><span class="clip-title">"Operation North Pole" — StoryCorps</span></div>
+      <div class="video-frame"><iframe src="https://www.youtube.com/embed/rM07p0I1pvk" loading="lazy" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
+      <div class="fallback-link" style="text-align:center;margin:-6px 0 12px;"><a href="https://www.youtube.com/watch?v=rM07p0I1pvk" target="_blank" style="font-size:12.5px;color:var(--ink-soft);text-decoration:underline;">Can't see the video? Open it directly on YouTube ↗</a></div>
+      <div class="question">3&nbsp;&nbsp;What are the speakers mainly describing?</div>
+      <div class="options">
+        <label><input type="radio" name="q3" value="a"> A&nbsp; A funny mistake their father made at work</label>
+        <label><input type="radio" name="q3" value="b"> B&nbsp; How a surprising childhood phone call led to a Christmas tradition</label>
+        <label><input type="radio" name="q3" value="c"> C&nbsp; A dangerous moment during the Cold War</label>
+      </div>
+    </div>
+
+    <!-- Clip 4 -->
+    <div class="clip" data-q="4">
+      <div class="clip-top"><span class="clip-num">4</span><span class="clip-title">"Late Nights at Dubrow's" — StoryCorps</span></div>
+      <div class="video-frame"><iframe src="https://www.youtube.com/embed/UMO4Sdn72us" loading="lazy" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
+      <div class="fallback-link" style="text-align:center;margin:-6px 0 12px;"><a href="https://www.youtube.com/watch?v=UMO4Sdn72us" target="_blank" style="font-size:12.5px;color:var(--ink-soft);text-decoration:underline;">Can't see the video? Open it directly on YouTube ↗</a></div>
+      <div class="question">4&nbsp;&nbsp;What do the speakers mainly talk about?</div>
+      <div class="options">
+        <label><input type="radio" name="q4" value="a"> A&nbsp; Funny memories of friends from a place they used to hang out together</label>
+        <label><input type="radio" name="q4" value="b"> B&nbsp; A disagreement they once had about food</label>
+        <label><input type="radio" name="q4" value="c"> C&nbsp; Their plans to open their own restaurant</label>
+      </div>
+    </div>
+
+    <!-- Clip 5 -->
+    <div class="clip" data-q="5">
+      <div class="clip-top"><span class="clip-num">5</span><span class="clip-title">"Shades of Love" — StoryCorps</span></div>
+      <div class="video-frame"><iframe src="https://www.youtube.com/embed/hu9dLqgQQvk" loading="lazy" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
+      <div class="fallback-link" style="text-align:center;margin:-6px 0 12px;"><a href="https://www.youtube.com/watch?v=hu9dLqgQQvk" target="_blank" style="font-size:12.5px;color:var(--ink-soft);text-decoration:underline;">Can't see the video? Open it directly on YouTube ↗</a></div>
+      <div class="question">5&nbsp;&nbsp;What connects the two speakers?</div>
+      <div class="options">
+        <label><input type="radio" name="q5" value="a"> A&nbsp; They both work at the same hospital</label>
+        <label><input type="radio" name="q5" value="b"> B&nbsp; They both have the same rare skin condition</label>
+        <label><input type="radio" name="q5" value="c"> C&nbsp; They both grew up in the same town</label>
+      </div>
+    </div>
+
+    <!-- Clip 6 -->
+    <div class="clip" data-q="6">
+      <div class="clip-top"><span class="clip-num">6</span><span class="clip-title">"Wild in Love" — StoryCorps</span></div>
+      <div class="video-frame"><iframe src="https://www.youtube.com/embed/1vJwmEYbw58" loading="lazy" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
+      <div class="fallback-link" style="text-align:center;margin:-6px 0 12px;"><a href="https://www.youtube.com/watch?v=1vJwmEYbw58" target="_blank" style="font-size:12.5px;color:var(--ink-soft);text-decoration:underline;">Can't see the video? Open it directly on YouTube ↗</a></div>
+      <div class="question">6&nbsp;&nbsp;How does the woman describe the start of their relationship?</div>
+      <div class="options">
+        <label><input type="radio" name="q6" value="a"> A&nbsp; Calm and predictable</label>
+        <label><input type="radio" name="q6" value="b"> B&nbsp; Unusual and full of surprises</label>
+        <label><input type="radio" name="q6" value="c"> C&nbsp; Slow and a little boring</label>
+      </div>
+    </div>
+
+    <div class="check-row"><button class="btn" onclick="checkPart(1)">Check Part 1</button></div>
+    <div class="part-result" id="result1"></div>
+  </div>
+
+  <hr class="div">
+
+  <!-- ============ PART 2 ============ -->
+  <div class="part" id="part2">
+    <div class="part-head">
+      <div class="badge">2</div>
+      <div class="part-titles">
+        <div class="eyebrow">Part 2 · Note completion</div>
+        <h2>"Double Major" — a StoryCorps story</h2>
+      </div>
+    </div>
+    <div class="part-instructions">Listen to Wil Smith tell his daughter Olivia about being a single dad in college. Complete each gap below with one word or a short number/phrase.</div>
+
+    <div class="clip">
+      <div class="video-frame"><iframe src="https://www.youtube.com/embed/tmK8ROYiddA" loading="lazy" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
+      <div class="fallback-link" style="text-align:center;margin:-6px 0 12px;"><a href="https://www.youtube.com/watch?v=tmK8ROYiddA" target="_blank" style="font-size:12.5px;color:var(--ink-soft);text-decoration:underline;">Can't see the video? Open it directly on YouTube ↗</a></div>
+      <div class="transcript-box">
+        Wil got a night job cleaning at <input type="text" id="g1" data-q="g1"> while he was a student.<br><br>
+        He says he lost about <input type="text" id="g2" data-q="g2" size="3"> pounds because of stress and not eating enough.<br><br>
+        His first babysitters were his <input type="text" id="g3" data-q="g3"> teammates.<br><br>
+        At the time, Olivia was an <input type="text" id="g4" data-q="g4" size="3">-month-old baby who tore up the room.<br><br>
+        Wil says he sometimes felt a little <input type="text" id="g5" data-q="g5">, but never embarrassed.<br><br>
+        At his graduation, his classmates gave him the only <input type="text" id="g6" data-q="g6">.<br><br>
+        It was the college <input type="text" id="g7" data-q="g7"> who called both their names when he presented the diploma.<br><br>
+        Wil tells Olivia that he draws his <input type="text" id="g8" data-q="g8"> from her.
+      </div>
+    </div>
+
+    <div class="check-row"><button class="btn" onclick="checkPart(2)">Check Part 2</button></div>
+    <div class="part-result" id="result2"></div>
+  </div>
+
+  <hr class="div">
+
+  <!-- ============ PART 3 ============ -->
+  <div class="part" id="part3">
+    <div class="part-head">
+      <div class="badge">3</div>
+      <div class="part-titles">
+        <div class="eyebrow">Part 3 · Multiple matching</div>
+        <h2>Five people, one theme: things that shaped us</h2>
+      </div>
+    </div>
+    <div class="part-instructions">You will hear five different speakers from StoryCorps's 20th Anniversary collection. For each speaker, choose the summary (A–H) that best matches what they say. There are three extra summaries you do not need.</div>
+
+    <div class="options-box">
+      <div class="opt-line"><b>A.</b> This speaker remembers someone whose strength came from a quiet, gentle presence rather than words.</div>
+      <div class="opt-line"><b>B.</b> This speaker describes turning a stressful moment behind the wheel into a story the family still laughs about.</div>
+      <div class="opt-line"><b>C.</b> This speaker explains how a small, personal act of care became a way of helping people move forward in life.</div>
+      <div class="opt-line"><b>D.</b> This speaker talks about overcoming a financial obstacle in order to follow a passion for music.</div>
+      <div class="opt-line"><b>E.</b> This speaker remembers a relative who filled their home with fun and laughter.</div>
+      <div class="opt-line"><b>F.</b> This speaker recalls being inspired by a teacher's unexpected act of kindness.</div>
+      <div class="opt-line"><b>G.</b> This speaker describes how a frightening event changed the course of their life.</div>
+      <div class="opt-line"><b>H.</b> This speaker talks about reconnecting with a long-lost family member after many years.</div>
+    </div>
+
+    <div class="clip">
+      <div class="clip-top"><span class="clip-num">Speaker 1</span><span class="clip-title">"Family Harmony"</span></div>
+      <div class="video-frame"><iframe src="https://www.youtube.com/embed/oAn6XFwZ8CA" loading="lazy" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
+      <div class="fallback-link" style="text-align:center;margin:-6px 0 12px;"><a href="https://www.youtube.com/watch?v=oAn6XFwZ8CA" target="_blank" style="font-size:12.5px;color:var(--ink-soft);text-decoration:underline;">Can't see the video? Open it directly on YouTube ↗</a></div>
+      <div class="match-row"><select id="m1" data-q="m1"><option value="">— choose A–H —</option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option><option>G</option><option>H</option></select></div>
+    </div>
+
+    <div class="clip">
+      <div class="clip-top"><span class="clip-num">Speaker 2</span><span class="clip-title">"Dreamer's Gift"</span></div>
+      <div class="video-frame"><iframe src="https://www.youtube.com/embed/-UTXJZDSL4Y" loading="lazy" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
+      <div class="fallback-link" style="text-align:center;margin:-6px 0 12px;"><a href="https://www.youtube.com/watch?v=-UTXJZDSL4Y" target="_blank" style="font-size:12.5px;color:var(--ink-soft);text-decoration:underline;">Can't see the video? Open it directly on YouTube ↗</a></div>
+      <div class="match-row"><select id="m2" data-q="m2"><option value="">— choose A–H —</option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option><option>G</option><option>H</option></select></div>
+    </div>
+
+    <div class="clip">
+      <div class="clip-top"><span class="clip-num">Speaker 3</span><span class="clip-title">"Rules of the Road"</span></div>
+      <div class="video-frame"><iframe src="https://www.youtube.com/embed/nP0eLTzfwlQ" loading="lazy" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
+      <div class="fallback-link" style="text-align:center;margin:-6px 0 12px;"><a href="https://www.youtube.com/watch?v=nP0eLTzfwlQ" target="_blank" style="font-size:12.5px;color:var(--ink-soft);text-decoration:underline;">Can't see the video? Open it directly on YouTube ↗</a></div>
+      <div class="match-row"><select id="m3" data-q="m3"><option value="">— choose A–H —</option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option><option>G</option><option>H</option></select></div>
+    </div>
+
+    <div class="clip">
+      <div class="clip-top"><span class="clip-num">Speaker 4</span><span class="clip-title">"Grandma's Hands"</span></div>
+      <div class="video-frame"><iframe src="https://www.youtube.com/embed/kZVKyPYpAGo" loading="lazy" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
+      <div class="fallback-link" style="text-align:center;margin:-6px 0 12px;"><a href="https://www.youtube.com/watch?v=kZVKyPYpAGo" target="_blank" style="font-size:12.5px;color:var(--ink-soft);text-decoration:underline;">Can't see the video? Open it directly on YouTube ↗</a></div>
+      <div class="match-row"><select id="m4" data-q="m4"><option value="">— choose A–H —</option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option><option>G</option><option>H</option></select></div>
+    </div>
+
+    <div class="clip">
+      <div class="clip-top"><span class="clip-num">Speaker 5</span><span class="clip-title">"Mama Sug"</span></div>
+      <div class="video-frame"><iframe src="https://www.youtube.com/embed/kfP6CbZR4r8" loading="lazy" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
+      <div class="fallback-link" style="text-align:center;margin:-6px 0 12px;"><a href="https://www.youtube.com/watch?v=kfP6CbZR4r8" target="_blank" style="font-size:12.5px;color:var(--ink-soft);text-decoration:underline;">Can't see the video? Open it directly on YouTube ↗</a></div>
+      <div class="match-row"><select id="m5" data-q="m5"><option value="">— choose A–H —</option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option><option>G</option><option>H</option></select></div>
+    </div>
+
+    <div class="check-row"><button class="btn" onclick="checkPart(3)">Check Part 3</button></div>
+    <div class="part-result" id="result3"></div>
+  </div>
+
+  <hr class="div">
+
+  <!-- ============ PART 4 ============ -->
+  <div class="part" id="part4">
+    <div class="part-head">
+      <div class="badge">4</div>
+      <div class="part-titles">
+        <div class="eyebrow">Part 4 · Long interview / talk</div>
+        <h2>Scott Loarie — "The surprising power of your nature photos" (TED, 2025)</h2>
+      </div>
+    </div>
+    <div class="part-instructions">Listen to the whole talk (about 12 minutes — take your time, pause and replay as needed), then answer the seven questions, A, B or C.</div>
+
+    <div class="clip">
+      <div class="video-frame"><iframe src="https://www.youtube.com/embed/DUfobESjj6s" loading="lazy" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
+      <div class="fallback-link" style="text-align:center;margin:-6px 0 12px;"><a href="https://www.youtube.com/watch?v=DUfobESjj6s" target="_blank" style="font-size:12.5px;color:var(--ink-soft);text-decoration:underline;">Can't see the video? Open it directly on YouTube ↗</a></div>
+    </div>
+
+    <div class="clip" data-q="p4_1">
+      <div class="question">1&nbsp;&nbsp;What is Scott Loarie's role, as mentioned in the talk?</div>
+      <div class="options">
+        <label><input type="radio" name="p4_1" value="a"> A&nbsp; A professional wildlife photographer</label>
+        <label><input type="radio" name="p4_1" value="b"> B&nbsp; The executive director of iNaturalist</label>
+        <label><input type="radio" name="p4_1" value="c"> C&nbsp; A university professor of biology</label>
+      </div>
+    </div>
+
+    <div class="clip" data-q="p4_2">
+      <div class="question">2&nbsp;&nbsp;What challenge does Loarie set for the audience?</div>
+      <div class="options">
+        <label><input type="radio" name="p4_2" value="a"> A&nbsp; Plant a native species in their garden</label>
+        <label><input type="radio" name="p4_2" value="b"> B&nbsp; Go outside, take a photo of a living thing, and share it</label>
+        <label><input type="radio" name="p4_2" value="c"> C&nbsp; Donate money to a conservation charity</label>
+      </div>
+    </div>
+
+    <div class="clip" data-q="p4_3">
+      <div class="question">3&nbsp;&nbsp;What happens to the nature photos people share on the platform?</div>
+      <div class="options">
+        <label><input type="radio" name="p4_3" value="a"> A&nbsp; They are entered into a photography competition</label>
+        <label><input type="radio" name="p4_3" value="b"> B&nbsp; They are identified with the help of AI and other users, building a record of nature</label>
+        <label><input type="radio" name="p4_3" value="c"> C&nbsp; They are sold to print companies to raise funds</label>
+      </div>
+    </div>
+
+    <div class="clip" data-q="p4_4">
+      <div class="question">4&nbsp;&nbsp;What example does Loarie give about newts in Petaluma, California?</div>
+      <div class="options">
+        <label><input type="radio" name="p4_4" value="a"> A&nbsp; Citizen scientists discovered a brand-new species of newt</label>
+        <label><input type="radio" name="p4_4" value="b"> B&nbsp; People organised efforts to help the newts cross roads safely</label>
+        <label><input type="radio" name="p4_4" value="c"> C&nbsp; Scientists began breeding the newts in captivity</label>
+      </div>
+    </div>
+
+    <div class="clip" data-q="p4_5">
+      <div class="question">5&nbsp;&nbsp;What does Loarie say about how many of the world's species have been documented through the platform?</div>
+      <div class="options">
+        <label><input type="radio" name="p4_5" value="a"> A&nbsp; Only a small handful, so far</label>
+        <label><input type="radio" name="p4_5" value="b"> B&nbsp; A surprisingly large share — around a quarter of all known species</label>
+        <label><input type="radio" name="p4_5" value="c"> C&nbsp; Practically every species on Earth</label>
+      </div>
+    </div>
+
+    <div class="clip" data-q="p4_6">
+      <div class="question">6&nbsp;&nbsp;What does Loarie say about users who remove invasive plants or plant native ones?</div>
+      <div class="options">
+        <label><input type="radio" name="p4_6" value="a"> A&nbsp; They are acting on what they learned and observed through the app</label>
+        <label><input type="radio" name="p4_6" value="b"> B&nbsp; iNaturalist pays them to carry out this work</label>
+        <label><input type="radio" name="p4_6" value="c"> C&nbsp; It is a compulsory part of joining the community</label>
+      </div>
+    </div>
+
+    <div class="clip" data-q="p4_7">
+      <div class="question">7&nbsp;&nbsp;What is the main message of the talk?</div>
+      <div class="options">
+        <label><input type="radio" name="p4_7" value="a"> A&nbsp; Only professional scientists can solve the biodiversity crisis</label>
+        <label><input type="radio" name="p4_7" value="b"> B&nbsp; Ordinary people taking nature photos can meaningfully contribute to science and conservation</label>
+        <label><input type="radio" name="p4_7" value="c"> C&nbsp; Smartphone cameras are not accurate enough for scientific use</label>
+      </div>
+    </div>
+
+    <div class="check-row"><button class="btn" onclick="checkPart(4)">Check Part 4</button></div>
+    <div class="part-result" id="result4"></div>
+  </div>
+
+  <hr class="div">
+
+  <div class="final-card">
+    <div class="eyebrow" style="color:#cfd4e0;">Full test</div>
+    <div class="big"><span id="finalScore">0</span> / 26</div>
+    <p>Check every part above, then press the button below for your full result.</p>
+    <button class="btn secondary" style="border-color:#fff;color:#fff;margin-top:10px;" onclick="showFinal()">Show full result</button>
+    <button class="btn secondary" style="border-color:#fff;color:#fff;margin-top:10px;" onclick="resetAll()">Reset and try again</button>
+  </div>
+
+</div>
+
+<footer>
+  Built for one-to-one C2/B2 practice. All clips are real, publicly available recordings on YouTube (StoryCorps and TED) — not staged exam audio — so the listening challenge is genuine. Always feel free to replay a clip as many times as you like.
+</footer>
+
+<script>
+const ANSWERS = {
+  q1:'a', q2:'b', q3:'b', q4:'a', q5:'b', q6:'b',
+  g1:'staples', g2:'27', g3:'basketball', g4:'18', g5:'awkward', g6:'standing ovation', g7:'dean', g8:'strength',
+  m1:'D', m2:'C', m3:'B', m4:'A', m5:'E',
+  p4_1:'b', p4_2:'b', p4_3:'b', p4_4:'b', p4_5:'b', p4_6:'a', p4_7:'b'
+};
+const TOTAL = 26;
+let scoreByPart = {1:0,2:0,3:0,4:0};
+
+function norm(s){ return (s||'').toString().trim().toLowerCase().replace(/\s+/g,' '); }
+
+function checkPart(n){
+  let correct = 0, total = 0;
+  if(n===1){
+    for(let i=1;i<=6;i++){
+      total++;
+      const sel = document.querySelector('input[name="q'+i+'"]:checked');
+      const labels = document.querySelectorAll('#part1 .clip[data-q="'+i+'"] .options label');
+      labels.forEach(l=>{
+        l.classList.remove('correct','incorrect');
+        const val = l.querySelector('input').value;
+        if(val===ANSWERS['q'+i]) l.classList.add('correct');
+        else if(sel && val===sel.value) l.classList.add('incorrect');
+      });
+      if(sel && sel.value===ANSWERS['q'+i]) correct++;
+    }
+  }
+  if(n===2){
+    for(let i=1;i<=8;i++){
+      total++;
+      const inp = document.getElementById('g'+i);
+      const val = norm(inp.value);
+      const ans = ANSWERS['g'+i];
+      inp.classList.remove('correct','incorrect');
+      if(val===ans || (ans==='standing ovation' && val.includes('standing'))){
+        inp.classList.add('correct'); correct++;
+      } else {
+        inp.classList.add('incorrect');
+      }
+    }
+  }
+  if(n===3){
+    for(let i=1;i<=5;i++){
+      total++;
+      const sel = document.getElementById('m'+i);
+      sel.classList.remove('correct','incorrect');
+      if(sel.value===ANSWERS['m'+i]){ sel.classList.add('correct'); correct++; }
+      else if(sel.value!==''){ sel.classList.add('incorrect'); }
+    }
+  }
+  if(n===4){
+    const keys = ['p4_1','p4_2','p4_3','p4_4','p4_5','p4_6','p4_7'];
+    keys.forEach(k=>{
+      total++;
+      const sel = document.querySelector('input[name="'+k+'"]:checked');
+      const labels = document.querySelectorAll('.clip[data-q="'+k+'"] .options label');
+      labels.forEach(l=>{
+        l.classList.remove('correct','incorrect');
+        const val = l.querySelector('input').value;
+        if(val===ANSWERS[k]) l.classList.add('correct');
+        else if(sel && val===sel.value) l.classList.add('incorrect');
+      });
+      if(sel && sel.value===ANSWERS[k]) correct++;
+    });
+  }
+  scoreByPart[n] = correct;
+  document.getElementById('result'+n).textContent = 'Score: ' + correct + ' / ' + total;
+  updateScoreBar();
+}
+
+function updateScoreBar(){
+  const sum = scoreByPart[1]+scoreByPart[2]+scoreByPart[3]+scoreByPart[4];
+  document.getElementById('scoreNow').textContent = sum;
+  document.getElementById('finalScore').textContent = sum;
+}
+
+function showFinal(){
+  updateScoreBar();
+  document.querySelector('.final-card').scrollIntoView({behavior:'smooth', block:'center'});
+}
+
+function resetAll(){
+  document.querySelectorAll('input[type=radio]').forEach(r=>r.checked=false);
+  document.querySelectorAll('input[type=text]').forEach(t=>{t.value=''; t.classList.remove('correct','incorrect');});
+  document.querySelectorAll('select').forEach(s=>{s.value=''; s.classList.remove('correct','incorrect');});
+  document.querySelectorAll('.options label').forEach(l=>l.classList.remove('correct','incorrect'));
+  document.querySelectorAll('.part-result').forEach(p=>p.textContent='');
+  scoreByPart = {1:0,2:0,3:0,4:0};
+  updateScoreBar();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+</script>
+</body>
+</html>
