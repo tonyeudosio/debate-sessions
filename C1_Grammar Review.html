@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>C1 / CAE — Complete Grammar Review</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:    #1a2e4a;
+    --blue:    #2563a8;
+    --sky:     #d6e8f7;
+    --accent:  #c8813a;
+    --green:   #2a7a4b;
+    --green-bg:#e8f5ee;
+    --yellow:  #fffaed;
+    --yellow-b:#f5e6b8;
+    --cream:   #faf8f4;
+    --paper:   #f4f1ec;
+    --ink:     #1c1c1c;
+    --mid:     #555;
+    --light:   #e8e4dc;
+    --shadow:  rgba(26,46,74,.10);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body { font-family: 'Source Serif 4', Georgia, serif; background: var(--paper); color: var(--ink); }
+
+  /* NAV */
+  nav {
+    background: var(--navy);
+    position: sticky; top: 0; z-index: 100;
+    display: flex; flex-wrap: wrap; gap: .3rem;
+    padding: .5rem .8rem;
+    border-bottom: 3px solid var(--accent);
+  }
+  nav a {
+    color: rgba(255,255,255,.75); font-size: .75rem;
+    text-decoration: none; padding: .25rem .55rem;
+    border-radius: 4px; transition: background .2s, color .2s;
+    font-family: 'Source Serif 4', serif;
+    white-space: nowrap;
+  }
+  nav a:hover { background: var(--accent); color: #fff; }
+
+  /* HEADER */
+  header {
+    background: var(--navy); padding: 2.2rem 2rem 1.6rem;
+    text-align: center; position: relative; overflow: hidden;
+  }
+  header::before {
+    content: ''; position: absolute; inset: 0;
+    background: repeating-linear-gradient(45deg,transparent,transparent 28px,rgba(255,255,255,.025) 28px,rgba(255,255,255,.025) 29px);
+  }
+  header h1 { font-family:'Playfair Display',serif; font-size:clamp(1.4rem,4vw,2.4rem); color:#fff; position:relative; }
+  header p  { font-size:.9rem; color:rgba(255,255,255,.6); font-style:italic; margin-top:.4rem; position:relative; }
+  .accent-bar { width:60px;height:3px;background:var(--accent);margin:.9rem auto 0;border-radius:2px;position:relative; }
+
+  /* LAYOUT */
+  .container { max-width:900px; margin:0 auto; padding:1.8rem 1.2rem 4rem; }
+
+  /* GLOBAL CONTROLS */
+  .controls { display:flex; justify-content:flex-end; gap:.7rem; margin-bottom:1.4rem; flex-wrap:wrap; }
+  .ctrl-btn {
+    font-family:'Source Serif 4',serif; font-size:.85rem; padding:.4rem .9rem;
+    border-radius:5px; border:1.5px solid var(--navy);
+    background:var(--navy); color:#fff; cursor:pointer; transition:opacity .2s;
+  }
+  .ctrl-btn:hover { opacity:.82; }
+  .ctrl-btn.outline { background:transparent; color:var(--navy); }
+
+  /* SECTION */
+  .section { background:var(--cream); border-radius:10px; box-shadow:0 2px 16px var(--shadow); margin-bottom:2.2rem; overflow:hidden; }
+  .section-header {
+    background:var(--navy); color:#fff; padding:.8rem 1.4rem;
+    font-family:'Playfair Display',serif; font-size:1.1rem; letter-spacing:.03em;
+    display:flex; align-items:center; gap:.7rem;
+  }
+  .section-header .tag {
+    background:var(--accent); color:#fff;
+    font-family:'Source Serif 4',serif; font-size:.68rem; font-weight:600;
+    letter-spacing:.08em; text-transform:uppercase;
+    padding:.12rem .5rem; border-radius:3px;
+  }
+  .section-body { padding:1.3rem 1.5rem; }
+
+  /* TABLES */
+  .ref-table { width:100%; border-collapse:collapse; font-size:.88rem; margin:.8rem 0; }
+  .ref-table th { background:var(--navy); color:#fff; padding:.5rem .75rem; text-align:left; font-family:'Playfair Display',serif; }
+  .ref-table td { padding:.45rem .75rem; border-bottom:1px solid var(--light); vertical-align:top; }
+  .ref-table tr:last-child td { border-bottom:none; }
+  .ref-table tr:nth-child(odd)  td { background:var(--sky); }
+  .ref-table tr:nth-child(even) td { background:var(--cream); }
+  .ref-table .c1 { font-weight:600; color:var(--navy); width:25%; }
+  .ref-table .c2 { width:75%; }
+  .ref-table .c3 { font-style:italic; color:var(--blue); font-weight:600; }
+
+  /* IP BOXES */
+  .ip-box { border-radius:8px; padding:.9rem 1.1rem; margin:.7rem 0; border-left:4px solid var(--blue); }
+  .ip-box.imp { background:var(--sky); border-color:var(--blue); }
+  .ip-box.per { background:var(--green-bg); border-color:var(--green); }
+  .ip-box .lbl { font-family:'Playfair Display',serif; font-size:.82rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; margin-bottom:.35rem; }
+  .ip-box.imp .lbl { color:var(--blue); }
+  .ip-box.per .lbl { color:var(--green); }
+  .ip-box .formula { font-weight:600; color:var(--navy); font-size:.88rem; margin-bottom:.3rem; }
+  .ip-box .eg { font-style:italic; font-size:.88rem; }
+  .ip-box .note { font-size:.8rem; color:var(--mid); margin-top:.28rem; }
+
+  .warn { background:var(--yellow); border:1.5px solid var(--yellow-b); border-radius:7px; padding:.75rem 1rem; margin:.8rem 0; font-size:.88rem; }
+  .warn strong { color:var(--accent); }
+
+  .pv-box { background:var(--sky); border-radius:7px; padding:.7rem 1rem; margin-bottom:1.1rem; font-style:italic; font-size:.88rem; color:var(--navy); text-align:center; font-weight:600; }
+
+  ul.blist { list-style:none; padding:0; margin:.4rem 0; }
+  ul.blist li { padding:.28rem 0 .28rem 1.2rem; position:relative; font-size:.9rem; }
+  ul.blist li::before { content:'▸'; position:absolute; left:0; color:var(--blue); font-size:.82rem; }
+  ul.blist em { font-style:italic; color:var(--blue); font-weight:600; }
+
+  h3 { font-family:'Playfair Display',serif; color:var(--blue); font-size:1rem; margin:1.1rem 0 .4rem; }
+  p.desc { font-size:.9rem; color:var(--mid); margin-bottom:.65rem; line-height:1.6; }
+
+  /* EXERCISES */
+  .ex-list { list-style:none; padding:0; }
+  .ex-item { margin-bottom:1rem; }
+  .ex-prompt { font-size:.92rem; line-height:1.65; margin-bottom:.35rem; display:flex; gap:.55rem; }
+  .ex-num { font-family:'Playfair Display',serif; color:var(--accent); font-size:.98rem; font-weight:700; min-width:1.35rem; padding-top:.05rem; }
+
+  /* Answer row */
+  .answer-row { display:flex; align-items:stretch; gap:0; border-radius:7px; overflow:hidden; border:1.5px solid var(--light); margin-left:1.9rem; }
+  .check-cell { background:var(--yellow); padding:.38rem .65rem; display:flex; align-items:center; justify-content:center; border-right:1.5px solid var(--light); min-width:40px; }
+  .check-cell input[type="checkbox"] { width:17px; height:17px; accent-color:var(--green); cursor:pointer; }
+  .answer-cell { background:#fff; flex:1; padding:.38rem .75rem; display:flex; align-items:center; gap:.45rem; font-size:.88rem; flex-wrap:wrap; }
+  .alabel { color:#bbb; font-weight:600; font-size:.76rem; white-space:nowrap; }
+  .answer-text { color:var(--blue); font-weight:700; font-style:italic; filter:blur(5px); user-select:none; transition:filter .35s ease; cursor:pointer; }
+  .answer-text.revealed { filter:none; cursor:default; }
+  .anote { color:#aaa; font-size:.76rem; font-style:italic; }
+  .reveal-btn { background:none; border:1.5px solid var(--blue); color:var(--blue); font-family:'Source Serif 4',serif; font-size:.76rem; padding:.12rem .5rem; border-radius:4px; cursor:pointer; white-space:nowrap; transition:background .2s,color .2s; margin-left:auto; }
+  .reveal-btn:hover { background:var(--blue); color:#fff; }
+  .reveal-btn.hidden { display:none; }
+
+  /* double answers */
+  .double-ans { margin-left:1.9rem; }
+  .double-ans .answer-row { margin-left:0; margin-bottom:.35rem; }
+  .atype { font-size:.75rem; font-weight:700; color:var(--mid); letter-spacing:.05em; text-transform:uppercase; min-width:110px; }
+
+  /* keyword transform style */
+  .kw-item { margin-bottom:1rem; }
+  .kw-prompt { font-size:.9rem; margin-bottom:.2rem; line-height:1.6; }
+  .kw-key { display:inline-block; background:var(--navy); color:#fff; font-size:.72rem; font-weight:700; letter-spacing:.07em; padding:.1rem .38rem; border-radius:3px; margin:0 .25rem; font-family:'Source Serif 4',serif; }
+
+  footer { text-align:center; padding:1.1rem; font-size:.8rem; color:#aaa; font-style:italic; border-top:1px solid var(--light); margin-top:1rem; }
+
+  @media(max-width:600px){
+    .section-body { padding:1rem .8rem; }
+    .ref-table { font-size:.78rem; }
+    .ref-table th,.ref-table td { padding:.38rem .45rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>C1 / CAE — Complete Grammar Review</h1>
+  <p>Advanced Aspect & Inversion · Complex Prepositions · Phrasal Verbs · Clefts · Mixed Conditionals · Collocations</p>
+  <div class="accent-bar"></div>
+</header>
+
+<nav>
+  <a href="#ref">📖 Reference</a>
+  <a href="#ex1">Ex 1 Tenses</a>
+  <a href="#ex2">Ex 2 Prepositions</a>
+  <a href="#ex3">Ex 3 Phrasal Verbs</a>
+  <a href="#ex4">Ex 4 Wish/Urgency</a>
+  <a href="#ex5">Ex 5 Habits/States</a>
+  <a href="#ex6">Ex 6 Concession</a>
+  <a href="#ex7">Ex 7 Passives/Clefts</a>
+  <a href="#ex8">Ex 8 Collocations</a>
+  <a href="#ex9">Ex 9 CAE Part 4</a>
+</nav>
+
+<div class="container">
+
+  <div class="controls">
+    <button class="ctrl-btn outline" onclick="revealAll(false)">🙈 Hide all answers</button>
+    <button class="ctrl-btn" onclick="revealAll(true)">👁 Reveal all answers</button>
+  </div>
+
+  <!-- ══════════════════════════════════
+       PART A — REFERENCE
+  ══════════════════════════════════ -->
+
+  <div class="section" id="ref">
+    <div class="section-header"><span class="tag">Part A</span>Grammar Reference</div>
+    <div class="section-body">
+
+      <h3>1. Advanced Verb Tenses & Inversion</h3>
+      <table class="ref-table">
+        <thead><tr><th class="c1">Structure</th><th>Use + Example</th></tr></thead>
+        <tbody>
+          <tr><td class="c1">Future in the Past</td><td>An event planned in the past that did or did not happen → <em>The committee was to have met yesterday, but it was postponed.</em></td></tr>
+          <tr><td class="c1">Future Perfect Continuous</td><td>Projecting duration forward to a specific point → <em>By next month, I will have been living here for ten years.</em></td></tr>
+          <tr><td class="c1">Negative Inversion</td><td>Emphatic structure after initial negative adverbs → <em>Seldom have we witnessed such an exceptional performance.</em></td></tr>
+          <tr><td class="c1">Past Perfect Continuous</td><td>Duration highlighted right before a past event → <em>He had been working for hours when the power went out.</em></td></tr>
+        </tbody>
+      </table>
+
+      <h3>2a. Advanced Prepositions of Time & Complex Linkers</h3>
+      <table class="ref-table">
+        <thead><tr><th style="width:25%">Prep. Phrase</th><th>Examples</th></tr></thead>
+        <tbody>
+          <tr><td class="c1">prior to</td><td>prior to the deadline / prior to the commencement of the exam</td></tr>
+          <tr><td class="c1">in the wake of</td><td>in the wake of the financial crisis (= following / as a result of)</td></tr>
+          <tr><td class="c1">throughout</td><td>throughout the duration of the course / throughout the 20th century</td></tr>
+          <tr><td class="c1">ahead of</td><td>ahead of schedule / ahead of its time</td></tr>
+        </tbody>
+      </table>
+
+      <h3>2b. C1 Prepositional Phrases & Dependent Prepositions</h3>
+      <table class="ref-table">
+        <thead><tr><th style="width:28%">Phrase</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td class="c1">compatible WITH</td><td><em>His theories are not entirely compatible with current scientific models.</em></td></tr>
+          <tr><td class="c1">deficient IN</td><td><em>The diet was found to be seriously deficient in essential vitamins.</em></td></tr>
+          <tr><td class="c1">impervious TO</td><td><em>She seemed completely impervious to criticism from the press.</em></td></tr>
+          <tr><td class="c1">exempt FROM</td><td><em>Charities are typically exempt from paying property taxes.</em></td></tr>
+          <tr><td class="c1">attribute s.t. TO</td><td><em>The doctors attribute his quick recovery to his excellent physical fitness.</em></td></tr>
+          <tr><td class="c1">tamper WITH</td><td><em>Security footage revealed that the lock had been tampered with.</em></td></tr>
+        </tbody>
+      </table>
+
+      <h3>3. Key C1 Phrasal Verbs for CAE</h3>
+      <table class="ref-table">
+        <thead><tr><th style="width:28%">Phrasal Verb</th><th>Meaning + Example</th></tr></thead>
+        <tbody>
+          <tr><td class="c1">bring about</td><td>cause to happen → <em>The new layout will bring about dramatic improvements.</em></td></tr>
+          <tr><td class="c1">get round to</td><td>finally find time to do something → <em>I haven't got round to replying to his email yet.</em></td></tr>
+          <tr><td class="c1">catch on</td><td>become popular / understand → <em>The new fashion trend is slowly starting to catch on.</em></td></tr>
+          <tr><td class="c1">come up against</td><td>encounter an obstacle → <em>We came up against unexpected bureaucratic problems.</em></td></tr>
+          <tr><td class="c1">crop up</td><td>appear unexpectedly → <em>Several unforeseen issues cropped up during the project.</em></td></tr>
+          <tr><td class="c1">fall back on</td><td>use as a last resort → <em>When the funding stopped, they had to fall back on their savings.</em></td></tr>
+          <tr><td class="c1">make up for</td><td>compensate for → <em>Her enthusiasm more than makes up for her lack of experience.</em></td></tr>
+          <tr><td class="c1">put down to</td><td>attribute to → <em>The flight cancellation was put down to adverse weather conditions.</em></td></tr>
+          <tr><td class="c1">take to</td><td>develop a habit / start liking → <em>He has taken to drinking green tea instead of coffee lately.</em></td></tr>
+          <tr><td class="c1">gloss over</td><td>avoid detailing a problem → <em>The report completely glossed over the real causes of the crisis.</em></td></tr>
+        </tbody>
+      </table>
+
+      <h3>4a. Urgency & Complex Preferences</h3>
+      <table class="ref-table">
+        <thead><tr><th style="width:40%">Structure</th><th>Use + Example</th></tr></thead>
+        <tbody>
+          <tr><td class="c1">would rather + past perfect</td><td>Past preference about someone else's action → <em>I'd rather you hadn't told her yet.</em></td></tr>
+          <tr><td class="c1">it is high time + past simple</td><td>Urgent advice / complaint about the present → <em>It is high time the government acted.</em></td></tr>
+          <tr><td class="c1">lest + subjunctive</td><td>To avoid a specific risk → <em>He took notes lest he should forget the main points.</em></td></tr>
+        </tbody>
+      </table>
+
+      <h3>4b. Advanced Conditionals: Inverted & Mixed</h3>
+      <table class="ref-table">
+        <thead><tr><th style="width:36%">Structure</th><th>Use + Example</th></tr></thead>
+        <tbody>
+          <tr><td class="c1">Inverted Third Conditional</td><td>Omission of "if" in formal past contexts → <em>Had I known, I would have intervened.</em></td></tr>
+          <tr><td class="c1">Inverted First Conditional</td><td>Formal future contingency → <em>Should you require assistance, do not hesitate to ask.</em></td></tr>
+          <tr><td class="c1">Mixed Conditional (Past/Pres)</td><td>Past action with a present result → <em>If you had slept more, you wouldn't feel tired now.</em></td></tr>
+        </tbody>
+      </table>
+
+      <h3>4c. Sophisticated Concession Linkers</h3>
+      <table class="ref-table">
+        <thead><tr><th style="width:36%">Linker</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td class="c1">much as + clause</td><td>Strong concession meaning 'although' → <em>Much as I like him, I disagree with his idea.</em></td></tr>
+          <tr><td class="c1">adj / adv + as / though + clause</td><td>Emphatic structure → <em>Difficult though it was, they managed to complete the task.</em></td></tr>
+          <tr><td class="c1">notwithstanding + noun</td><td>Formal contrast → <em>Notwithstanding the heavy rain, the football match continued.</em></td></tr>
+          <tr><td class="c1">be that as it may</td><td>Conceding a point but moving past it → <em>Be that as it may, we must look at the facts.</em></td></tr>
+        </tbody>
+      </table>
+
+      <h3>4d. Advanced Passives & Cleft Emphatic Sentences</h3>
+      <div class="ip-box imp">
+        <div class="lbl">It-Cleft Structures</div>
+        <div class="formula">It + be + emphasized focus + that / who + relative clause</div>
+        <div class="eg">It was the director who made the ultimate decision, not the supervisor.</div>
+        <div class="note">👉 Shifts absolute emphasis directly onto a specific agent or point.</div>
+      </div>
+      <div class="ip-box per">
+        <div class="lbl">Wh-Cleft / Pseudo-Cleft</div>
+        <div class="formula">What + clause + be + noun phrase / infinitive phrase</div>
+        <div class="eg">What the target demographic genuinely values is transparency.</div>
+        <div class="note">👉 Packs structural momentum into the sentence by leading with a noun clause.</div>
+      </div>
+      <table class="ref-table" style="margin-top:.7rem">
+        <thead><tr><th style="width:32%">Standard Active</th><th style="width:34%">It-Cleft Format</th><th>Wh-Cleft Format</th></tr></thead>
+        <tbody>
+          <tr><td>The music woke me up.</td><td class="c3">It was the music that woke me up.</td><td><em>What woke me up was the music.</em></td></tr>
+          <tr><td>I need a long holiday.</td><td class="c3">It is a long holiday that I need.</td><td><em>What I need is a long holiday.</em></td></tr>
+        </tbody>
+      </table>
+
+      <h3>4e. C1 Verb-Noun Collocations</h3>
+      <table class="ref-table">
+        <thead><tr><th style="width:36%">Verb Phrase</th><th>Advanced Application Examples</th></tr></thead>
+        <tbody>
+          <tr><td class="c1">take</td><td>take exception to a remark / take precedence over / take for granted</td></tr>
+          <tr><td class="c1">bear</td><td>bear in mind the conditions / bear fruit / bear testimony to</td></tr>
+          <tr><td class="c1">draw</td><td>draw a line between / draw conclusions from / draw attention to</td></tr>
+          <tr><td class="c1">cast</td><td>cast doubt on a theory / cast a vote / cast an eye over a draft</td></tr>
+          <tr><td class="c1">meet</td><td>meet with disapproval / meet criteria / meet targets</td></tr>
+          <tr><td class="c1">fall</td><td>fall short of expectations / fall into a category / fall under scrutiny</td></tr>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       PART B — EXERCISES
+  ══════════════════════════════════ -->
+
+  <div class="section" style="background:transparent;box-shadow:none;border-radius:0">
+    <div style="padding:.4rem 0 1rem">
+      <p class="desc" style="font-size:.95rem;"><strong>Instructions:</strong> Complete each sentence, then click <strong>Show</strong> (or tap the blurred text) to reveal the answer. Tick ☑ if your answer is correct.</p>
+    </div>
+  </div>
+
+  <!-- EX 1 — ADVANCED TENSES -->
+  <div class="section" id="ex1">
+    <div class="section-header"><span class="tag">Exercise 1</span>Advanced Aspect & Inversion</div>
+    <div class="section-body">
+      <p class="desc">Put the verb in brackets into the correct advanced tense form.</p>
+      <ul class="ex-list" id="list-ex1"></ul>
+    </div>
+  </div>
+
+  <!-- EX 2 — PREPOSITIONS -->
+  <div class="section" id="ex2">
+    <div class="section-header"><span class="tag">Exercise 2</span>C1 Dependent Prepositions</div>
+    <div class="section-body">
+      <p class="desc">Fill in the correct missing preposition.</p>
+      <ul class="ex-list" id="list-ex2"></ul>
+    </div>
+  </div>
+
+  <!-- EX 3 — PHRASAL VERBS -->
+  <div class="section" id="ex3">
+    <div class="section-header"><span class="tag">Exercise 3</span>Advanced Phrasal Verbs</div>
+    <div class="section-body">
+      <p class="desc">Replace the underlined words with the correct phrasal verb from the box, in the right form.</p>
+      <div class="pv-box">bring about · get round to · catch on · come up against · crop up · fall back on · make up for · put down to · take to · gloss over</div>
+      <ul class="ex-list" id="list-ex3"></ul>
+    </div>
+  </div>
+
+  <!-- EX 4 — WISH / RATHER / URGENCIES -->
+  <div class="section" id="ex4">
+    <div class="section-header"><span class="tag">Exercise 4</span>Preferences,Urgency & Inverted Conditionals</div>
+    <div class="section-body">
+      <p class="desc">Complete the sentences using an appropriate C1 level grammatical structure.</p>
+      <ul class="ex-list" id="list-ex4"></ul>
+    </div>
+  </div>
+
+  <!-- EX 5 — USED TO / HABITS -->
+  <div class="section" id="ex5">
+    <div class="section-header"><span class="tag">Exercise 5</span>Advanced Habits & States</div>
+    <div class="section-body">
+      <p class="desc">Choose the correct grammatical modifier to complete each sentence context.</p>
+      <ul class="ex-list" id="list-ex5"></ul>
+    </div>
+  </div>
+
+  <!-- EX 6 — CONCESSION -->
+  <div class="section" id="ex6">
+    <div class="section-header"><span class="tag">Exercise 6</span>Complex Concession & Contrast Links</div>
+    <div class="section-body">
+      <p class="desc">Rewrite or combine the sentences using the word in brackets.</p>
+      <ul class="ex-list" id="list-ex6"></ul>
+    </div>
+  </div>
+
+  <!-- EX 7 — PASSIVE / CLEFTS -->
+  <div class="section" id="ex7">
+    <div class="section-header"><span class="tag">Exercise 7</span>Cleft Emphatic Construction Sentences</div>
+    <div class="section-body">
+      <p class="desc">Rewrite each sentence <strong>twice</strong>: (a) using an It-Cleft structure and (b) using a Wh-Cleft structure.</p>
+      <ul class="ex-list" id="list-ex7"></ul>
+    </div>
+  </div>
+
+  <!-- EX 8 — COLLOCATIONS -->
+  <div class="section" id="ex8">
+    <div class="section-header"><span class="tag">Exercise 8</span>C1 Verb-Noun Collocations</div>
+    <div class="section-body">
+      <p class="desc">Choose the correct verb: <em>take / bear / draw / cast / meet / fall</em>.</p>
+      <ul class="ex-list" id="list-ex8"></ul>
+    </div>
+  </div>
+
+  <!-- EX 9 — CAE PART 4 -->
+  <div class="section" id="ex9">
+    <div class="section-header"><span class="tag">Exercise 9</span>CAE Use of English — Part 4 Style</div>
+    <div class="section-body">
+      <p class="desc">Complete the second sentence so that it has a similar meaning to the first. Use <strong>3–6 words</strong> including the word given. <strong>Do NOT change the word given.</strong></p>
+      <ul class="ex-list" id="list-ex9"></ul>
+    </div>
+  </div>
+
+  <footer>☐ Tick when correct &nbsp;|&nbsp; Click blurred text to reveal &nbsp;|&nbsp; Good luck on Saturday! 😊</footer>
+</div>
+
+<script>
+// ── EXERCISE DATA ─────────────────────────────────────────────────────────
+
+const ex1 = [
+  { q:"Hardly ____________ (the meeting / commence) when the system network failed completely.", a:"had the meeting commenced", note:"negative inversion template" },
+  { q:"The project team ____________ (be) to finish the rollout on Monday, but the database crashed.", a:"were to have finished", note:"unfulfilled past intention" },
+  { q:"By this time next winter, she ____________ (work) on her doctoral thesis for four years.", a:"will have been working" },
+  { q:"The data was compromised because the analysts ____________ (not / anticipate) a security breach.", a:"had not anticipated" },
+  { q:"Little ____________ (the candidate / realize) that the board members had already evaluated her profile.", a:"did the candidate realize" },
+  { q:"At this time tomorrow, the core development panel ____________ (defend) their proposal.", a:"will be defending" },
+];
+
+const ex2 = [
+  { q:"The software updates are simply not compatible ________ our current legacy database.", a:"with" },
+  { q:"The legal division took immediate exception ________ the comments made by the auditor.", a:"to" },
+  { q:"Senior research partners are completely exempt ________ the new administrative regulations.", a:"from" },
+  { q:"The log entries had obviously been tampered ________ prior to the security check.", a:"with" },
+  { q:"Economists attribute the sudden market contraction ________ a severe drop in consumer trust.", a:"to" },
+  { q:"He proved entirely impervious ________ the criticism directed at him by the director.", a:"to" },
+];
+
+const ex3 = [
+  { q:"We unexpectedly <u>encountered</u> a series of architectural design errors.", a:"came up against" },
+  { q:"I unfortunately haven't <u>found the time to address</u> the project adjustments yet.", a:"got round to" },
+  { q:"The wireless security application is rapidly <u>becoming popular</u> in the tech sector.", a:"catching on" },
+  { q:"The supervisor chose to <u>avoid detailing</u> the budget deficit parameters during the meeting.", a:"gloss over" },
+  { q:"Her exceptional drive completely <u>compensated for</u> her initial lack of experience.", a:"made up for" },
+  { q:"Lately, he has <u>developed a habit of</u> verifying the codebase multiple times.", a:"taken to" },
+];
+
+const ex4 = [
+  { q:"I prefer that you did not mention those metrics to the board yesterday. → I would rather you …", a:"hadn't mentioned those metrics" },
+  { q:"If the alarm had notified us earlier, we would not face a critical failure now. → Had …", a:"the alarm notified us earlier, we wouldn't face" },
+  { q:"The administration must update the database immediately. → It is high time the administration …", a:"updated the database immediately" },
+  { q:"If you happen to find any operational anomalies, contact the support team. → Should …", a:"you find any operational anomalies, contact" },
+  { q:"We checked the logs repeatedly because we feared missing a single error entry. → We checked the logs repeatedly lest …", a:"we should miss a single error entry / we miss a single error entry" },
+];
+
+const ex5 = [
+  { q:"When she was the lead researcher, she ____________ (would / used to have / is used to) spend entire nights tracking data patterns.", a:"would", note:"past regular iteration pattern" },
+  { q:"The new setup was difficult, but the team eventually ____________ (got used to / used to / was used to) the protocols.", a:"got used to" },
+  { q:"The administrator ____________ (is always pointing out / points out used to / used to point out) minor formatting errors; it is incredibly frustrating.", a:"is always pointing out", note:"annoying regular habit expression" },
+  { q:"The company ____________ (used to possess) massive real estate holdings before the restructuring process.", a:"used to possess" },
+];
+
+const ex6 = [
+  { q:"The analysis was incredibly detailed. However, it was entirely coherent throughout. (detailed though)", a:"Detailed though the analysis was, it was entirely coherent throughout." },
+  { q:"I thoroughly respect his commitment, but I cannot endorse his research conclusions. (much as)", a:"Much as I respect his commitment, I cannot endorse his research conclusions." },
+  { q:"The budget was frozen. Nevertheless, the research group finished the assessment. (notwithstanding)", a:"Notwithstanding the frozen budget, the research group finished the assessment." },
+  { q:"Even if the solution is completely logical, it lacks actual empirical validation. (be that as it may)", a:"The solution is completely logical. Be that as it may, it lacks actual empirical validation." },
+];
+
+const ex7 = [
+  { q:"The tracking system failed because of the coding mistake.",
+    per:"It was the coding mistake that caused the tracking system to fail.",
+    imp:"What caused the tracking system to fail was the coding mistake." },
+  { q:"The supervisor commended your attention to detail, not your speed.",
+    per:"It was your attention to detail, not your speed, that the supervisor commended.",
+    imp:"What the supervisor commended was your attention to detail, not your speed." },
+];
+
+const ex8 = [
+  { q:"Please ________ in mind that the assessment standards have been modified.", a:"bear" },
+  { q:"The hard work will eventually ________ fruit once the system launches.", a:"bear" },
+  { q:"The board will ________ a clear line between acceptable deviations and negligence.", a:"draw" },
+  { q:"The sudden system crashes ________ serious doubt on the security framework's viability.", a:"cast" },
+  { q:"The initial system output unfortunately ________ short of our targets.", a:"fell" },
+  { q:"The alternative proposal successfully ________ with total approval from the board.", a:"met" },
+];
+
+const ex9 = [
+  { q:'We didn’t know the survey was optional, so we spent hours completing it.', key:'KNOWN', a:'Had we known the survey was' },
+  { q:'The manager attributes the drop in efficiency to old legacy applications.', key:'PUT', a:'The drop in efficiency is put down to' },
+  { q:'I would love to read your paper but I simply cannot find time for it lately.', key:'ROUND', a:'I simply cannot get round to reading' },
+  { q:'The board criticized the financial report because it skipped over key details.', key:'GLOSS', a:'The financial report tended to gloss over' },
+  { q:'Even though the weather conditions were appalling, the team reached the summit.', key:'NOTWITHSTANDING', a:'Notwithstanding the appalling weather conditions' },
+  { q:'The direct intervention of the chancellor resolved the scheduling conflict.', key:'IT', a:'It was the direct intervention of the chancellor' },
+];
+
+// ── RENDER HELPERS ────────────────────────────────────────────────────────
+
+let uid = 0;
+const newId = () => 'c1_' + (++uid);
+
+function makeSimpleItem(num, prompt, answer, note) {
+  const id = newId();
+  const li = document.createElement('li');
+  li.className = 'ex-item';
+  li.innerHTML = `
+    <div class="ex-prompt"><span class="ex-num">${num}.</span><span>${prompt}</span></div>
+    <div class="answer-row">
+      <div class="check-cell"><input type="checkbox" title="Tick if correct"></div>
+      <div class="answer-cell">
+        <span class="alabel">Answer:</span>
+        <span class="answer-text" id="${id}" onclick="revealOne('${id}')">${answer}</span>
+        ${note ? `<span class="anote">(${note})</span>` : ''}
+        <button class="reveal-btn" id="btn-${id}" onclick="revealOne('${id}')">Show</button>
+      </div>
+    </div>`;
+  return li;
+}
+
+function makeDoubleItem(num, prompt, personal, impersonal) {
+  const id1 = newId(), id2 = newId();
+  const li = document.createElement('li');
+  li.className = 'ex-item';
+  li.innerHTML = `
+    <div class="ex-prompt"><span class="ex-num">${num}.</span><span>${prompt}</span></div>
+    <div class="double-ans">
+      <div class="answer-row">
+        <div class="check-cell"><input type="checkbox" title="Tick if correct"></div>
+        <div class="answer-cell">
+          <span class="atype">It-Cleft Structure:</span>
+          <span class="answer-text" id="${id1}" onclick="revealOne('${id1}')">${personal}</span>
+          <button class="reveal-btn" id="btn-${id1}" onclick="revealOne('${id1}')">Show</button>
+        </div>
+      </div>
+      <div class="answer-row">
+        <div class="check-cell"><input type="checkbox" title="Tick if correct"></div>
+        <div class="answer-cell">
+          <span class="atype">Wh-Cleft Structure:</span>
+          <span class="answer-text" id="${id2}" onclick="revealOne('${id2}')">${impersonal}</span>
+          <button class="reveal-btn" id="btn-${id2}" onclick="revealOne('${id2}')">Show</button>
+        </div>
+      </div>
+    </div>`;
+  return li;
+}
+
+function makeKWItem(num, sentence, keyword, answer) {
+  const id = newId();
+  const li = document.createElement('li');
+  li.className = 'ex-item';
+  li.innerHTML = `
+    <div class="ex-prompt">
+      <span class="ex-num">${num}.</span>
+      <span>${sentence} <span class="kw-key">${keyword}</span></span>
+    </div>
+    <div class="answer-row">
+      <div class="check-cell"><input type="checkbox" title="Tick if correct"></div>
+      <div class="answer-cell">
+        <span class="alabel">Answer (3-6 words):</span>
+        <span class="answer-text" id="${id}" onclick="revealOne('${id}')">${answer}</span>
+        <button class="reveal-btn" id="btn-${id}" onclick="revealOne('${id}')">Show</button>
+      </div>
+    </div>`;
+  return li;
+}
+
+function populate(listId, data, type) {
+  const ul = document.getElementById(listId);
+  data.forEach((item, i) => {
+    let li;
+    if (type === 'double') {
+      li = makeDoubleItem(i+1, item.q, item.per, item.imp);
+    } else if (type === 'kw') {
+      li = makeKWItem(i+1, item.q, item.key, item.a);
+    } else {
+      li = makeSimpleItem(i+1, item.q, item.a, item.note||'');
+    }
+    ul.appendChild(li);
+  });
+}
+
+populate('list-ex1', ex1, 'simple');
+populate('list-ex2', ex2, 'simple');
+populate('list-ex3', ex3, 'simple');
+populate('list-ex4', ex4, 'simple');
+populate('list-ex5', ex5, 'simple');
+populate('list-ex6', ex6, 'simple');
+populate('list-ex7', ex7, 'double');
+populate('list-ex8', ex8, 'simple');
+populate('list-ex9', ex9, 'kw');
+
+// ── REVEAL ────────────────────────────────────────────────────────────────
+
+function revealOne(id) {
+  const span = document.getElementById(id);
+  const btn  = document.getElementById('btn-' + id);
+  if (span) span.classList.add('revealed');
+  if (btn)  btn.classList.add('hidden');
+}
+
+function revealAll(show) {
+  document.querySelectorAll('.answer-text').forEach(el =>
+    el.classList.toggle('revealed', show));
+  document.querySelectorAll('.reveal-btn').forEach(btn =>
+    btn.classList.toggle('hidden', show));
+}
+</script>
+</body>
+</html>
