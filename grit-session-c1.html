@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>C1 Session · Grit: The Power of Passion and Perseverance</title>
+<style>
+  :root{
+    --navy:#1b2a4a;
+    --burgundy:#7a2c3e;
+    --burgundy-light:#f3e6e9;
+    --paper:#fdfcfa;
+    --ink:#22282f;
+    --muted:#6b7280;
+    --line:#e3e1dc;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Georgia', 'Iowan Old Style', serif;
+    line-height:1.6;
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:40px 24px 80px;}
+  header{margin-bottom:36px;}
+  .tag{
+    display:inline-block;
+    font-family:Helvetica, Arial, sans-serif;
+    font-size:12px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--burgundy);
+    border:1px solid var(--burgundy);
+    border-radius:20px;
+    padding:4px 12px;
+    margin-bottom:14px;
+  }
+  h1{
+    font-size:28px;
+    color:var(--navy);
+    margin:0 0 6px;
+  }
+  .subtitle{color:var(--muted);font-size:16px;margin:0;}
+  section{
+    margin-bottom:40px;
+    padding-bottom:32px;
+    border-bottom:1px solid var(--line);
+  }
+  section:last-child{border-bottom:none;}
+  h2{
+    font-family:Helvetica, Arial, sans-serif;
+    font-size:13px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:var(--navy);
+    margin-bottom:16px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  h2::before{
+    content:"";
+    width:22px;height:2px;background:var(--burgundy);display:inline-block;
+  }
+  .video-frame{
+    position:relative;
+    width:100%;
+    padding-top:56.25%;
+    border-radius:10px;
+    overflow:hidden;
+    box-shadow:0 4px 18px rgba(0,0,0,.12);
+    margin-bottom:6px;
+  }
+  .video-frame iframe{
+    position:absolute;top:0;left:0;width:100%;height:100%;border:0;
+  }
+  .ytlink{
+    font-family:Helvetica, Arial, sans-serif;
+    font-size:13.5px;
+    text-align:center;
+    margin:10px 0 18px;
+  }
+  .ytlink a{color:var(--burgundy);}
+  .note{
+    font-family:Helvetica, Arial, sans-serif;
+    font-size:14px;
+    color:var(--muted);
+    background:var(--burgundy-light);
+    border-left:3px solid var(--burgundy);
+    padding:12px 16px;
+    border-radius:4px;
+    margin:16px 0;
+  }
+  .task{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:18px 20px;
+    margin-bottom:16px;
+  }
+  .task p.q{
+    font-weight:bold;
+    margin:0 0 10px;
+  }
+  .task .meta{
+    font-family:Helvetica, Arial, sans-serif;
+    font-size:12px;
+    color:var(--burgundy);
+    text-transform:uppercase;
+    letter-spacing:.04em;
+    margin-bottom:6px;
+  }
+  label.opt{
+    display:block;
+    padding:8px 12px;
+    margin:6px 0;
+    border:1px solid var(--line);
+    border-radius:6px;
+    cursor:pointer;
+    font-family:Helvetica, Arial, sans-serif;
+    font-size:15px;
+    transition:.15s;
+  }
+  label.opt:hover{background:var(--burgundy-light);}
+  input[type=radio]{margin-right:8px;}
+  .answer-box{
+    width:100%;
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:10px 12px;
+    font-family:Helvetica, Arial, sans-serif;
+    font-size:15px;
+    resize:vertical;
+    min-height:38px;
+  }
+  button.check{
+    font-family:Helvetica, Arial, sans-serif;
+    font-size:13px;
+    text-transform:uppercase;
+    letter-spacing:.05em;
+    background:var(--navy);
+    color:#fff;
+    border:none;
+    padding:9px 18px;
+    border-radius:20px;
+    cursor:pointer;
+    margin-top:8px;
+  }
+  button.check:hover{background:var(--burgundy);}
+  .feedback{
+    margin-top:10px;
+    font-family:Helvetica, Arial, sans-serif;
+    font-size:14px;
+    padding:8px 12px;
+    border-radius:6px;
+    display:none;
+  }
+  .feedback.correct{display:block;background:#e6f3ec;color:#1f6e44;}
+  .feedback.incorrect{display:block;background:#fbe9e7;color:#a13a2a;}
+  .speak-card{
+    background:var(--navy);
+    color:#fff;
+    border-radius:10px;
+    padding:22px 24px;
+    margin-bottom:16px;
+  }
+  .speak-card .meta{color:#e3b9c4;font-family:Helvetica,Arial,sans-serif;font-size:12px;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;}
+  .speak-card p{margin:0 0 10px;}
+  .speak-card .helper{
+    font-family:Helvetica, Arial, sans-serif;
+    font-size:13.5px;
+    color:#cfd4e0;
+    font-style:italic;
+  }
+  .vocab-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px 24px;
+    font-family:Helvetica, Arial, sans-serif;
+    font-size:14.5px;
+  }
+  .vocab-grid div{padding:6px 0;border-bottom:1px dashed var(--line);}
+  .vocab-grid b{color:var(--navy);}
+  .quote-block{
+    font-style:italic;
+    font-size:15.5px;
+    color:var(--navy);
+    border-left:3px solid var(--burgundy);
+    padding:8px 16px;
+    margin:14px 0;
+  }
+  footer{
+    text-align:center;
+    font-family:Helvetica, Arial, sans-serif;
+    font-size:12px;
+    color:var(--muted);
+    margin-top:20px;
+  }
+  @media(max-width:600px){
+    .vocab-grid{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <span class="tag">C1 Session · Listening & Speaking</span>
+    <h1>Grit: The Power of Passion and Perseverance</h1>
+    <p class="subtitle">Angela Lee Duckworth · TED · ~6 minutes</p>
+  </header>
+
+  <section>
+    <h2>Before You Watch</h2>
+    <div class="vocab-grid">
+      <div><b>grit</b> — sustained passion and perseverance toward a long-term goal</div>
+      <div><b>to plummet</b> — to fall suddenly and steeply</div>
+      <div><b>stamina</b> — the ability to sustain effort over time</div>
+      <div><b>aptitude</b> — natural talent or ability for something</div>
+      <div><b>to falter</b> — to lose strength or hesitate</div>
+      <div><b>a marathon, not a sprint</b> (idiom) — a long sustained effort, not a short burst</div>
+      <div><b>to flounder</b> — to struggle, lacking direction</div>
+      <div><b>a growth mindset</b> — the belief that ability can be developed through effort</div>
+    </div>
+    <div class="note">At C1 level, the goal isn't just recognising these words — it's noticing how the speaker uses some of them rhetorically, almost as small persuasive tools. Keep that in the back of your mind for the third watch.</div>
+  </section>
+
+  <section>
+    <h2>First Watch — The Gist</h2>
+    <div class="video-frame">
+      <iframe src="https://www.youtube.com/embed/H14bBuluwB8" title="Grit: the power of passion and perseverance | Angela Lee Duckworth | TED" allowfullscreen></iframe>
+    </div>
+    <p class="ytlink"><a href="https://www.youtube.com/watch?v=H14bBuluwB8" target="_blank">If the video doesn't load above, watch it directly on YouTube →</a></p>
+    <div class="task">
+      <p class="meta">Quick check</p>
+      <p class="q">In one or two sentences: what is Duckworth's central argument?</p>
+      <textarea class="answer-box" rows="2" placeholder="Write your summary here..."></textarea>
+    </div>
+  </section>
+
+  <section>
+    <h2>Second Watch — Facts and Details</h2>
+    <div class="note">Replay as needed — at this level, the goal is precision, not just gist. Some answers require holding two details together, not just spotting one.</div>
+
+    <div class="task" data-correct="b">
+      <p class="meta">Detail · Background</p>
+      <p class="q">1. What was Duckworth's job before she became a researcher?</p>
+      <label class="opt"><input type="radio" name="q1" value="a"> A university professor of psychology</label>
+      <label class="opt"><input type="radio" name="q1" value="b"> A management consultant who left to teach math</label>
+      <label class="opt"><input type="radio" name="q1" value="c"> A school principal</label>
+      <button class="check" onclick="checkAnswer(this)">Check</button>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="task" data-correct="a">
+      <p class="meta">Detail · Finding</p>
+      <p class="q">2. In her classroom, what surprised her most about which students performed well?</p>
+      <label class="opt"><input type="radio" name="q2" value="a"> IQ alone didn't reliably predict who would succeed</label>
+      <label class="opt"><input type="radio" name="q2" value="b"> Only the students with tutors improved</label>
+      <label class="opt"><input type="radio" name="q2" value="c"> Girls consistently outperformed boys</label>
+      <button class="check" onclick="checkAnswer(this)">Check</button>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="task">
+      <p class="meta">Detail · Open answer</p>
+      <p class="q">3. Duckworth describes several groups she studied to test her ideas about grit (e.g. West Point cadets, salespeople, students). Name at least two of these groups and what she found in each.</p>
+      <textarea class="answer-box" rows="3" placeholder="Write what you understood..."></textarea>
+    </div>
+
+    <div class="task">
+      <p class="meta">Detail · Numbers</p>
+      <p class="q">4. Catch at least one specific statistic or figure she mentions, and what it refers to.</p>
+      <textarea class="answer-box" rows="2" placeholder="E.g. a percentage, a dropout rate, a score..."></textarea>
+    </div>
+
+    <div class="task">
+      <p class="meta">Detail · Honesty in the talk</p>
+      <p class="q">5. What does Duckworth admit she does NOT yet know how to do, near the end of the talk?</p>
+      <textarea class="answer-box" rows="2" placeholder="Write what you understood..."></textarea>
+    </div>
+  </section>
+
+  <section>
+    <h2>Third Watch — Reading Between the Lines</h2>
+    <div class="note">This is the C1 layer: not just what she says, but how and why she says it. These questions ask for inference — there isn't always one "correct" wording, so we'll discuss your answers together rather than auto-checking them.</div>
+
+    <div class="task">
+      <p class="meta">Inference · Tone</p>
+      <p class="q">6. Why do you think Duckworth chooses to talk about her own uncertainty (what she doesn't know) rather than just presenting her findings with full confidence?</p>
+      <textarea class="answer-box" rows="3" placeholder="Your interpretation..."></textarea>
+    </div>
+
+    <div class="task">
+      <p class="meta">Inference · Implication</p>
+      <p class="q">7. Without saying so directly, what does the talk suggest about how schools currently measure or reward students? What is she implicitly criticising?</p>
+      <textarea class="answer-box" rows="3" placeholder="Your interpretation..."></textarea>
+    </div>
+
+    <div class="quote-block">
+      "Grit is living life like it's a marathon, not a sprint."
+    </div>
+    <div class="task">
+      <p class="meta">Inference · Rhetorical effect</p>
+      <p class="q">8. This is one of the most quoted lines from the talk. Why do you think it works so well as a soundbite — what makes it memorable, beyond just being true?</p>
+      <textarea class="answer-box" rows="3" placeholder="Your interpretation..."></textarea>
+    </div>
+  </section>
+
+  <section>
+    <h2>Speaking</h2>
+    <div class="note">Tasks build from description to argument — the last one asks you to take a position, which is exactly the kind of speaking the CAE exam will eventually ask of you, but without exam pressure today.</div>
+
+    <div class="speak-card">
+      <p class="meta">Task A · Summarising (easiest)</p>
+      <p>Summarise Duckworth's argument for someone who hasn't seen the talk — what is grit, and why does she think it matters more than talent alone?</p>
+      <p class="helper">Try to use at least two words from today's vocabulary list naturally.</p>
+    </div>
+
+    <div class="speak-card">
+      <p class="meta">Task B · Personal connection</p>
+      <p>Think of someone you know — or yourself — who succeeded through sheer perseverance rather than natural talent. Tell that story briefly.</p>
+      <p class="helper">This is a classic CAE-style prompt: personal anecdote used to illustrate an abstract idea.</p>
+    </div>
+
+    <div class="speak-card">
+      <p class="meta">Task C · Taking a position</p>
+      <p>Duckworth admits she doesn't fully know how to teach grit. Do you think perseverance can actually be taught, or is it mostly a fixed personality trait? Argue your view for about a minute, and address at least one counter-argument.</p>
+      <p class="helper">Try structuring it like a mini essay: claim → reason → acknowledgment of the other side → conclusion.</p>
+    </div>
+  </section>
+
+  <footer>Prepared for our session · Tony's Corner — Tailor-Made English</footer>
+</div>
+
+<script>
+function checkAnswer(btn){
+  const task = btn.closest('.task');
+  const correct = task.getAttribute('data-correct');
+  const selected = task.querySelector('input[type=radio]:checked');
+  const fb = task.querySelector('.feedback');
+  if(!selected){
+    fb.textContent = "Choose an option first.";
+    fb.className = "feedback incorrect";
+    return;
+  }
+  if(selected.value === correct){
+    fb.textContent = "Correct — well caught.";
+    fb.className = "feedback correct";
+  } else {
+    fb.textContent = "Not quite — try listening to that section again.";
+    fb.className = "feedback incorrect";
+  }
+}
+</script>
+
+</body>
+</html>
