@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>C1 Session 2 · 10 Ways to Have a Better Conversation</title>
+<style>
+  :root{
+    --navy:#1b2a4a;
+    --burgundy:#7a2c3e;
+    --burgundy-light:#f3e6e9;
+    --paper:#fdfcfa;
+    --ink:#22282f;
+    --muted:#6b7280;
+    --line:#e3e1dc;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Georgia', 'Iowan Old Style', serif;
+    line-height:1.6;
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:40px 24px 80px;}
+  header{margin-bottom:36px;}
+  .tag{
+    display:inline-block;
+    font-family:Helvetica, Arial, sans-serif;
+    font-size:12px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--burgundy);
+    border:1px solid var(--burgundy);
+    border-radius:20px;
+    padding:4px 12px;
+    margin-bottom:14px;
+  }
+  h1{
+    font-size:28px;
+    color:var(--navy);
+    margin:0 0 6px;
+  }
+  .subtitle{color:var(--muted);font-size:16px;margin:0;}
+  section{
+    margin-bottom:40px;
+    padding-bottom:32px;
+    border-bottom:1px solid var(--line);
+  }
+  section:last-child{border-bottom:none;}
+  h2{
+    font-family:Helvetica, Arial, sans-serif;
+    font-size:13px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:var(--navy);
+    margin-bottom:16px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  h2::before{
+    content:"";
+    width:22px;height:2px;background:var(--burgundy);display:inline-block;
+  }
+  .video-frame{
+    position:relative;
+    width:100%;
+    padding-top:56.25%;
+    border-radius:10px;
+    overflow:hidden;
+    box-shadow:0 4px 18px rgba(0,0,0,.12);
+    margin-bottom:6px;
+  }
+  .video-frame iframe{
+    position:absolute;top:0;left:0;width:100%;height:100%;border:0;
+  }
+  .ytlink{
+    font-family:Helvetica, Arial, sans-serif;
+    font-size:13.5px;
+    text-align:center;
+    margin:10px 0 18px;
+  }
+  .ytlink a{color:var(--burgundy);}
+  .note{
+    font-family:Helvetica, Arial, sans-serif;
+    font-size:14px;
+    color:var(--muted);
+    background:var(--burgundy-light);
+    border-left:3px solid var(--burgundy);
+    padding:12px 16px;
+    border-radius:4px;
+    margin:16px 0;
+  }
+  .task{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:18px 20px;
+    margin-bottom:16px;
+  }
+  .task p.q{
+    font-weight:bold;
+    margin:0 0 10px;
+  }
+  .task .meta{
+    font-family:Helvetica, Arial, sans-serif;
+    font-size:12px;
+    color:var(--burgundy);
+    text-transform:uppercase;
+    letter-spacing:.04em;
+    margin-bottom:6px;
+  }
+  label.opt{
+    display:block;
+    padding:8px 12px;
+    margin:6px 0;
+    border:1px solid var(--line);
+    border-radius:6px;
+    cursor:pointer;
+    font-family:Helvetica, Arial, sans-serif;
+    font-size:15px;
+    transition:.15s;
+  }
+  label.opt:hover{background:var(--burgundy-light);}
+  input[type=radio]{margin-right:8px;}
+  .answer-box{
+    width:100%;
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:10px 12px;
+    font-family:Helvetica, Arial, sans-serif;
+    font-size:15px;
+    resize:vertical;
+    min-height:38px;
+  }
+  button.check{
+    font-family:Helvetica, Arial, sans-serif;
+    font-size:13px;
+    text-transform:uppercase;
+    letter-spacing:.05em;
+    background:var(--navy);
+    color:#fff;
+    border:none;
+    padding:9px 18px;
+    border-radius:20px;
+    cursor:pointer;
+    margin-top:8px;
+  }
+  button.check:hover{background:var(--burgundy);}
+  .feedback{
+    margin-top:10px;
+    font-family:Helvetica, Arial, sans-serif;
+    font-size:14px;
+    padding:8px 12px;
+    border-radius:6px;
+    display:none;
+  }
+  .feedback.correct{display:block;background:#e6f3ec;color:#1f6e44;}
+  .feedback.incorrect{display:block;background:#fbe9e7;color:#a13a2a;}
+  .speak-card{
+    background:var(--navy);
+    color:#fff;
+    border-radius:10px;
+    padding:22px 24px;
+    margin-bottom:16px;
+  }
+  .speak-card .meta{color:#e3b9c4;font-family:Helvetica,Arial,sans-serif;font-size:12px;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;}
+  .speak-card p{margin:0 0 10px;}
+  .speak-card .helper{
+    font-family:Helvetica, Arial, sans-serif;
+    font-size:13.5px;
+    color:#cfd4e0;
+    font-style:italic;
+  }
+  .vocab-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px 24px;
+    font-family:Helvetica, Arial, sans-serif;
+    font-size:14.5px;
+  }
+  .vocab-grid div{padding:6px 0;border-bottom:1px dashed var(--line);}
+  .vocab-grid b{color:var(--navy);}
+  .quote-block{
+    font-style:italic;
+    font-size:15.5px;
+    color:var(--navy);
+    border-left:3px solid var(--burgundy);
+    padding:8px 16px;
+    margin:14px 0;
+  }
+  footer{
+    text-align:center;
+    font-family:Helvetica, Arial, sans-serif;
+    font-size:12px;
+    color:var(--muted);
+    margin-top:20px;
+  }
+  @media(max-width:600px){
+    .vocab-grid{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <span class="tag">C1 Session 2 · Listening & Speaking</span>
+    <h1>10 Ways to Have a Better Conversation</h1>
+    <p class="subtitle">Celeste Headlee · TED · ~12 minutes</p>
+  </header>
+
+  <section>
+    <h2>Before You Watch</h2>
+    <div class="vocab-grid">
+      <div><b>to pontificate</b> — to talk in a pompous, opinionated way</div>
+      <div><b>a buzzword</b> — a fashionable word/phrase, often vague</div>
+      <div><b>to digress</b> — to wander off the main topic</div>
+      <div><b>to bombard (someone with)</b> — to overwhelm with a stream of things</div>
+      <div><b>to ramble</b> — to talk at length without clear focus</div>
+      <div><b>a faux pas</b> — a social mistake or embarrassing slip</div>
+      <div><b>to be on the same page</b> (idiom) — to share the same understanding</div>
+      <div><b>to cut to the chase</b> (idiom) — to get to the point quickly</div>
+    </div>
+    <div class="note">Headlee speaks noticeably faster and more conversationally than Duckworth did — closer to real, unscripted speech. Don't expect to catch everything on the first pass; that's the whole point of today's session.</div>
+  </section>
+
+  <section>
+    <h2>First Watch — The Gist</h2>
+    <div class="video-frame">
+      <iframe src="https://www.youtube.com/embed/R1vskiVDwl4" title="10 ways to have a better conversation | Celeste Headlee | TED" allowfullscreen></iframe>
+    </div>
+    <p class="ytlink"><a href="https://www.youtube.com/watch?v=R1vskiVDwl4" target="_blank">If the video doesn't load above, watch it directly on YouTube →</a></p>
+    <div class="task">
+      <p class="meta">Quick check</p>
+      <p class="q">In one or two sentences: what is Headlee's main message?</p>
+      <textarea class="answer-box" rows="2" placeholder="Write your summary here..."></textarea>
+    </div>
+    <div class="note">If this first watch felt noticeably harder than Session 1's, that's expected — and worth saying out loud rather than hiding. Naming the difficulty is itself part of building exam stamina.</div>
+  </section>
+
+  <section>
+    <h2>Second Watch — Facts and Details</h2>
+    <div class="note">Headlee structures her talk as a numbered list — use that structure to help you track details, the way you'd use signposting language in the exam itself.</div>
+
+    <div class="task" data-correct="c">
+      <p class="meta">Detail · Personal anecdote</p>
+      <p class="q">1. Headlee opens with a story about her grandfather. What was he known for?</p>
+      <label class="opt"><input type="radio" name="q1" value="a"> Being a brilliant public speaker</label>
+      <label class="opt"><input type="radio" name="q1" value="b"> Refusing to ever discuss politics</label>
+      <label class="opt"><input type="radio" name="q1" value="c"> Getting total strangers to open up to him in conversation</label>
+      <button class="check" onclick="checkAnswer(this)">Check</button>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="task" data-correct="b">
+      <p class="meta">Detail · Rule</p>
+      <p class="q">2. One of her rules is "don't multitask." What reasoning does she give for this?</p>
+      <label class="opt"><input type="radio" name="q2" value="a"> It's rude to the other person</label>
+      <label class="opt"><input type="radio" name="q2" value="b"> You need to be fully present in the moment, not thinking about something else</label>
+      <label class="opt"><input type="radio" name="q2" value="c"> It makes you talk too fast</label>
+      <button class="check" onclick="checkAnswer(this)">Check</button>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="task">
+      <p class="meta">Detail · List recall</p>
+      <p class="q">3. Name at least three of Headlee's ten rules, in your own words (you don't need her exact wording).</p>
+      <textarea class="answer-box" rows="3" placeholder="List them here..."></textarea>
+    </div>
+
+    <div class="task">
+      <p class="meta">Detail · Specific example</p>
+      <p class="q">4. She mentions a specific (and slightly embarrassing) personal example of "pontificating" or talking too much. What was it, as far as you caught it?</p>
+      <textarea class="answer-box" rows="2" placeholder="Write what you understood..."></textarea>
+    </div>
+
+    <div class="task">
+      <p class="meta">Detail · Numbers</p>
+      <p class="q">5. Catch at least one number or statistic she mentions (it could relate to surveys, studies, or anything else) and what it refers to.</p>
+      <textarea class="answer-box" rows="2" placeholder="Write the figure and its context..."></textarea>
+    </div>
+  </section>
+
+  <section>
+    <h2>Third Watch — Reading Between the Lines</h2>
+    <div class="note">As before, no auto-checking here — we'll talk these through together. The goal is noticing implication, tone, and rhetorical choices.</div>
+
+    <div class="task">
+      <p class="meta">Inference · Self-deprecation</p>
+      <p class="q">6. Headlee admits to her own conversational failures more than once. What effect do you think this has on the audience, rather than if she simply gave advice without admitting her own mistakes?</p>
+      <textarea class="answer-box" rows="3" placeholder="Your interpretation..."></textarea>
+    </div>
+
+    <div class="task">
+      <p class="meta">Inference · Implication</p>
+      <p class="q">7. Without saying it outright, what does Headlee suggest about how technology and social media have changed the way we converse?</p>
+      <textarea class="answer-box" rows="3" placeholder="Your interpretation..."></textarea>
+    </div>
+
+    <div class="quote-block">
+      "Go out, talk to people, listen to people. And, most importantly, be prepared to be amazed."
+    </div>
+    <div class="task">
+      <p class="meta">Inference · Closing line</p>
+      <p class="q">8. This is her closing line. Why do you think a speaker chooses to end on an instruction ("go out, talk...") rather than a summary of what was already said?</p>
+      <textarea class="answer-box" rows="3" placeholder="Your interpretation..."></textarea>
+    </div>
+  </section>
+
+  <section>
+    <h2>Speaking</h2>
+    <div class="note">Same escalating structure as before — but Task C now asks you to sustain an argument for slightly longer, with a clearer counter-argument expected.</div>
+
+    <div class="speak-card">
+      <p class="meta">Task A · Summarising (easiest)</p>
+      <p>Summarise three of Headlee's ten rules for someone who hasn't watched the talk, and briefly say why each one matters.</p>
+      <p class="helper">Try using at least two words or expressions from today's vocabulary list naturally.</p>
+    </div>
+
+    <div class="speak-card">
+      <p class="meta">Task B · Personal connection</p>
+      <p>Which of her ten rules do you personally struggle with most — in English, in Spanish, or both? Give a real example.</p>
+      <p class="helper">Self-deprecating honesty is a strength here, not a weakness — Headlee herself uses it constantly.</p>
+    </div>
+
+    <div class="speak-card">
+      <p class="meta">Task C · Taking a position</p>
+      <p>Headlee partly blames modern technology for our declining conversational skills. Do you agree, or do you think this is an old complaint that gets recycled with every new generation of technology? Argue your position for about 90 seconds, and address at least one counter-argument.</p>
+      <p class="helper">Structure: claim → reason → acknowledge the other side → conclusion. This is almost exactly CAE Speaking Part 4 territory.</p>
+    </div>
+  </section>
+
+  <footer>Prepared for our session · Tony's Corner — Tailor-Made English</footer>
+</div>
+
+<script>
+function checkAnswer(btn){
+  const task = btn.closest('.task');
+  const correct = task.getAttribute('data-correct');
+  const selected = task.querySelector('input[type=radio]:checked');
+  const fb = task.querySelector('.feedback');
+  if(!selected){
+    fb.textContent = "Choose an option first.";
+    fb.className = "feedback incorrect";
+    return;
+  }
+  if(selected.value === correct){
+    fb.textContent = "Correct — well caught.";
+    fb.className = "feedback correct";
+  } else {
+    fb.textContent = "Not quite — try listening to that section again.";
+    fb.className = "feedback incorrect";
+  }
+}
+</script>
+
+</body>
+</html>
