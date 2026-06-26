@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B2 — Grammar Review II</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:    #1b2a4a;
+    --blue:    #1f7a72;
+    --sky:     #dceceb;
+    --accent:  #d9a23e;
+    --green:   #2f8f7f;
+    --green-bg:#e3f3f1;
+    --plum:    #6a4a8f;
+    --plum-bg: #efe9f6;
+    --yellow:  #fff8ec;
+    --yellow-b:#f0dfb8;
+    --cream:   #faf9f5;
+    --paper:   #f1f1ec;
+    --ink:     #1c1c1c;
+    --mid:     #555;
+    --light:   #e2e2db;
+    --shadow:  rgba(27,42,74,.10);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body { font-family: 'Source Serif 4', Georgia, serif; background: var(--paper); color: var(--ink); }
+
+  nav {
+    background: var(--navy);
+    position: sticky; top: 0; z-index: 100;
+    display: flex; flex-wrap: wrap; gap: .3rem;
+    padding: .5rem .8rem;
+    border-bottom: 3px solid var(--accent);
+  }
+  nav a {
+    color: rgba(255,255,255,.75); font-size: .75rem;
+    text-decoration: none; padding: .25rem .55rem;
+    border-radius: 4px; transition: background .2s, color .2s;
+    font-family: 'Source Serif 4', serif;
+    white-space: nowrap;
+  }
+  nav a:hover { background: var(--accent); color: #fff; }
+
+  header {
+    background: var(--navy); padding: 2.2rem 2rem 1.6rem;
+    text-align: center; position: relative; overflow: hidden;
+  }
+  header::before {
+    content: ''; position: absolute; inset: 0;
+    background: repeating-linear-gradient(45deg,transparent,transparent 28px,rgba(255,255,255,.025) 28px,rgba(255,255,255,.025) 29px);
+  }
+  header h1 { font-family:'Playfair Display',serif; font-size:clamp(1.4rem,4vw,2.4rem); color:#fff; position:relative; }
+  header p  { font-size:.9rem; color:rgba(255,255,255,.6); font-style:italic; margin-top:.4rem; position:relative; }
+  .accent-bar { width:60px;height:3px;background:var(--accent);margin:.9rem auto 0;border-radius:2px;position:relative; }
+
+  .container { max-width:900px; margin:0 auto; padding:1.8rem 1.2rem 4rem; }
+
+  .controls { display:flex; justify-content:flex-end; gap:.7rem; margin-bottom:1.4rem; flex-wrap:wrap; }
+  .ctrl-btn {
+    font-family:'Source Serif 4',serif; font-size:.85rem; padding:.4rem .9rem;
+    border-radius:5px; border:1.5px solid var(--navy);
+    background:var(--navy); color:#fff; cursor:pointer; transition:opacity .2s;
+  }
+  .ctrl-btn:hover { opacity:.82; }
+  .ctrl-btn.outline { background:transparent; color:var(--navy); }
+
+  .section { background:var(--cream); border-radius:10px; box-shadow:0 2px 16px var(--shadow); margin-bottom:2.2rem; overflow:hidden; }
+  .section-header {
+    background:var(--navy); color:#fff; padding:.8rem 1.4rem;
+    font-family:'Playfair Display',serif; font-size:1.1rem; letter-spacing:.03em;
+    display:flex; align-items:center; gap:.7rem;
+  }
+  .section-header .tag {
+    background:var(--accent); color:#fff;
+    font-family:'Source Serif 4',serif; font-size:.68rem; font-weight:600;
+    letter-spacing:.08em; text-transform:uppercase;
+    padding:.12rem .5rem; border-radius:3px;
+  }
+  .section-body { padding:1.3rem 1.5rem; }
+
+  .ref-table { width:100%; border-collapse:collapse; font-size:.88rem; margin:.8rem 0; }
+  .ref-table th { background:var(--navy); color:#fff; padding:.5rem .75rem; text-align:left; font-family:'Playfair Display',serif; }
+  .ref-table td { padding:.45rem .75rem; border-bottom:1px solid var(--light); vertical-align:top; }
+  .ref-table tr:last-child td { border-bottom:none; }
+  .ref-table tr:nth-child(odd)  td { background:var(--sky); }
+  .ref-table tr:nth-child(even) td { background:var(--cream); }
+  .ref-table .c1 { font-weight:600; color:var(--navy); width:22%; }
+  .ref-table .c2 { width:78%; }
+  .ref-table .c3 { font-style:italic; color:var(--blue); font-weight:600; }
+
+  .ip-box { border-radius:8px; padding:.9rem 1.1rem; margin:.7rem 0; border-left:4px solid var(--blue); }
+  .ip-box.imp { background:var(--sky); border-color:var(--green); }
+  .ip-box.per { background:var(--plum-bg); border-color:var(--plum); }
+  .ip-box .lbl { font-family:'Playfair Display',serif; font-size:.82rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; margin-bottom:.35rem; }
+  .ip-box.imp .lbl { color:var(--green); }
+  .ip-box.per .lbl { color:var(--plum); }
+  .ip-box .formula { font-weight:600; color:var(--navy); font-size:.88rem; margin-bottom:.3rem; }
+  .ip-box .eg { font-style:italic; font-size:.88rem; }
+  .ip-box .note { font-size:.8rem; color:var(--mid); margin-top:.28rem; }
+
+  .warn { background:var(--yellow); border:1.5px solid var(--yellow-b); border-radius:7px; padding:.75rem 1rem; margin:.8rem 0; font-size:.88rem; }
+  .warn strong { color:var(--accent); }
+
+  .pv-box { background:var(--sky); border-radius:7px; padding:.7rem 1rem; margin-bottom:1.1rem; font-style:italic; font-size:.88rem; color:var(--navy); text-align:center; font-weight:600; }
+
+  ul.blist { list-style:none; padding:0; margin:.4rem 0; }
+  ul.blist li { padding:.28rem 0 .28rem 1.2rem; position:relative; font-size:.9rem; }
+  ul.blist li::before { content:'▸'; position:absolute; left:0; color:var(--blue); font-size:.82rem; }
+  ul.blist em { font-style:italic; color:var(--blue); font-weight:600; }
+
+  h3 { font-family:'Playfair Display',serif; color:var(--blue); font-size:1rem; margin:1.1rem 0 .4rem; }
+  p.desc { font-size:.9rem; color:var(--mid); margin-bottom:.65rem; line-height:1.6; }
+
+  .ex-list { list-style:none; padding:0; }
+  .ex-item { margin-bottom:1rem; }
+  .ex-prompt { font-size:.92rem; line-height:1.65; margin-bottom:.35rem; display:flex; gap:.55rem; }
+  .ex-num { font-family:'Playfair Display',serif; color:var(--accent); font-size:.98rem; font-weight:700; min-width:1.35rem; padding-top:.05rem; }
+
+  .answer-row { display:flex; align-items:stretch; gap:0; border-radius:7px; overflow:hidden; border:1.5px solid var(--light); margin-left:1.9rem; }
+  .check-cell { background:var(--yellow); padding:.38rem .65rem; display:flex; align-items:center; justify-content:center; border-right:1.5px solid var(--light); min-width:40px; }
+  .check-cell input[type="checkbox"] { width:17px; height:17px; accent-color:var(--green); cursor:pointer; }
+  .answer-cell { background:#fff; flex:1; padding:.38rem .75rem; display:flex; align-items:center; gap:.45rem; font-size:.88rem; flex-wrap:wrap; }
+  .alabel { color:#bbb; font-weight:600; font-size:.76rem; white-space:nowrap; }
+  .answer-text { color:var(--blue); font-weight:700; font-style:italic; filter:blur(5px); user-select:none; transition:filter .35s ease; cursor:pointer; }
+  .answer-text.revealed { filter:none; cursor:default; }
+  .anote { color:#aaa; font-size:.76rem; font-style:italic; }
+  .reveal-btn { background:none; border:1.5px solid var(--blue); color:var(--blue); font-family:'Source Serif 4',serif; font-size:.76rem; padding:.12rem .5rem; border-radius:4px; cursor:pointer; white-space:nowrap; transition:background .2s,color .2s; margin-left:auto; }
+  .reveal-btn:hover { background:var(--blue); color:#fff; }
+  .reveal-btn.hidden { display:none; }
+
+  .double-ans { margin-left:1.9rem; }
+  .double-ans .answer-row { margin-left:0; margin-bottom:.35rem; }
+  .atype { font-size:.75rem; font-weight:700; color:var(--mid); letter-spacing:.05em; text-transform:uppercase; min-width:86px; }
+
+  .kw-item { margin-bottom:1rem; }
+  .kw-prompt { font-size:.9rem; margin-bottom:.2rem; line-height:1.6; }
+  .kw-key { display:inline-block; background:var(--navy); color:#fff; font-size:.72rem; font-weight:700; letter-spacing:.07em; padding:.1rem .38rem; border-radius:3px; margin:0 .25rem; font-family:'Source Serif 4',serif; }
+
+  footer { text-align:center; padding:1.1rem; font-size:.8rem; color:#aaa; font-style:italic; border-top:1px solid var(--light); margin-top:1rem; }
+
+  @media(max-width:600px){
+    .section-body { padding:1rem .8rem; }
+    .ref-table { font-size:.78rem; }
+    .ref-table th,.ref-table td { padding:.38rem .45rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>B2 — Grammar Review II</h1>
+  <p>Reported Speech · Conditionals · Relative Clauses · Modals of Deduction · Gerunds &amp; Infinitives · Passive Voice (Full) · Comparatives</p>
+  <div class="accent-bar"></div>
+</header>
+
+<nav>
+  <a href="#ref">📖 Reference</a>
+  <a href="#ex1">Ex 1 Reported Speech</a>
+  <a href="#ex2">Ex 2 Conditionals</a>
+  <a href="#ex3">Ex 3 Relative Clauses</a>
+  <a href="#ex4">Ex 4 Modals of Deduction</a>
+  <a href="#ex5">Ex 5 Gerunds &amp; Infinitives</a>
+  <a href="#ex6">Ex 6 Passive — Personal/Impersonal</a>
+  <a href="#ex7">Ex 7 Causative &amp; Passive</a>
+  <a href="#ex8">Ex 8 Comparatives</a>
+  <a href="#ex9">Ex 9 Key Word Transformation</a>
+</nav>
+
+<div class="container">
+
+  <div class="controls">
+    <button class="ctrl-btn outline" onclick="revealAll(false)">🙈 Hide all answers</button>
+    <button class="ctrl-btn" onclick="revealAll(true)">👁 Reveal all answers</button>
+  </div>
+
+  <!-- ══════════════════════════════════
+       PART A — REFERENCE
+  ══════════════════════════════════ -->
+
+  <div class="section" id="ref">
+    <div class="section-header"><span class="tag">Part A</span>Grammar Reference</div>
+    <div class="section-body">
+
+      <h3>1. Reported Speech</h3>
+      <table class="ref-table">
+        <thead><tr><th class="c1">Pattern</th><th>Use + Example</th></tr></thead>
+        <tbody>
+          <tr><td class="c1">Statements</td><td>Tense moves one step back → <em>"I am tired," she said. → She said she was tired.</em></td></tr>
+          <tr><td class="c1">Questions</td><td>No auxiliary, normal word order → <em>"Where do you live?" → She asked where I lived.</em></td></tr>
+          <tr><td class="c1">Yes/No questions</td><td>+ if / whether → <em>"Can you help me?" → She asked if I could help her.</em></td></tr>
+          <tr><td class="c1">Commands &amp; requests</td><td>tell/ask + object + (not) + infinitive → <em>"Don't touch that." → He told us not to touch it.</em></td></tr>
+          <tr><td class="c1">Time/place changes</td><td>tomorrow→the next day, yesterday→the day before, here→there</td></tr>
+        </tbody>
+      </table>
+
+      <h3>2. Conditionals</h3>
+      <table class="ref-table">
+        <thead><tr><th style="width:18%">Type</th><th>Formula + Example</th></tr></thead>
+        <tbody>
+          <tr><td class="c1">Zero</td><td>If + present, present (general truth) → <em>If you heat water to 100°C, it boils.</em></td></tr>
+          <tr><td class="c1">First</td><td>If + present, will + infinitive (real future possibility) → <em>If it rains, we'll cancel the picnic.</em></td></tr>
+          <tr><td class="c1">Second</td><td>If + past simple, would + infinitive (unreal present/future) → <em>If I had more time, I would travel more.</em></td></tr>
+          <tr><td class="c1">Third</td><td>If + past perfect, would have + p.p. (unreal past) → <em>If she had studied harder, she would have passed.</em></td></tr>
+        </tbody>
+      </table>
+
+      <h3>3. Relative Clauses</h3>
+      <table class="ref-table">
+        <thead><tr><th style="width:22%">Type</th><th>Formula + Example</th></tr></thead>
+        <tbody>
+          <tr><td class="c1">Defining</td><td>No commas; essential info → <em>The woman who lives next door is a doctor.</em></td></tr>
+          <tr><td class="c1">Non-defining</td><td>Commas; extra info → <em>My brother, who works in Madrid, is visiting us.</em></td></tr>
+          <tr><td class="c1">whose (possession)</td><td><em>The man whose car was stolen called the police.</em></td></tr>
+          <tr><td class="c1">where / when / why</td><td><em>This is the restaurant where we met.</em></td></tr>
+          <tr><td class="c1">Omission of pronoun</td><td>When it's the object of a defining clause → <em>The film (that) we watched was great.</em></td></tr>
+        </tbody>
+      </table>
+
+      <h3>4. Modals of Deduction &amp; Obligation</h3>
+      <table class="ref-table">
+        <thead><tr><th style="width:25%">Modal</th><th>Use + Example</th></tr></thead>
+        <tbody>
+          <tr><td class="c1">must (be)</td><td>Logical certainty (positive) → <em>He must be at home now.</em></td></tr>
+          <tr><td class="c1">can't (be)</td><td>Logical certainty (negative) → <em>She can't have seen the message.</em></td></tr>
+          <tr><td class="c1">might/may/could have</td><td>Possibility → <em>They might have missed the train.</em></td></tr>
+          <tr><td class="c1">have to / must</td><td>Obligation → <em>You must wear a seatbelt.</em></td></tr>
+          <tr><td class="c1">don't have to / needn't</td><td>No obligation → <em>You don't have to come if you're busy.</em></td></tr>
+          <tr><td class="c1">mustn't</td><td>Prohibition → <em>You mustn't smoke here.</em></td></tr>
+          <tr><td class="c1">should/shouldn't</td><td>Advice → <em>You should see a doctor.</em></td></tr>
+        </tbody>
+      </table>
+
+      <h3>5. Gerunds &amp; Infinitives</h3>
+      <table class="ref-table">
+        <thead><tr><th style="width:25%">Pattern</th><th>Use + Example</th></tr></thead>
+        <tbody>
+          <tr><td class="c1">verb + -ing</td><td>enjoy, avoid, mind, stop, look forward to → <em>I enjoy reading before bed.</em></td></tr>
+          <tr><td class="c1">verb + to-infinitive</td><td>decide, manage, remember (future), agree → <em>She decided to study abroad.</em></td></tr>
+          <tr><td class="c1">remember/forget + -ing vs to-inf.</td><td>-ing = memory of the past; to-inf. = a task not yet done → <em>I'll never forget seeing... / Remember to lock...</em></td></tr>
+          <tr><td class="c1">stop + -ing vs to-inf.</td><td>stop -ing = finish an activity; stop to + inf. = pause in order to → <em>He stopped smoking. / He stopped to smoke.</em></td></tr>
+        </tbody>
+      </table>
+
+      <h3>6a. Passive Voice — Personal &amp; Impersonal</h3>
+      <div class="ip-box imp">
+        <div class="lbl">Impersonal Passive</div>
+        <div class="formula">It + passive reporting verb + that + clause</div>
+        <div class="eg">It is said that tourism brings money to the region.</div>
+        <div class="note">👉 'It' is a dummy subject; the real subject stays inside the that-clause.</div>
+      </div>
+      <div class="ip-box per">
+        <div class="lbl">Personal Passive</div>
+        <div class="formula">Subject (from the that-clause) + passive reporting verb + to-infinitive</div>
+        <div class="eg">Tourism is said to bring money to the region.</div>
+        <div class="note">👉 Use <strong>to + have + past participle</strong> when the action happened before the reporting verb: <em>He is believed to have left the country.</em></div>
+      </div>
+      <table class="ref-table" style="margin-top:.7rem">
+        <thead><tr><th style="width:32%">Active</th><th style="width:34%">Personal Passive</th><th>Impersonal Passive</th></tr></thead>
+        <tbody>
+          <tr><td>People say tourism brings money to the region.</td><td class="c3">Tourism is said to bring money to the region.</td><td><em>It is said that tourism brings money to the region.</em></td></tr>
+          <tr><td>People believe the building is haunted.</td><td class="c3">The building is believed to be haunted.</td><td><em>It is believed that the building is haunted.</em></td></tr>
+          <tr><td>People know he worked as a chef.</td><td class="c3">He is known to have worked as a chef.</td><td><em>It is known that he worked as a chef.</em></td></tr>
+        </tbody>
+      </table>
+      <div class="warn">⚠️ <strong>Most common reporting verbs:</strong> say, believe, think, know, consider, expect, report.</div>
+
+      <h3>6b. Causative — have / get something done</h3>
+      <table class="ref-table">
+        <thead><tr><th style="width:30%">Pattern</th><th>Use + Example</th></tr></thead>
+        <tbody>
+          <tr><td class="c1">have + object + past participle</td><td>Pay/arrange for someone else to do something → <em>I have my hair cut every month.</em></td></tr>
+          <tr><td class="c1">get + object + past participle</td><td>Slightly more informal; also unfortunate events → <em>She had her phone stolen.</em></td></tr>
+        </tbody>
+      </table>
+
+      <h3>6c. Passive with Two Objects</h3>
+      <div class="pv-box">give / send / show / offer / tell + indirect object + direct object → either object can become the passive subject</div>
+      <table class="ref-table">
+        <thead><tr><th style="width:38%">Active</th><th>Passive (indirect object as subject)</th></tr></thead>
+        <tbody>
+          <tr><td>They gave him a medal.</td><td class="c3">He was given a medal.</td></tr>
+          <tr><td>They sent her an invitation.</td><td class="c3">She was sent an invitation.</td></tr>
+          <tr><td>They offered her a new contract.</td><td class="c3">She was offered a new contract.</td></tr>
+        </tbody>
+      </table>
+
+      <h3>6d. Common Passive Pitfalls</h3>
+      <div class="warn">⚠️ Intransitive verbs (happen, arrive, occur, disappear) <strong>cannot</strong> be made passive: ❌ <em>"The accident was happened."</em> ⚠️ Don't forget the dummy "It" in the impersonal passive — without it, the sentence is incomplete.</div>
+
+      <h3>7. Comparatives &amp; Superlatives</h3>
+      <table class="ref-table">
+        <thead><tr><th style="width:30%">Pattern</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td class="c1">the + comparative..., the + comparative...</td><td><em>The more you practise, the better you become.</em></td></tr>
+          <tr><td class="c1">by far + superlative</td><td><em>She is by far the most intelligent student in the class.</em></td></tr>
+          <tr><td class="c1">comparative + and + comparative</td><td><em>The traffic gets worse and worse every year.</em></td></tr>
+          <tr><td class="c1">nowhere near as... as</td><td><em>This phone is nowhere near as good as the previous model.</em></td></tr>
+          <tr><td class="c1">far / much + comparative</td><td><em>He is far more experienced than his colleague.</em></td></tr>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       PART B — EXERCISES
+  ══════════════════════════════════ -->
+
+  <div class="section" style="background:transparent;box-shadow:none;border-radius:0">
+    <div style="padding:.4rem 0 1rem">
+      <p class="desc" style="font-size:.95rem;"><strong>Instructions:</strong> Complete each sentence, then click <strong>Show</strong> (or tap the blurred text) to reveal the answer. Tick ☑ if your answer is correct.</p>
+    </div>
+  </div>
+
+  <div class="section" id="ex1">
+    <div class="section-header"><span class="tag">Exercise 1</span>Reported Speech</div>
+    <div class="section-body">
+      <p class="desc">Report each sentence.</p>
+      <ul class="ex-list" id="list-ex1"></ul>
+    </div>
+  </div>
+
+  <div class="section" id="ex2">
+    <div class="section-header"><span class="tag">Exercise 2</span>Conditionals</div>
+    <div class="section-body">
+      <p class="desc">Put the verb in brackets into the correct form.</p>
+      <ul class="ex-list" id="list-ex2"></ul>
+    </div>
+  </div>
+
+  <div class="section" id="ex3">
+    <div class="section-header"><span class="tag">Exercise 3</span>Relative Clauses</div>
+    <div class="section-body">
+      <p class="desc">Combine the two sentences using a relative clause.</p>
+      <ul class="ex-list" id="list-ex3"></ul>
+    </div>
+  </div>
+
+  <div class="section" id="ex4">
+    <div class="section-header"><span class="tag">Exercise 4</span>Modals of Deduction &amp; Obligation</div>
+    <div class="section-body">
+      <p class="desc">Rewrite each sentence using a modal verb.</p>
+      <ul class="ex-list" id="list-ex4"></ul>
+    </div>
+  </div>
+
+  <div class="section" id="ex5">
+    <div class="section-header"><span class="tag">Exercise 5</span>Gerunds &amp; Infinitives</div>
+    <div class="section-body">
+      <p class="desc">Put the verb in brackets into the gerund or infinitive.</p>
+      <ul class="ex-list" id="list-ex5"></ul>
+    </div>
+  </div>
+
+  <div class="section" id="ex6">
+    <div class="section-header"><span class="tag">Exercise 6</span>Passive — Personal &amp; Impersonal</div>
+    <div class="section-body">
+      <p class="desc">Rewrite each sentence in both the personal and the impersonal passive.</p>
+      <ul class="ex-list" id="list-ex6"></ul>
+    </div>
+  </div>
+
+  <div class="section" id="ex7">
+    <div class="section-header"><span class="tag">Exercise 7</span>Causative &amp; Passive with Two Objects</div>
+    <div class="section-body">
+      <p class="desc">Rewrite each sentence using a causative or passive structure.</p>
+      <ul class="ex-list" id="list-ex7"></ul>
+    </div>
+  </div>
+
+  <div class="section" id="ex8">
+    <div class="section-header"><span class="tag">Exercise 8</span>Comparatives &amp; Superlatives</div>
+    <div class="section-body">
+      <p class="desc">Complete each sentence with the correct comparative or superlative form.</p>
+      <ul class="ex-list" id="list-ex8"></ul>
+    </div>
+  </div>
+
+  <div class="section" id="ex9">
+    <div class="section-header"><span class="tag">Exercise 9</span>Key Word Transformation</div>
+    <div class="section-body">
+      <p class="desc">Rewrite each sentence using the keyword given, without changing its meaning.</p>
+      <ul class="ex-list" id="list-ex9"></ul>
+    </div>
+  </div>
+
+</div>
+
+<footer>Created for private tutoring use · B2 Grammar Review II</footer>
+
+<script>
+const ex1 = [
+  { q:'"I am tired," she said.', a:'She said (that) she was tired.' },
+  { q:'"I will call you tomorrow," he said.', a:'He said (that) he would call me the next day.' },
+  { q:'"Where do you live?" she asked me.', a:'She asked me where I lived.' },
+  { q:'"Don\'t touch that," the teacher said.', a:'The teacher told us not to touch that.' },
+  { q:'"I have finished my homework," he said.', a:'He said (that) he had finished his homework.' },
+  { q:'"Can you help me?" she asked.', a:'She asked me if I could help her.' },
+  { q:'"Open the window, please," she said.', a:'She asked me to open the window.' },
+  { q:'"I saw him yesterday," she said.', a:'She said (that) she had seen him the day before.' },
+  { q:'"What time is it?" he asked.', a:'He asked what time it was.' },
+  { q:'"Don\'t be late," my mother said.', a:'My mother told me not to be late.' },
+];
+
+const ex2 = [
+  { q:'If you heat water to 100°C, it ________ (boil).', a:'boils' },
+  { q:'If it ________ (rain) tomorrow, we\'ll cancel the picnic.', a:'rains' },
+  { q:'If I ________ (have) more time, I would travel more.', a:'had' },
+  { q:'If she ________ (study) harder, she would have passed the exam.', a:'had studied' },
+  { q:'If you mix red and blue, you ________ (get) purple.', a:'get' },
+  { q:'Unless you ________ (hurry), you\'ll miss the bus.', a:'hurry' },
+  { q:'If he ________ (be) richer, he would buy a yacht.', a:'were' },
+  { q:'If they ________ (leave) earlier, they wouldn\'t have missed the flight.', a:'had left' },
+  { q:'We\'ll go to the beach if the weather ________ (be) nice.', a:'is' },
+  { q:'If I ________ (win) the lottery, I would travel around the world.', a:'won' },
+];
+
+const ex3 = [
+  { q:'The woman lives next door. She is a doctor.', a:'The woman who lives next door is a doctor.' },
+  { q:'I borrowed a book. It was excellent.', a:'The book (that) I borrowed was excellent.' },
+  { q:'My brother works in Madrid. He is visiting us.', a:'My brother, who works in Madrid, is visiting us.' },
+  { q:'This is the restaurant. We met there.', a:'This is the restaurant where we met.' },
+  { q:'A man\'s car was stolen. He called the police.', a:'The man whose car was stolen called the police.' },
+  { q:'We watched a film last night. It was great.', a:'The film we watched last night was great.' },
+  { q:'Paris is the capital of France. It attracts millions of tourists.', a:'Paris, which is the capital of France, attracts millions of tourists.' },
+  { q:'We got married on a day. It was unforgettable.', a:'The day when we got married was unforgettable.' },
+  { q:'Some students arrived late. They missed the introduction.', a:'The students who arrived late missed the introduction.' },
+  { q:'She left for a reason. That\'s the reason.', a:'That\'s the reason why she left.' },
+];
+
+const ex4 = [
+  { q:"I'm sure he is at home now.", a:'He must be at home now.' },
+  { q:"I'm sure she didn't see the message.", a:"She can't have seen the message." },
+  { q:"It's possible that they missed the train.", a:'They might have missed the train.' },
+  { q:"It's necessary for you to wear a seatbelt.", a:'You must wear a seatbelt.' },
+  { q:"It isn't necessary for you to come if you're busy.", a:"You don't have to come if you're busy." },
+  { q:"It's not allowed to smoke here.", a:"You mustn't smoke here." },
+  { q:"I'm sure it wasn't easy for her.", a:"It can't have been easy for her." },
+  { q:'Perhaps he forgot the meeting.', a:'He might have forgotten the meeting.' },
+  { q:"It would be a good idea for you to see a doctor.", a:'You should see a doctor.' },
+  { q:"I'm sure they are not at work today.", a:"They can't be at work today." },
+];
+
+const ex5 = [
+  { q:'I enjoy ________ (read) before bed.', a:'reading' },
+  { q:'She decided ________ (study) abroad.', a:'to study' },
+  { q:'He stopped ________ (smoke) two years ago.', a:'smoking' },
+  { q:'Remember ________ (lock) the door before you leave.', a:'to lock' },
+  { q:"I'll never forget ________ (see) the Northern Lights.", a:'seeing' },
+  { q:'Would you mind ________ (open) the window?', a:'opening' },
+  { q:'They are looking forward to ________ (see) you.', a:'seeing' },
+  { q:'He avoided ________ (answer) the question directly.', a:'answering' },
+  { q:"It's no use ________ (cry) over spilt milk.", a:'crying' },
+  { q:'She managed ________ (finish) the project on time.', a:'to finish' },
+];
+
+const ex6 = [
+  { q:'People say (that) tourism brings money to the region.', per:'Tourism is said to bring money to the region.', imp:'It is said that tourism brings money to the region.' },
+  { q:'People believe (that) the building is haunted.', per:'The building is believed to be haunted.', imp:'It is believed that the building is haunted.' },
+  { q:'People think (that) she lives abroad.', per:'She is thought to live abroad.', imp:'It is thought that she lives abroad.' },
+  { q:'People know (that) he worked as a chef.', per:'He is known to have worked as a chef.', imp:'It is known that he worked as a chef.' },
+  { q:'People say (that) the company lost a lot of money last year.', per:'The company is said to have lost a lot of money last year.', imp:'It is said that the company lost a lot of money last year.' },
+  { q:'People consider her to be the best player in the team.', per:'She is considered to be the best player in the team.', imp:'It is considered that she is the best player in the team.' },
+  { q:'People expect (that) prices will rise.', per:'Prices are expected to rise.', imp:'It is expected that prices will rise.' },
+  { q:'People report (that) the road is closed.', per:'The road is reported to be closed.', imp:'It is reported that the road is closed.' },
+  { q:'People say (that) the recipe is very old.', per:'The recipe is said to be very old.', imp:'It is said that the recipe is very old.' },
+  { q:'People believe (that) he left the country.', per:'He is believed to have left the country.', imp:'It is believed that he left the country.' },
+];
+
+const ex7 = [
+  { q:'Someone cuts my hair every month. (causative)', a:'I have my hair cut every month.' },
+  { q:'A mechanic is fixing my car. (causative)', a:'I am having my car fixed.' },
+  { q:'Someone stole her phone. (causative — negative event)', a:'She had her phone stolen.' },
+  { q:'They gave him a medal. (passive, two objects)', a:'He was given a medal.' },
+  { q:'Someone is going to paint our house next week. (causative)', a:'We are going to have our house painted next week.' },
+  { q:'They sent her an invitation. (passive, two objects)', a:'She was sent an invitation.' },
+  { q:'Someone cleans the office every night. (simple passive)', a:'The office is cleaned every night.' },
+  { q:'A dentist checked my teeth yesterday. (causative)', a:'I had my teeth checked yesterday.' },
+  { q:'They offered her a new contract. (passive, two objects)', a:'She was offered a new contract.' },
+  { q:'Someone broke into our flat last week. (causative — negative event)', a:'We had our flat broken into last week.' },
+];
+
+const ex8 = [
+  { q:'The ________ you practise, the ________ you become. (more / better)', a:'more / better' },
+  { q:'She is by far ________ (intelligent) student in the class.', a:'the most intelligent' },
+  { q:'This phone is nowhere near as ________ (good) as the previous model.', a:'good' },
+  { q:'The traffic gets ________ (bad) every year.', a:'worse and worse' },
+  { q:'He is far ________ (experienced) than his colleague.', a:'more experienced' },
+  { q:"It was one of ________ (interesting) films I've ever seen.", a:'the most interesting' },
+  { q:'The fewer mistakes you make, the ________ (high) your score.', a:'higher' },
+  { q:'This is by far the ________ (cheap) option.', a:'cheapest' },
+  { q:'She runs almost as ________ (fast) as a professional athlete.', a:'fast' },
+  { q:"The sooner we leave, the ________ (early) we'll arrive.", a:'earlier' },
+];
+
+const ex9 = [
+  { q:"I haven't seen him for two years.", key:'LAST', a:'The last time I saw him was two years ago.' },
+  { q:'She finds it difficult to wake up early.', key:'DIFFICULTY', a:'She has difficulty waking up early.' },
+  { q:'He is too young to drive.', key:'ENOUGH', a:"He isn't old enough to drive." },
+  { q:"I'd prefer you not to smoke here.", key:'RATHER', a:"I'd rather you didn't smoke here." },
+  { q:"It's not necessary for you to bring anything.", key:'NEED', a:"You don't need to bring anything." },
+  { q:'She regrets selling her car.', key:'WISH', a:"She wishes she hadn't sold her car." },
+  { q:"He hasn't been to Italy before.", key:'NEVER', a:'He has never been to Italy.' },
+  { q:'Despite the rain, we went out.', key:'ALTHOUGH', a:'Although it was raining, we went out.' },
+  { q:"I'm sure he is not telling the truth.", key:"CAN'T", a:"He can't be telling the truth." },
+  { q:"It's been three years since I last saw her.", key:'SEEN', a:"I haven't seen her for three years." },
+];
+
+let uid = 0;
+const newId = () => 'a' + (++uid);
+
+function makeSimpleItem(num, prompt, answer, note) {
+  const id = newId();
+  const li = document.createElement('li');
+  li.className = 'ex-item';
+  li.innerHTML = `
+    <div class="ex-prompt"><span class="ex-num">${num}.</span><span>${prompt}</span></div>
+    <div class="answer-row">
+      <div class="check-cell"><input type="checkbox" title="Tick if correct"></div>
+      <div class="answer-cell">
+        <span class="alabel">Answer:</span>
+        <span class="answer-text" id="${id}" onclick="revealOne('${id}')">${answer}</span>
+        ${note ? `<span class="anote">(${note})</span>` : ''}
+        <button class="reveal-btn" id="btn-${id}" onclick="revealOne('${id}')">Show</button>
+      </div>
+    </div>`;
+  return li;
+}
+
+function makeDoubleItem(num, prompt, personal, impersonal) {
+  const id1 = newId(), id2 = newId();
+  const li = document.createElement('li');
+  li.className = 'ex-item';
+  li.innerHTML = `
+    <div class="ex-prompt"><span class="ex-num">${num}.</span><span>${prompt}</span></div>
+    <div class="double-ans">
+      <div class="answer-row">
+        <div class="check-cell"><input type="checkbox" title="Tick if correct"></div>
+        <div class="answer-cell">
+          <span class="atype">Personal:</span>
+          <span class="answer-text" id="${id1}" onclick="revealOne('${id1}')">${personal}</span>
+          <button class="reveal-btn" id="btn-${id1}" onclick="revealOne('${id1}')">Show</button>
+        </div>
+      </div>
+      <div class="answer-row">
+        <div class="check-cell"><input type="checkbox" title="Tick if correct"></div>
+        <div class="answer-cell">
+          <span class="atype">Impersonal:</span>
+          <span class="answer-text" id="${id2}" onclick="revealOne('${id2}')">${impersonal}</span>
+          <button class="reveal-btn" id="btn-${id2}" onclick="revealOne('${id2}')">Show</button>
+        </div>
+      </div>
+    </div>`;
+  return li;
+}
+
+function makeKWItem(num, sentence, keyword, answer) {
+  const id = newId();
+  const li = document.createElement('li');
+  li.className = 'ex-item';
+  li.innerHTML = `
+    <div class="ex-prompt">
+      <span class="ex-num">${num}.</span>
+      <span>${sentence} <span class="kw-key">${keyword}</span></span>
+    </div>
+    <div class="answer-row">
+      <div class="check-cell"><input type="checkbox" title="Tick if correct"></div>
+      <div class="answer-cell">
+        <span class="alabel">Answer:</span>
+        <span class="answer-text" id="${id}" onclick="revealOne('${id}')">${answer}</span>
+        <button class="reveal-btn" id="btn-${id}" onclick="revealOne('${id}')">Show</button>
+      </div>
+    </div>`;
+  return li;
+}
+
+function populate(listId, data, type) {
+  const ul = document.getElementById(listId);
+  data.forEach((item, i) => {
+    let li;
+    if (type === 'double') {
+      li = makeDoubleItem(i+1, item.q, item.per, item.imp);
+    } else if (type === 'kw') {
+      li = makeKWItem(i+1, item.q, item.key, item.a);
+    } else {
+      li = makeSimpleItem(i+1, item.q, item.a, item.note||'');
+    }
+    ul.appendChild(li);
+  });
+}
+
+populate('list-ex1', ex1, 'simple');
+populate('list-ex2', ex2, 'simple');
+populate('list-ex3', ex3, 'simple');
+populate('list-ex4', ex4, 'simple');
+populate('list-ex5', ex5, 'simple');
+populate('list-ex6', ex6, 'double');
+populate('list-ex7', ex7, 'simple');
+populate('list-ex8', ex8, 'simple');
+populate('list-ex9', ex9, 'kw');
+
+function revealOne(id) {
+  const span = document.getElementById(id);
+  const btn  = document.getElementById('btn-' + id);
+  if (span) span.classList.add('revealed');
+  if (btn)  btn.classList.add('hidden');
+}
+
+function revealAll(show) {
+  document.querySelectorAll('.answer-text').forEach(el =>
+    el.classList.toggle('revealed', show));
+  document.querySelectorAll('.reveal-btn').forEach(btn =>
+    btn.classList.toggle('hidden', show));
+}
+</script>
+</body>
+</html>
