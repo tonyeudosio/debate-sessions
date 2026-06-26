@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>C2 — Advanced Grammar Review</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:    #1f4a3d;
+    --blue:    #2f7d5f;
+    --sky:     #dfeee5;
+    --accent:  #b5651d;
+    --green:   #3f8c68;
+    --green-bg:#e7f3ec;
+    --plum:    #6a3b8f;
+    --plum-bg: #f1e9f7;
+    --yellow:  #fff8ec;
+    --yellow-b:#f0dfb8;
+    --cream:   #faf8f3;
+    --paper:   #f2f0e8;
+    --ink:     #1c1c1c;
+    --mid:     #555;
+    --light:   #e4e0d6;
+    --shadow:  rgba(31,74,61,.10);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body { font-family: 'Source Serif 4', Georgia, serif; background: var(--paper); color: var(--ink); }
+
+  /* NAV */
+  nav {
+    background: var(--navy);
+    position: sticky; top: 0; z-index: 100;
+    display: flex; flex-wrap: wrap; gap: .3rem;
+    padding: .5rem .8rem;
+    border-bottom: 3px solid var(--accent);
+  }
+  nav a {
+    color: rgba(255,255,255,.75); font-size: .75rem;
+    text-decoration: none; padding: .25rem .55rem;
+    border-radius: 4px; transition: background .2s, color .2s;
+    font-family: 'Source Serif 4', serif;
+    white-space: nowrap;
+  }
+  nav a:hover { background: var(--accent); color: #fff; }
+
+  /* HEADER */
+  header {
+    background: var(--navy); padding: 2.2rem 2rem 1.6rem;
+    text-align: center; position: relative; overflow: hidden;
+  }
+  header::before {
+    content: ''; position: absolute; inset: 0;
+    background: repeating-linear-gradient(45deg,transparent,transparent 28px,rgba(255,255,255,.025) 28px,rgba(255,255,255,.025) 29px);
+  }
+  header h1 { font-family:'Playfair Display',serif; font-size:clamp(1.4rem,4vw,2.4rem); color:#fff; position:relative; }
+  header p  { font-size:.9rem; color:rgba(255,255,255,.6); font-style:italic; margin-top:.4rem; position:relative; }
+  .accent-bar { width:60px;height:3px;background:var(--accent);margin:.9rem auto 0;border-radius:2px;position:relative; }
+
+  /* LAYOUT */
+  .container { max-width:900px; margin:0 auto; padding:1.8rem 1.2rem 4rem; }
+
+  /* GLOBAL CONTROLS */
+  .controls { display:flex; justify-content:flex-end; gap:.7rem; margin-bottom:1.4rem; flex-wrap:wrap; }
+  .ctrl-btn {
+    font-family:'Source Serif 4',serif; font-size:.85rem; padding:.4rem .9rem;
+    border-radius:5px; border:1.5px solid var(--navy);
+    background:var(--navy); color:#fff; cursor:pointer; transition:opacity .2s;
+  }
+  .ctrl-btn:hover { opacity:.82; }
+  .ctrl-btn.outline { background:transparent; color:var(--navy); }
+
+  /* SECTION */
+  .section { background:var(--cream); border-radius:10px; box-shadow:0 2px 16px var(--shadow); margin-bottom:2.2rem; overflow:hidden; }
+  .section-header {
+    background:var(--navy); color:#fff; padding:.8rem 1.4rem;
+    font-family:'Playfair Display',serif; font-size:1.1rem; letter-spacing:.03em;
+    display:flex; align-items:center; gap:.7rem;
+  }
+  .section-header .tag {
+    background:var(--accent); color:#fff;
+    font-family:'Source Serif 4',serif; font-size:.68rem; font-weight:600;
+    letter-spacing:.08em; text-transform:uppercase;
+    padding:.12rem .5rem; border-radius:3px;
+  }
+  .section-body { padding:1.3rem 1.5rem; }
+
+  /* TABLES */
+  .ref-table { width:100%; border-collapse:collapse; font-size:.88rem; margin:.8rem 0; }
+  .ref-table th { background:var(--navy); color:#fff; padding:.5rem .75rem; text-align:left; font-family:'Playfair Display',serif; }
+  .ref-table td { padding:.45rem .75rem; border-bottom:1px solid var(--light); vertical-align:top; }
+  .ref-table tr:last-child td { border-bottom:none; }
+  .ref-table tr:nth-child(odd)  td { background:var(--sky); }
+  .ref-table tr:nth-child(even) td { background:var(--cream); }
+  .ref-table .c1 { font-weight:600; color:var(--navy); width:22%; }
+  .ref-table .c2 { width:78%; }
+  .ref-table .c3 { font-style:italic; color:var(--blue); font-weight:600; }
+
+  /* IP BOXES */
+  .ip-box { border-radius:8px; padding:.9rem 1.1rem; margin:.7rem 0; border-left:4px solid var(--blue); }
+  .ip-box.imp { background:var(--sky); border-color:var(--green); }
+  .ip-box.per { background:var(--plum-bg); border-color:var(--plum); }
+  .ip-box .lbl { font-family:'Playfair Display',serif; font-size:.82rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; margin-bottom:.35rem; }
+  .ip-box.imp .lbl { color:var(--green); }
+  .ip-box.per .lbl { color:var(--plum); }
+  .ip-box .formula { font-weight:600; color:var(--navy); font-size:.88rem; margin-bottom:.3rem; }
+  .ip-box .eg { font-style:italic; font-size:.88rem; }
+  .ip-box .note { font-size:.8rem; color:var(--mid); margin-top:.28rem; }
+
+  .warn { background:var(--yellow); border:1.5px solid var(--yellow-b); border-radius:7px; padding:.75rem 1rem; margin:.8rem 0; font-size:.88rem; }
+  .warn strong { color:var(--accent); }
+
+  .pv-box { background:var(--sky); border-radius:7px; padding:.7rem 1rem; margin-bottom:1.1rem; font-style:italic; font-size:.88rem; color:var(--navy); text-align:center; font-weight:600; }
+
+  ul.blist { list-style:none; padding:0; margin:.4rem 0; }
+  ul.blist li { padding:.28rem 0 .28rem 1.2rem; position:relative; font-size:.9rem; }
+  ul.blist li::before { content:'▸'; position:absolute; left:0; color:var(--blue); font-size:.82rem; }
+  ul.blist em { font-style:italic; color:var(--blue); font-weight:600; }
+
+  h3 { font-family:'Playfair Display',serif; color:var(--blue); font-size:1rem; margin:1.1rem 0 .4rem; }
+  p.desc { font-size:.9rem; color:var(--mid); margin-bottom:.65rem; line-height:1.6; }
+
+  /* EXERCISES */
+  .ex-list { list-style:none; padding:0; }
+  .ex-item { margin-bottom:1rem; }
+  .ex-prompt { font-size:.92rem; line-height:1.65; margin-bottom:.35rem; display:flex; gap:.55rem; }
+  .ex-num { font-family:'Playfair Display',serif; color:var(--accent); font-size:.98rem; font-weight:700; min-width:1.35rem; padding-top:.05rem; }
+
+  /* Answer row */
+  .answer-row { display:flex; align-items:stretch; gap:0; border-radius:7px; overflow:hidden; border:1.5px solid var(--light); margin-left:1.9rem; }
+  .check-cell { background:var(--yellow); padding:.38rem .65rem; display:flex; align-items:center; justify-content:center; border-right:1.5px solid var(--light); min-width:40px; }
+  .check-cell input[type="checkbox"] { width:17px; height:17px; accent-color:var(--green); cursor:pointer; }
+  .answer-cell { background:#fff; flex:1; padding:.38rem .75rem; display:flex; align-items:center; gap:.45rem; font-size:.88rem; flex-wrap:wrap; }
+  .alabel { color:#bbb; font-weight:600; font-size:.76rem; white-space:nowrap; }
+  .answer-text { color:var(--blue); font-weight:700; font-style:italic; filter:blur(5px); user-select:none; transition:filter .35s ease; cursor:pointer; }
+  .answer-text.revealed { filter:none; cursor:default; }
+  .anote { color:#aaa; font-size:.76rem; font-style:italic; }
+  .reveal-btn { background:none; border:1.5px solid var(--blue); color:var(--blue); font-family:'Source Serif 4',serif; font-size:.76rem; padding:.12rem .5rem; border-radius:4px; cursor:pointer; white-space:nowrap; transition:background .2s,color .2s; margin-left:auto; }
+  .reveal-btn:hover { background:var(--blue); color:#fff; }
+  .reveal-btn.hidden { display:none; }
+
+  /* double answers */
+  .double-ans { margin-left:1.9rem; }
+  .double-ans .answer-row { margin-left:0; margin-bottom:.35rem; }
+  .atype { font-size:.75rem; font-weight:700; color:var(--mid); letter-spacing:.05em; text-transform:uppercase; min-width:86px; }
+
+  /* keyword transform style */
+  .kw-item { margin-bottom:1rem; }
+  .kw-prompt { font-size:.9rem; margin-bottom:.2rem; line-height:1.6; }
+  .kw-key { display:inline-block; background:var(--navy); color:#fff; font-size:.72rem; font-weight:700; letter-spacing:.07em; padding:.1rem .38rem; border-radius:3px; margin:0 .25rem; font-family:'Source Serif 4',serif; }
+
+  footer { text-align:center; padding:1.1rem; font-size:.8rem; color:#aaa; font-style:italic; border-top:1px solid var(--light); margin-top:1rem; }
+
+  @media(max-width:600px){
+    .section-body { padding:1rem .8rem; }
+    .ref-table { font-size:.78rem; }
+    .ref-table th,.ref-table td { padding:.38rem .45rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>C2 — Advanced Grammar Review</h1>
+  <p>Inversion · Cleft Sentences · Mixed Conditionals · Participle Clauses · Subjunctive · Passive Voice (Full) · Advanced Collocations</p>
+  <div class="accent-bar"></div>
+</header>
+
+<nav>
+  <a href="#ref">📖 Reference</a>
+  <a href="#ex1">Ex 1 Inversion</a>
+  <a href="#ex2">Ex 2 Cleft Sentences</a>
+  <a href="#ex3">Ex 3 Mixed Conditionals</a>
+  <a href="#ex4">Ex 4 Participle Clauses</a>
+  <a href="#ex5">Ex 5 Subjunctive</a>
+  <a href="#ex6">Ex 6 Passive — Personal/Impersonal</a>
+  <a href="#ex7">Ex 7 Causative & Passive -ing/Inf.</a>
+  <a href="#ex8">Ex 8 Collocations</a>
+  <a href="#ex9">Ex 9 Keyword Transformation</a>
+</nav>
+
+<div class="container">
+
+  <div class="controls">
+    <button class="ctrl-btn outline" onclick="revealAll(false)">🙈 Hide all answers</button>
+    <button class="ctrl-btn" onclick="revealAll(true)">👁 Reveal all answers</button>
+  </div>
+
+  <!-- ══════════════════════════════════
+       PART A — REFERENCE
+  ══════════════════════════════════ -->
+
+  <div class="section" id="ref">
+    <div class="section-header"><span class="tag">Part A</span>Grammar Reference</div>
+    <div class="section-body">
+
+      <h3>1. Inversion</h3>
+      <table class="ref-table">
+        <thead><tr><th class="c1">Pattern</th><th>Use + Example</th></tr></thead>
+        <tbody>
+          <tr><td class="c1">Negative adverbials</td><td>Never, Rarely, Seldom, Little, Hardly/Scarcely/No sooner + aux + subject → <em>Never have I seen such arrogance.</em></td></tr>
+          <tr><td class="c1">No sooner... than / Hardly... when</td><td><em>No sooner had he sat down than the phone rang.</em></td></tr>
+          <tr><td class="c1">Conditional inversion (no <em>if</em>)</td><td>Had / Were / Should + subject → <em>Had I known, I would have acted differently.</em></td></tr>
+          <tr><td class="c1">So + adj / Such + be</td><td><em>So great was her surprise that she couldn't speak. / Such was the silence that we could hear the clock.</em></td></tr>
+          <tr><td class="c1">Only after / Only when / Not until</td><td><em>Only when she left did he realise how much he loved her.</em></td></tr>
+          <tr><td class="c1">Locative adverbials (literary)</td><td><em>Down came the rain. / On the hill stood an ancient castle.</em></td></tr>
+        </tbody>
+      </table>
+
+      <h3>2. Cleft Sentences</h3>
+      <table class="ref-table">
+        <thead><tr><th class="c1">Type</th><th>Formula + Example</th></tr></thead>
+        <tbody>
+          <tr><td class="c1">It-cleft</td><td>It + be + emphasised element + that/who + clause → <em>It was John who broke the window.</em></td></tr>
+          <tr><td class="c1">What-cleft</td><td>What + clause + be + emphasised element → <em>What I need is a holiday.</em></td></tr>
+          <tr><td class="c1">All-cleft</td><td>All + clause + be (+ infinitive) → <em>All she wants is to be heard.</em></td></tr>
+        </tbody>
+      </table>
+      <div class="warn">⚠️ <strong>Key point:</strong> cleft sentences don't add new information — they re-package a known idea to emphasise one part of it.</div>
+
+      <h3>3. Mixed Conditionals</h3>
+      <table class="ref-table">
+        <thead><tr><th style="width:30%">Type</th><th>Formula + Example</th></tr></thead>
+        <tbody>
+          <tr><td class="c1">Past condition → Present result</td><td>If + past perfect, ...would + infinitive → <em>If she had studied medicine, she would be a doctor now.</em></td></tr>
+          <tr><td class="c1">Present/general condition → Past result</td><td>If + past simple, ...would have + p.p. → <em>If he weren't so stubborn, he wouldn't have lost the deal.</em></td></tr>
+        </tbody>
+      </table>
+
+      <h3>4. Participle Clauses</h3>
+      <table class="ref-table">
+        <thead><tr><th style="width:30%">Type</th><th>Formula + Example</th></tr></thead>
+        <tbody>
+          <tr><td class="c1">Present participle (-ing)</td><td>Active / cause → <em>Realising his mistake, he apologised at once.</em></td></tr>
+          <tr><td class="c1">Perfect participle</td><td>Having + p.p. (earlier action) → <em>Having finished his homework, he watched TV.</em></td></tr>
+          <tr><td class="c1">Past participle (-ed)</td><td>Reduced passive relative clause → <em>The man arrested last night is now in custody.</em></td></tr>
+          <tr><td class="c1">Negative form</td><td>Not + participle → <em>Not knowing what to say, she remained silent.</em></td></tr>
+        </tbody>
+      </table>
+
+      <h3>5. Subjunctive Mood</h3>
+      <table class="ref-table">
+        <thead><tr><th style="width:30%">Pattern</th><th>Formula + Example</th></tr></thead>
+        <tbody>
+          <tr><td class="c1">Formal that-clause subjunctive</td><td>verb (recommend / insist / demand / suggest / propose) + that + subject + base form → <em>The judge demanded that the witness tell the truth.</em></td></tr>
+          <tr><td class="c1">it is + adj. + that</td><td>essential / vital / imperative / crucial + that + base form → <em>It is essential that he be informed.</em></td></tr>
+          <tr><td class="c1">Were-subjunctive</td><td>If I were... / as if / as though + were → <em>If I were you, I'd accept. / He talks as if he were the boss.</em></td></tr>
+        </tbody>
+      </table>
+
+      <h3>6a. Passive Voice — Personal &amp; Impersonal Reporting</h3>
+      <div class="ip-box imp">
+        <div class="lbl">Impersonal Passive</div>
+        <div class="formula">It + passive reporting verb + that + clause</div>
+        <div class="eg">It is said that the minister lied. &nbsp;/&nbsp; It was believed that she had left.</div>
+        <div class="note">👉 'It' is a dummy subject; the real information sits in the that-clause, which keeps its own tense.</div>
+      </div>
+      <div class="ip-box per">
+        <div class="lbl">Personal Passive</div>
+        <div class="formula">Subject (from the that-clause) + passive reporting verb + to-infinitive</div>
+        <div class="eg">The minister is said to have lied. &nbsp;/&nbsp; She was believed to have left.</div>
+        <div class="note">👉 Use <strong>to + have + past participle</strong> whenever the that-clause action happened <em>before</em> the reporting verb.</div>
+      </div>
+      <table class="ref-table" style="margin-top:.7rem">
+        <thead><tr><th style="width:32%">Active</th><th style="width:34%">Personal Passive</th><th>Impersonal Passive</th></tr></thead>
+        <tbody>
+          <tr><td>People say the minister lied.</td><td class="c3">The minister is said to have lied.</td><td><em>It is said that the minister lied.</em></td></tr>
+          <tr><td>Many believe the painting is a forgery.</td><td class="c3">The painting is believed to be a forgery.</td><td><em>It is believed that the painting is a forgery.</em></td></tr>
+          <tr><td>Investigators reported the fire had started accidentally.</td><td class="c3">The fire was reported to have started accidentally.</td><td><em>It was reported that the fire had started accidentally.</em></td></tr>
+        </tbody>
+      </table>
+      <div class="warn">⚠️ <strong>Common reporting verbs that take this pattern:</strong> say, believe, think, claim, consider, expect, know, report, allege, feel, understand, assume, rumour (be rumoured to).</div>
+
+      <h3>6b. Causative Passive — have / get something done</h3>
+      <table class="ref-table">
+        <thead><tr><th style="width:30%">Pattern</th><th>Use + Example</th></tr></thead>
+        <tbody>
+          <tr><td class="c1">have + object + past participle</td><td>Arrange for someone else to do something → <em>I had my car repaired yesterday.</em></td></tr>
+          <tr><td class="c1">get + object + past participle</td><td>Slightly more informal; also used for unfortunate events → <em>She got her bag stolen on the bus.</em></td></tr>
+          <tr><td class="c1">have/get something done (negative event)</td><td>Something happens <em>to</em> you, with no agent intended → <em>They had their house broken into.</em></td></tr>
+        </tbody>
+      </table>
+
+      <h3>6c. Passive Gerund &amp; Passive Infinitive</h3>
+      <table class="ref-table">
+        <thead><tr><th style="width:30%">Pattern</th><th>Use + Example</th></tr></thead>
+        <tbody>
+          <tr><td class="c1">Passive gerund</td><td>being + p.p., after verbs like hate, like, remember, resent, mind → <em>He hates being interrupted. / She remembers being praised.</em></td></tr>
+          <tr><td class="c1">Passive infinitive</td><td>(to) be + p.p., after want, need, expect, would like → <em>He wants the document translated. / I need this checked.</em></td></tr>
+          <tr><td class="c1">need / want + -ing (= passive meaning)</td><td><em>This essay needs checking.</em> (= needs to be checked)</td></tr>
+        </tbody>
+      </table>
+
+      <h3>6d. Passive with Two Objects</h3>
+      <div class="pv-box">give / send / show / offer / tell / promise + indirect object + direct object → either object can become the passive subject</div>
+      <table class="ref-table">
+        <thead><tr><th style="width:38%">Active</th><th>Passive (preferred — indirect object as subject)</th></tr></thead>
+        <tbody>
+          <tr><td>They gave her an award.</td><td class="c3">She was given an award.</td></tr>
+          <tr><td>The company offered him a promotion.</td><td class="c3">He was offered a promotion.</td></tr>
+          <tr><td>They sent the shareholders a report.</td><td class="c3">The shareholders were sent a report.</td></tr>
+        </tbody>
+      </table>
+
+      <h3>6e. Formal / Stative Passive Expressions</h3>
+      <ul class="blist">
+        <li>be <em>held / deemed / regarded</em> + to-infinitive or as → <em>He is held to be responsible. / It is regarded as a masterpiece.</em></li>
+        <li>be <em>widely considered / generally acknowledged</em> + to-infinitive → <em>She is widely considered to be the finest violinist of her generation.</em></li>
+        <li>be <em>rumoured / purported</em> + to-infinitive → <em>The deal is rumoured to be worth millions.</em></li>
+      </ul>
+
+      <h3>6f. Common Passive Pitfalls</h3>
+      <div class="warn">⚠️ Intransitive verbs (happen, arrive, occur, exist, disappear) <strong>cannot</strong> be made passive: ❌ <em>"The accident was happened"</em>. ⚠️ Don't confuse the impersonal passive (<em>It is said that...</em>) with a simple passive sentence — the impersonal pattern always needs the dummy "It" + that-clause.</div>
+
+      <h3>7. Advanced Collocations</h3>
+      <table class="ref-table">
+        <thead><tr><th style="width:32%">Collocation</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td class="c1">implement / introduce measures</td><td><em>The government implemented stringent measures.</em></td></tr>
+          <tr><td class="c1">trigger / spark speculation</td><td><em>Her resignation triggered a wave of speculation.</em></td></tr>
+          <tr><td class="c1">reach a consensus</td><td><em>The board failed to reach a consensus.</em></td></tr>
+          <tr><td class="c1">cast doubt on</td><td><em>The scandal cast doubt on the institution's integrity.</em></td></tr>
+          <tr><td class="c1">lay the blame on</td><td><em>It is difficult to lay the blame on a single individual.</em></td></tr>
+          <tr><td class="c1">take into account</td><td><em>We must take the cost into account.</em></td></tr>
+          <tr><td class="c1">on the verge of</td><td><em>The company was on the verge of bankruptcy.</em></td></tr>
+          <tr><td class="c1">on good/bad terms with</td><td><em>He isn't on good terms with his neighbours.</em></td></tr>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       PART B — EXERCISES
+  ══════════════════════════════════ -->
+
+  <div class="section" style="background:transparent;box-shadow:none;border-radius:0">
+    <div style="padding:.4rem 0 1rem">
+      <p class="desc" style="font-size:.95rem;"><strong>Instructions:</strong> Complete each sentence, then click <strong>Show</strong> (or tap the blurred text) to reveal the answer. Tick ☑ if your answer is correct.</p>
+    </div>
+  </div>
+
+  <!-- EX 1 — INVERSION -->
+  <div class="section" id="ex1">
+    <div class="section-header"><span class="tag">Exercise 1</span>Inversion</div>
+    <div class="section-body">
+      <p class="desc">Rewrite each sentence using inversion, keeping the same meaning.</p>
+      <ul class="ex-list" id="list-ex1"></ul>
+    </div>
+  </div>
+
+  <!-- EX 2 — CLEFT SENTENCES -->
+  <div class="section" id="ex2">
+    <div class="section-header"><span class="tag">Exercise 2</span>Cleft Sentences</div>
+    <div class="section-body">
+      <p class="desc">Rewrite each sentence as a cleft sentence to emphasise the part in capitals.</p>
+      <ul class="ex-list" id="list-ex2"></ul>
+    </div>
+  </div>
+
+  <!-- EX 3 — MIXED CONDITIONALS -->
+  <div class="section" id="ex3">
+    <div class="section-header"><span class="tag">Exercise 3</span>Mixed Conditionals</div>
+    <div class="section-body">
+      <p class="desc">Combine the two ideas into one mixed conditional sentence.</p>
+      <ul class="ex-list" id="list-ex3"></ul>
+    </div>
+  </div>
+
+  <!-- EX 4 — PARTICIPLE CLAUSES -->
+  <div class="section" id="ex4">
+    <div class="section-header"><span class="tag">Exercise 4</span>Participle Clauses</div>
+    <div class="section-body">
+      <p class="desc">Reduce the underlined clause to a participle clause.</p>
+      <ul class="ex-list" id="list-ex4"></ul>
+    </div>
+  </div>
+
+  <!-- EX 5 — SUBJUNCTIVE -->
+  <div class="section" id="ex5">
+    <div class="section-header"><span class="tag">Exercise 5</span>Subjunctive Mood</div>
+    <div class="section-body">
+      <p class="desc">Put the verb in brackets into the correct subjunctive form.</p>
+      <ul class="ex-list" id="list-ex5"></ul>
+    </div>
+  </div>
+
+  <!-- EX 6 — PASSIVE PERSONAL/IMPERSONAL -->
+  <div class="section" id="ex6">
+    <div class="section-header"><span class="tag">Exercise 6</span>Passive — Personal &amp; Impersonal</div>
+    <div class="section-body">
+      <p class="desc">Rewrite each sentence in both the personal and the impersonal passive.</p>
+      <ul class="ex-list" id="list-ex6"></ul>
+    </div>
+  </div>
+
+  <!-- EX 7 — CAUSATIVE & PASSIVE -ING/INF -->
+  <div class="section" id="ex7">
+    <div class="section-header"><span class="tag">Exercise 7</span>Causative &amp; Passive -ing / Infinitive</div>
+    <div class="section-body">
+      <p class="desc">Rewrite each sentence using a causative or passive gerund/infinitive structure.</p>
+      <ul class="ex-list" id="list-ex7"></ul>
+    </div>
+  </div>
+
+  <!-- EX 8 — COLLOCATIONS -->
+  <div class="section" id="ex8">
+    <div class="section-header"><span class="tag">Exercise 8</span>Advanced Collocations</div>
+    <div class="section-body">
+      <p class="desc">Complete each sentence with the correct collocate.</p>
+      <ul class="ex-list" id="list-ex8"></ul>
+    </div>
+  </div>
+
+  <!-- EX 9 — KEYWORD TRANSFORMATION -->
+  <div class="section" id="ex9">
+    <div class="section-header"><span class="tag">Exercise 9</span>Keyword Transformation</div>
+    <div class="section-body">
+      <p class="desc">Rewrite each sentence using the keyword given, without changing its meaning.</p>
+      <ul class="ex-list" id="list-ex9"></ul>
+    </div>
+  </div>
+
+</div>
+
+<footer>Created for private tutoring use · C2 Advanced Grammar Review</footer>
+
+<script>
+// ── DATA ─────────────────────────────────────────────────────────────────
+
+const ex1 = [
+  { q:"I have never seen such a mess.", a:"Never have I seen such a mess." },
+  { q:"She not only finished the report, but also reviewed it twice.", a:"Not only did she finish the report, but she also reviewed it twice." },
+  { q:"If I had known, I would have helped.", a:"Had I known, I would have helped." },
+  { q:"I had hardly arrived when the phone rang.", a:"Hardly had I arrived when the phone rang." },
+  { q:"The town was so badly damaged that it took years to rebuild.", a:"So badly damaged was the town that it took years to rebuild." },
+  { q:"She rarely complains about her workload.", a:"Rarely does she complain about her workload." },
+  { q:"If you should need anything, call me.", a:"Should you need anything, call me." },
+  { q:"I have seldom heard such a beautiful voice.", a:"Seldom have I heard such a beautiful voice." },
+  { q:"We will under no circumstances accept this offer.", a:"Under no circumstances will we accept this offer." },
+  { q:"It was such chaos that the meeting was cancelled.", a:"Such was the chaos that the meeting was cancelled." },
+];
+
+const ex2 = [
+  { q:"JOHN broke the window.", a:"It was John who broke the window." },
+  { q:"She wants PEACE OF MIND most.", a:"What she wants most is peace of mind." },
+  { q:"We need MORE TIME, not money.", a:"What we need is more time, not money." },
+  { q:"I lost my keys YESTERDAY.", a:"It was yesterday that I lost my keys." },
+  { q:"He really annoys me with HIS ARROGANCE.", a:"What really annoys me is his arrogance." },
+  { q:"She told ME the secret.", a:"It was me that she told the secret to." },
+  { q:"They blamed THE WEATHER for the delay.", a:"It was the weather that they blamed for the delay." },
+  { q:"PRACTICE makes you improve.", a:"What makes you improve is practice." },
+  { q:"The manager, not the staff, caused the problem.", a:"It was the manager, not the staff, who caused the problem." },
+  { q:"I really enjoyed THE ENDING of the film.", a:"What I really enjoyed was the ending of the film." },
+];
+
+const ex3 = [
+  { q:"He didn't study medicine. That's why he isn't a doctor now.", a:"If he had studied medicine, he would be a doctor now." },
+  { q:"She isn't very organised. That's why she missed the deadline.", a:"If she were more organised, she wouldn't have missed the deadline." },
+  { q:"I'm not fluent in German. I didn't understand the lecture.", a:"If I were fluent in German, I would have understood the lecture." },
+  { q:"He took the wrong turn. That's why we're lost now.", a:"If he hadn't taken the wrong turn, we wouldn't be lost now." },
+  { q:"She doesn't trust him. That's why she didn't lend him the money.", a:"If she trusted him, she would have lent him the money." },
+  { q:"They didn't book early. That's why they don't have good seats.", a:"If they had booked early, they would have good seats." },
+  { q:"He is afraid of heights. That's why he didn't climb the tower.", a:"If he weren't afraid of heights, he would have climbed the tower." },
+  { q:"I didn't save any money. That's why I can't go on holiday now.", a:"If I had saved some money, I would be able to go on holiday now." },
+  { q:"She isn't a native speaker. That's why she made some mistakes.", a:"If she were a native speaker, she wouldn't have made any mistakes." },
+  { q:"We didn't leave early. That's why we're stuck in traffic now.", a:"If we had left early, we wouldn't be stuck in traffic now." },
+];
+
+const ex4 = [
+  { q:"Because she was exhausted after the journey, she went straight to bed.", a:"Exhausted after the journey, she went straight to bed." },
+  { q:"The man who was standing by the door was my old teacher.", a:"The man standing by the door was my old teacher." },
+  { q:"After he had finished his homework, he watched TV.", a:"Having finished his homework, he watched TV." },
+  { q:"Since I didn't know what to say, I remained silent.", a:"Not knowing what to say, I remained silent." },
+  { q:"The letter, which had been sent a week earlier, finally arrived.", a:"The letter, sent a week earlier, finally arrived." },
+  { q:"Because she had been warned about the risks, she decided not to go.", a:"Having been warned about the risks, she decided not to go." },
+  { q:"The documents that are kept in the safe are confidential.", a:"The documents kept in the safe are confidential." },
+  { q:"As he realised his mistake, he apologised at once.", a:"Realising his mistake, he apologised at once." },
+  { q:"Because it was built in the 1800s, the bridge needs constant repair.", a:"Built in the 1800s, the bridge needs constant repair." },
+  { q:"Since they had been delayed by the storm, they missed the connecting flight.", a:"Having been delayed by the storm, they missed the connecting flight." },
+];
+
+const ex5 = [
+  { q:"It is essential that he ________ (be) informed immediately.", a:"be" },
+  { q:"The committee recommended that the proposal ________ (review) again.", a:"be reviewed" },
+  { q:"I wish I ________ (be) taller.", a:"were" },
+  { q:"If I ________ (be) you, I'd accept the offer.", a:"were" },
+  { q:"It is vital that every employee ________ (follow) the safety rules.", a:"follow" },
+  { q:"The judge demanded that the witness ________ (tell) the whole truth.", a:"tell" },
+  { q:"Her father insisted that she ________ (stay) at university.", a:"stay" },
+  { q:"It is imperative that the report ________ (submit) by Friday.", a:"be submitted" },
+  { q:"Suppose he ________ (lose) his job tomorrow — what would he do?", a:"lost" },
+  { q:"The doctor suggested that she ________ (rest) for a few days.", a:"rest" },
+];
+
+const ex6 = [
+  { q:"People say that the minister lied to parliament.", per:"The minister is said to have lied to parliament.", imp:"It is said that the minister lied to parliament." },
+  { q:"Many believe that the painting is a forgery.", per:"The painting is believed to be a forgery.", imp:"It is believed that the painting is a forgery." },
+  { q:"They expect that prices will fall next month.", per:"Prices are expected to fall next month.", imp:"It is expected that prices will fall next month." },
+  { q:"People considered him to be the greatest writer of his generation.", per:"He was considered to be the greatest writer of his generation.", imp:"It was considered that he was the greatest writer of his generation." },
+  { q:"Investigators reported that the fire had started accidentally.", per:"The fire was reported to have started accidentally.", imp:"It was reported that the fire had started accidentally." },
+  { q:"Some scientists claim that the treatment cures the disease.", per:"The treatment is claimed to cure the disease.", imp:"It is claimed that the treatment cures the disease." },
+  { q:"People knew that she had worked as a spy during the war.", per:"She was known to have worked as a spy during the war.", imp:"It was known that she had worked as a spy during the war." },
+  { q:"Critics felt that the film deserved an award.", per:"The film was felt to deserve an award.", imp:"It was felt that the film deserved an award." },
+  { q:"They alleged that the company had hidden the data.", per:"The company was alleged to have hidden the data.", imp:"It was alleged that the company had hidden the data." },
+  { q:"People assume that the rumours are true.", per:"The rumours are assumed to be true.", imp:"It is assumed that the rumours are true." },
+];
+
+const ex7 = [
+  { q:"Someone repaired my car yesterday. (have something done)", a:"I had my car repaired yesterday." },
+  { q:"A professional decorator is going to paint the house. (causative)", a:"We are going to have the house painted." },
+  { q:"Someone stole her bag while she was on the bus. (get something done)", a:"She got her bag stolen while she was on the bus." },
+  { q:"I don't like it when people criticise my work. (passive gerund)", a:"I don't like my work being criticised." },
+  { q:"He wants someone to translate the document. (passive infinitive)", a:"He wants the document translated." },
+  { q:"They are cleaning the carpets at the moment. (causative)", a:"We are having the carpets cleaned at the moment." },
+  { q:"Someone broke into their house last week. (negative causative)", a:"They had their house broken into last week." },
+  { q:"I need someone to check my essay before I hand it in. (need + -ing)", a:"My essay needs checking before I hand it in." },
+  { q:"She remembers that people praised her loudly. (passive gerund)", a:"She remembers being praised loudly." },
+  { q:"He hates it when people interrupt him. (passive gerund)", a:"He hates being interrupted." },
+];
+
+const ex8 = [
+  { q:"The government has decided to ________ stringent measures to curb inflation.", a:"implement" },
+  { q:"Her resignation ________ a wave of speculation in the press.", a:"triggered" },
+  { q:"The board failed to ________ a consensus on the merger.", a:"reach" },
+  { q:"He was widely ________ to have plagiarised parts of the thesis.", a:"alleged" },
+  { q:"The new policy is expected to ________ a significant impact on small businesses.", a:"have" },
+  { q:"The committee will ________ into the matter further before reaching a decision.", a:"look" },
+  { q:"She managed to ________ her point across despite the interruptions.", a:"get" },
+  { q:"The scandal ________ doubt on the integrity of the entire institution.", a:"cast" },
+  { q:"It is difficult to ________ the blame on a single individual.", a:"lay" },
+  { q:"The negotiations eventually ________ a compromise acceptable to both sides.", a:"yielded" },
+];
+
+const ex9 = [
+  { q:"I really think you should apologise to her.", key:"BETTER", a:"You had better apologise to her." },
+  { q:"It's possible that he missed the train.", key:"MAY", a:"He may have missed the train." },
+  { q:"She finds it impossible to concentrate with that noise.", key:"PREVENTS", a:"That noise prevents her from concentrating." },
+  { q:"As soon as he arrived, the phone rang.", key:"SOONER", a:"No sooner had he arrived than the phone rang." },
+  { q:"She didn't see him leave the room.", key:"NOTICE", a:"She didn't notice him leaving the room." },
+  { q:"We must consider the cost before deciding.", key:"ACCOUNT", a:"We must take the cost into account before deciding." },
+  { q:"There's no use arguing with him.", key:"POINT", a:"There's no point in arguing with him." },
+  { q:"We have very little money left.", key:"RUN", a:"We are running out of money." },
+  { q:"I don't object to waiting a few more minutes.", key:"MIND", a:"I don't mind waiting a few more minutes." },
+  { q:"Everyone said the accident was the driver's fault.", key:"BLAME", a:"Everyone put the blame for the accident on the driver." },
+];
+
+// ── RENDER HELPERS ────────────────────────────────────────────────────────
+
+let uid = 0;
+const newId = () => 'a' + (++uid);
+
+function makeSimpleItem(num, prompt, answer, note) {
+  const id = newId();
+  const li = document.createElement('li');
+  li.className = 'ex-item';
+  li.innerHTML = `
+    <div class="ex-prompt"><span class="ex-num">${num}.</span><span>${prompt}</span></div>
+    <div class="answer-row">
+      <div class="check-cell"><input type="checkbox" title="Tick if correct"></div>
+      <div class="answer-cell">
+        <span class="alabel">Answer:</span>
+        <span class="answer-text" id="${id}" onclick="revealOne('${id}')">${answer}</span>
+        ${note ? `<span class="anote">(${note})</span>` : ''}
+        <button class="reveal-btn" id="btn-${id}" onclick="revealOne('${id}')">Show</button>
+      </div>
+    </div>`;
+  return li;
+}
+
+function makeDoubleItem(num, prompt, personal, impersonal) {
+  const id1 = newId(), id2 = newId();
+  const li = document.createElement('li');
+  li.className = 'ex-item';
+  li.innerHTML = `
+    <div class="ex-prompt"><span class="ex-num">${num}.</span><span>${prompt}</span></div>
+    <div class="double-ans">
+      <div class="answer-row">
+        <div class="check-cell"><input type="checkbox" title="Tick if correct"></div>
+        <div class="answer-cell">
+          <span class="atype">Personal:</span>
+          <span class="answer-text" id="${id1}" onclick="revealOne('${id1}')">${personal}</span>
+          <button class="reveal-btn" id="btn-${id1}" onclick="revealOne('${id1}')">Show</button>
+        </div>
+      </div>
+      <div class="answer-row">
+        <div class="check-cell"><input type="checkbox" title="Tick if correct"></div>
+        <div class="answer-cell">
+          <span class="atype">Impersonal:</span>
+          <span class="answer-text" id="${id2}" onclick="revealOne('${id2}')">${impersonal}</span>
+          <button class="reveal-btn" id="btn-${id2}" onclick="revealOne('${id2}')">Show</button>
+        </div>
+      </div>
+    </div>`;
+  return li;
+}
+
+function makeKWItem(num, sentence, keyword, answer) {
+  const id = newId();
+  const li = document.createElement('li');
+  li.className = 'ex-item';
+  li.innerHTML = `
+    <div class="ex-prompt">
+      <span class="ex-num">${num}.</span>
+      <span>${sentence} <span class="kw-key">${keyword}</span></span>
+    </div>
+    <div class="answer-row">
+      <div class="check-cell"><input type="checkbox" title="Tick if correct"></div>
+      <div class="answer-cell">
+        <span class="alabel">Answer:</span>
+        <span class="answer-text" id="${id}" onclick="revealOne('${id}')">${answer}</span>
+        <button class="reveal-btn" id="btn-${id}" onclick="revealOne('${id}')">Show</button>
+      </div>
+    </div>`;
+  return li;
+}
+
+function populate(listId, data, type) {
+  const ul = document.getElementById(listId);
+  data.forEach((item, i) => {
+    let li;
+    if (type === 'double') {
+      li = makeDoubleItem(i+1, item.q, item.per, item.imp);
+    } else if (type === 'kw') {
+      li = makeKWItem(i+1, item.q, item.key, item.a);
+    } else {
+      li = makeSimpleItem(i+1, item.q, item.a, item.note||'');
+    }
+    ul.appendChild(li);
+  });
+}
+
+populate('list-ex1', ex1, 'simple');
+populate('list-ex2', ex2, 'simple');
+populate('list-ex3', ex3, 'simple');
+populate('list-ex4', ex4, 'simple');
+populate('list-ex5', ex5, 'simple');
+populate('list-ex6', ex6, 'double');
+populate('list-ex7', ex7, 'simple');
+populate('list-ex8', ex8, 'simple');
+populate('list-ex9', ex9, 'kw');
+
+// ── REVEAL ────────────────────────────────────────────────────────────────
+
+function revealOne(id) {
+  const span = document.getElementById(id);
+  const btn  = document.getElementById('btn-' + id);
+  if (span) span.classList.add('revealed');
+  if (btn)  btn.classList.add('hidden');
+}
+
+function revealAll(show) {
+  document.querySelectorAll('.answer-text').forEach(el =>
+    el.classList.toggle('revealed', show));
+  document.querySelectorAll('.reveal-btn').forEach(btn =>
+    btn.classList.toggle('hidden', show));
+}
+</script>
+</body>
+</html>
