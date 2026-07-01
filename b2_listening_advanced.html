@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>B2 Listening — Exam Simulation</title>
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F3F0E8;
+    --card:#FFFDF9;
+    --ink:#1F2A40;
+    --ink-soft:#5B6478;
+    --gold:#B8860B;
+    --gold-soft:#E9D9AE;
+    --good:#2F7355;
+    --good-bg:#E5F1EA;
+    --bad:#C1463D;
+    --bad-bg:#FBE9E7;
+    --line:#DCD6C6;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    padding-bottom:60px;
+  }
+  h1,h2,h3,.serif{font-family:'Fraunces',serif;}
+  a{color:var(--gold);}
+
+  /* ---------- HEADER ---------- */
+  .masthead{
+    background:var(--ink);
+    color:#F3F0E8;
+    padding:28px 20px 22px;
+    position:relative;
+    overflow:hidden;
+  }
+  .masthead::after{
+    content:"";
+    position:absolute; right:-40px; top:-60px;
+    width:200px; height:200px; border-radius:50%;
+    border:1px dashed rgba(243,240,232,0.18);
+  }
+  .masthead .eyebrow{
+    font-size:12px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--gold-soft); font-weight:600; margin-bottom:6px;
+  }
+  .masthead h1{
+    font-size:26px; margin:0 0 8px; font-weight:600; line-height:1.15;
+  }
+  .masthead p{
+    font-size:14.5px; color:#cfd4e0; margin:0; max-width:520px;
+  }
+
+  /* ---------- SCORE BAR ---------- */
+  .scorebar{
+    position:sticky; top:0; z-index:20;
+    background:rgba(243,240,232,0.97);
+    border-bottom:1px solid var(--line);
+    padding:10px 16px;
+    display:flex; align-items:center; justify-content:space-between;
+    backdrop-filter:blur(4px);
+  }
+  .scorebar .label{font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-soft); font-weight:600;}
+  .scorebar .total{font-family:'Fraunces',serif; font-size:20px; font-weight:600; color:var(--ink);}
+  .scorebar .total span{color:var(--gold);}
+
+  /* ---------- LAYOUT ---------- */
+  .wrap{max-width:680px; margin:0 auto; padding:18px 16px 0;}
+  .intro-card{
+    background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+    padding:16px 18px; margin-bottom:22px; font-size:14.5px; color:var(--ink-soft);
+  }
+  .intro-card strong{color:var(--ink);}
+  .intro-card ul{margin:8px 0 0; padding-left:18px;}
+  .intro-card li{margin-bottom:4px;}
+  .intro-card .tag{
+    display:inline-block; background:var(--gold-soft); color:#6b4e05; font-weight:600;
+    font-size:11.5px; letter-spacing:.04em; padding:2px 8px; border-radius:20px; margin-right:6px;
+  }
+
+  /* ---------- PART HEADER ---------- */
+  .part{margin-bottom:38px;}
+  .part-head{display:flex; align-items:center; gap:12px; margin-bottom:6px;}
+  .badge{
+    width:40px; height:40px; flex:0 0 40px; border-radius:50%;
+    border:1.5px solid var(--gold);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Fraunces',serif; font-weight:600; font-size:17px; color:var(--gold);
+  }
+  .part-titles .eyebrow{font-size:11.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-soft); font-weight:600;}
+  .part-titles h2{font-size:19px; margin:1px 0 0; font-weight:600;}
+  .part-instructions{
+    font-size:13.5px; color:var(--ink-soft); border-left:3px solid var(--gold-soft);
+    padding:8px 12px; margin:12px 0 18px; background:rgba(184,134,11,0.05); border-radius:0 8px 8px 0;
+  }
+
+  /* ---------- CLIP CARD ---------- */
+  .clip{
+    background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+    padding:16px; margin-bottom:16px;
+  }
+  .clip-top{display:flex; align-items:baseline; justify-content:space-between; margin-bottom:10px;}
+  .clip-num{font-family:'Fraunces',serif; font-weight:600; color:var(--gold); font-size:15px;}
+  .clip-title{font-size:12.5px; color:var(--ink-soft);}
+  .video-frame{
+    position:relative; width:100%; padding-top:56.25%; border-radius:10px; overflow:hidden;
+    background:#0c1320; margin-bottom:12px;
+  }
+  .video-frame iframe{position:absolute; top:0; left:0; width:100%; height:100%; border:0;}
+  .audio-frame{
+    border-radius:10px; overflow:hidden; margin-bottom:8px; background:#0c1320;
+  }
+  .audio-frame iframe{width:100%; height:152px; border:0; display:block;}
+  .audio-note{
+    font-size:12px; color:var(--ink-soft); text-align:center; margin:-2px 0 12px; font-style:italic;
+  }
+  .question{font-size:15px; font-weight:500; margin-bottom:10px;}
+  .options label{
+    display:flex; gap:10px; align-items:flex-start; padding:9px 10px; border-radius:9px;
+    border:1px solid var(--line); margin-bottom:8px; font-size:14.5px; cursor:pointer;
+    transition:border-color .15s, background .15s;
+  }
+  .options label:hover{border-color:var(--gold);}
+  .options input{margin-top:3px; accent-color:var(--gold);}
+  .options label.correct{background:var(--good-bg); border-color:var(--good);}
+  .options label.incorrect{background:var(--bad-bg); border-color:var(--bad);}
+
+  /* gap fill */
+  .transcript-box{font-size:14.8px; line-height:1.8;}
+  .transcript-box input{
+    width:120px; border:none; border-bottom:2px solid var(--gold); background:transparent;
+    font-family:'Inter',sans-serif; font-size:14.8px; padding:1px 3px; color:var(--ink); text-align:center;
+  }
+  .transcript-box input.correct{border-bottom-color:var(--good); background:var(--good-bg);}
+  .transcript-box input.incorrect{border-bottom-color:var(--bad); background:var(--bad-bg);}
+
+  /* ---------- BUTTONS ---------- */
+  .btn{
+    display:inline-block; background:var(--ink); color:#fff; border:none; border-radius:30px;
+    padding:12px 26px; font-family:'Inter',sans-serif; font-weight:600; font-size:14.5px;
+    cursor:pointer; margin:6px 0 4px;
+  }
+  .btn:active{transform:scale(0.98);}
+  .btn.secondary{background:transparent; color:var(--ink); border:1.5px solid var(--ink);}
+  .check-row{text-align:center; margin-top:6px;}
+  .part-result{
+    text-align:center; font-size:14px; color:var(--ink-soft); margin-top:8px; min-height:18px; font-weight:600;
+  }
+
+  /* ---------- FOOTER / FINAL ---------- */
+  .final-card{
+    background:var(--ink); color:#F3F0E8; border-radius:var(--radius); padding:24px 20px;
+    text-align:center; margin-bottom:30px;
+  }
+  .final-card .big{font-family:'Fraunces',serif; font-size:40px; font-weight:600; margin:6px 0;}
+  .final-card .big span{color:var(--gold-soft);}
+  .final-card p{font-size:13.5px; color:#cfd4e0; margin:4px 0 0;}
+
+  footer{
+    max-width:680px; margin:0 auto; padding:0 16px 30px; font-size:12px; color:var(--ink-soft); text-align:center;
+  }
+  footer a{color:var(--gold);}
+  hr.div{border:none; border-top:1px dashed var(--line); margin:36px 0;}
+</style>
+</head>
+<body>
+
+<div class="masthead">
+  <div class="eyebrow">B2 First-style · Exam simulation</div>
+  <h1>Listen Like the Real Thing</h1>
+  <p>Three parts, closer to the actual Cambridge exam: sharper distractors, precise detail, and one part with audio only — no picture to lean on. Headphones recommended.</p>
+</div>
+
+<div class="scorebar">
+  <span class="label">Score so far</span>
+  <span class="total"><span id="scoreNow">0</span> / <span id="scoreMax">19</span></span>
+</div>
+
+<div class="wrap">
+
+  <div class="intro-card">
+    <strong>How this works.</strong> <span class="tag">Harder than last time</span> The questions this round ask about attitude, implication and exact detail rather than plain topic — the way the real exam does. Press <strong>"Check this part"</strong> at the end of each part to see your score and the correct answers immediately.
+    <ul>
+      <li><strong>Part 1</strong> — 4 short extracts, one question each (attitude / inference, not just gist)</li>
+      <li><strong>Part 2</strong> — one longer conversation, complete the notes with the missing word or number</li>
+      <li><strong>Part 3</strong> — one long talk, 7 multiple-choice questions on detail and implied meaning</li>
+    </ul>
+  </div>
+
+  <!-- ============ PART 1 ============ -->
+  <div class="part" id="part1">
+    <div class="part-head">
+      <div class="badge">1</div>
+      <div class="part-titles">
+        <div class="eyebrow">Part 1 · Short extracts</div>
+        <h2>Four unrelated recordings</h2>
+      </div>
+    </div>
+    <div class="part-instructions">You will hear four different short recordings. For each one, choose the best answer, A, B or C. These questions ask <em>why</em> or <em>what does it mean</em> — not simply what the topic is.</div>
+
+    <!-- Clip 1 -->
+    <div class="clip" data-q="1">
+      <div class="clip-top"><span class="clip-num">1</span><span class="clip-title">"A Knock at the Door" — StoryCorps</span></div>
+      <div class="video-frame"><iframe src="https://www.youtube.com/embed/v_oNDAoX4bo" loading="lazy" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
+      <div class="fallback-link" style="text-align:center;margin:-6px 0 12px;"><a href="https://www.youtube.com/watch?v=v_oNDAoX4bo" target="_blank" style="font-size:12.5px;color:var(--ink-soft);text-decoration:underline;">Can't see the video? Open it directly on YouTube ↗</a></div>
+      <div class="question">1&nbsp;&nbsp;Why does Juliet mention that she "used to cry for everything" as a child?</div>
+      <div class="options">
+        <label><input type="radio" name="q1" value="a"> A&nbsp; To explain that, even for someone who frightened easily, this felt like an extreme experience</label>
+        <label><input type="radio" name="q1" value="b"> B&nbsp; To excuse herself for not calling the police immediately</label>
+        <label><input type="radio" name="q1" value="c"> C&nbsp; To explain why she instantly guessed it was trick-or-treaters at the door</label>
+      </div>
+    </div>
+
+    <!-- Clip 2 -->
+    <div class="clip" data-q="2">
+      <div class="clip-top"><span class="clip-num">2</span><span class="clip-title">"A Gem of a Guy" — StoryCorps</span></div>
+      <div class="video-frame"><iframe src="https://www.youtube.com/embed/B55nqgw1BJ4" loading="lazy" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
+      <div class="fallback-link" style="text-align:center;margin:-6px 0 12px;"><a href="https://www.youtube.com/watch?v=B55nqgw1BJ4" target="_blank" style="font-size:12.5px;color:var(--ink-soft);text-decoration:underline;">Can't see the video? Open it directly on YouTube ↗</a></div>
+      <div class="question">2&nbsp;&nbsp;What is the overall tone of the conversation between the two brothers?</div>
+      <div class="options">
+        <label><input type="radio" name="q2" value="a"> A&nbsp; Tense — they clearly disagree about what really happened</label>
+        <label><input type="radio" name="q2" value="b"> B&nbsp; Formal — they are carefully recording family history for the archive</label>
+        <label><input type="radio" name="q2" value="c"> C&nbsp; Warm and affectionately teasing — they enjoy laughing about old memories together</label>
+      </div>
+    </div>
+
+    <!-- Clip 3 (audio only) -->
+    <div class="clip" data-q="3">
+      <div class="clip-top"><span class="clip-num">3</span><span class="clip-title">"Like Brothers" — StoryCorps, aired on NPR's Morning Edition</span></div>
+      <div class="audio-frame"><iframe src="https://www.npr.org/player/embed/454719333/454970671" scrolling="no" frameborder="0" title="NPR embedded audio player"></iframe></div>
+      <div class="audio-note">Audio only this time — just like the real exam, there's no picture to help you.</div>
+      <div class="question">3&nbsp;&nbsp;What does Barry mean when he says, "I had my ticket punched by my nephew's blood"?</div>
+      <div class="options">
+        <label><input type="radio" name="q3" value="a"> A&nbsp; He believes his nephew's death is the reason he himself survived and didn't have to return to Vietnam</label>
+        <label><input type="radio" name="q3" value="b"> B&nbsp; He is describing a wound he received while trying to rescue his nephew</label>
+        <label><input type="radio" name="q3" value="c"> C&nbsp; He means that donating blood earned him an early discharge from the army</label>
+      </div>
+    </div>
+
+    <!-- Clip 4 -->
+    <div class="clip" data-q="4">
+      <div class="clip-top"><span class="clip-num">4</span><span class="clip-title">"Heart to Heart" — StoryCorps</span></div>
+      <div class="video-frame"><iframe src="https://www.youtube.com/embed/sBPDvDbVHgM" loading="lazy" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
+      <div class="fallback-link" style="text-align:center;margin:-6px 0 12px;"><a href="https://www.youtube.com/watch?v=sBPDvDbVHgM" target="_blank" style="font-size:12.5px;color:var(--ink-soft);text-decoration:underline;">Can't see the video? Open it directly on YouTube ↗</a></div>
+      <div class="question">4&nbsp;&nbsp;Why did doctors present Sarah with such a difficult decision after Yomi was born?</div>
+      <div class="options">
+        <label><input type="radio" name="q4" value="a"> A&nbsp; Yomi's condition was expected to be fatal, and staff suggested leaving her at the hospital</label>
+        <label><input type="radio" name="q4" value="b"> B&nbsp; The hospital could not afford the equipment Yomi needed</label>
+        <label><input type="radio" name="q4" value="c"> C&nbsp; Sarah had to decide which of her three daughters to take home first</label>
+      </div>
+    </div>
+
+    <div class="check-row"><button class="btn" onclick="checkPart(1)">Check Part 1</button></div>
+    <div class="part-result" id="result1"></div>
+  </div>
+
+  <hr class="div">
+
+  <!-- ============ PART 2 ============ -->
+  <div class="part" id="part2">
+    <div class="part-head">
+      <div class="badge">2</div>
+      <div class="part-titles">
+        <div class="eyebrow">Part 2 · Note completion</div>
+        <h2>"Dear Mrs. Doyle" — a StoryCorps story</h2>
+      </div>
+    </div>
+    <div class="part-instructions">Listen to John Cruitt speak with his former third-grade teacher, Cecile Doyle. Complete each gap below with one word or a short number. Some answers are exact numbers or dates — listen carefully.</div>
+
+    <div class="clip">
+      <div class="video-frame"><iframe src="https://www.youtube.com/embed/zdO-lq-pl-I" loading="lazy" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
+      <div class="fallback-link" style="text-align:center;margin:-6px 0 12px;"><a href="https://www.youtube.com/watch?v=zdO-lq-pl-I" target="_blank" style="font-size:12.5px;color:var(--ink-soft);text-decoration:underline;">Can't see the video? Open it directly on YouTube ↗</a></div>
+      <div class="transcript-box">
+        John was a student in Mrs. Doyle's <input type="text" id="g1" data-q="g1"> grade class.<br><br>
+        His mother passed away two days before <input type="text" id="g2" data-q="g2">, in <input type="text" id="g3" data-q="g3" size="4">.<br><br>
+        When John returned to school, Mrs. Doyle waited until the other children had left the room, then kissed him on the <input type="text" id="g4" data-q="g4">.<br><br>
+        Mrs. Doyle understood how he felt because her own father died when she was <input type="text" id="g5" data-q="g5" size="3">.<br><br>
+        John finally wrote to Mrs. Doyle <input type="text" id="g6" data-q="g6" size="3"> years later.<br><br>
+        He <input type="text" id="g7" data-q="g7"> the letter, because he was worried his handwriting wasn't good enough.<br><br>
+        When the letter arrived, Mrs. Doyle's husband was seriously ill with <input type="text" id="g8" data-q="g8">.
+      </div>
+    </div>
+
+    <div class="check-row"><button class="btn" onclick="checkPart(2)">Check Part 2</button></div>
+    <div class="part-result" id="result2"></div>
+  </div>
+
+  <hr class="div">
+
+  <!-- ============ PART 3 ============ -->
+  <div class="part" id="part3">
+    <div class="part-head">
+      <div class="badge">3</div>
+      <div class="part-titles">
+        <div class="eyebrow">Part 3 · Long talk</div>
+        <h2>Julian Treasure — "How to Speak So That People Want to Listen" (TED, 2013)</h2>
+      </div>
+    </div>
+    <div class="part-instructions">Listen to the whole talk (about 10 minutes), then answer the seven questions, A, B or C. These test detail and implied meaning, not just what topics are mentioned.</div>
+
+    <div class="clip">
+      <div class="video-frame"><iframe src="https://www.youtube.com/embed/eIho2S0ZahI" loading="lazy" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
+      <div class="fallback-link" style="text-align:center;margin:-6px 0 12px;"><a href="https://www.youtube.com/watch?v=eIho2S0ZahI" target="_blank" style="font-size:12.5px;color:var(--ink-soft);text-decoration:underline;">Can't see the video? Open it directly on YouTube ↗</a></div>
+    </div>
+
+    <div class="clip" data-q="p3_1">
+      <div class="question">1&nbsp;&nbsp;Which of the "seven deadly sins of speaking" does the speaker describe as confusing opinions with facts?</div>
+      <div class="options">
+        <label><input type="radio" name="p3_1" value="a"> A&nbsp; Judging</label>
+        <label><input type="radio" name="p3_1" value="b"> B&nbsp; Dogmatism</label>
+        <label><input type="radio" name="p3_1" value="c"> C&nbsp; Embroidery</label>
+      </div>
+    </div>
+
+    <div class="clip" data-q="p3_2">
+      <div class="question">2&nbsp;&nbsp;Why does the speaker say complaining is particularly unhelpful?</div>
+      <div class="options">
+        <label><input type="radio" name="p3_2" value="a"> A&nbsp; It is technically a form of gossip</label>
+        <label><input type="radio" name="p3_2" value="b"> B&nbsp; It spreads negativity rather than anything positive</label>
+        <label><input type="radio" name="p3_2" value="c"> C&nbsp; It always leads to open arguments</label>
+      </div>
+    </div>
+
+    <div class="clip" data-q="p3_3">
+      <div class="question">3&nbsp;&nbsp;What does the "L" in his HAIL framework stand for, and why does he include it?</div>
+      <div class="options">
+        <label><input type="radio" name="p3_3" value="a"> A&nbsp; Listening — because you must listen before you're allowed to speak</label>
+        <label><input type="radio" name="p3_3" value="b"> B&nbsp; Love — because if you truly wish someone well, it's hard to judge them at the same time</label>
+        <label><input type="radio" name="p3_3" value="c"> C&nbsp; Logic — because every argument needs a rational structure</label>
+      </div>
+    </div>
+
+    <div class="clip" data-q="p3_4">
+      <div class="question">4&nbsp;&nbsp;According to the speaker, why do we associate a lower vocal register with authority?</div>
+      <div class="options">
+        <label><input type="radio" name="p3_4" value="a"> A&nbsp; Politicians are specifically trained to lower their pitch in public</label>
+        <label><input type="radio" name="p3_4" value="b"> B&nbsp; Listeners tend to associate vocal depth with power and authority</label>
+        <label><input type="radio" name="p3_4" value="c"> C&nbsp; Lower voices simply carry further in large rooms</label>
+      </div>
+    </div>
+
+    <div class="clip" data-q="p3_5">
+      <div class="question">5&nbsp;&nbsp;What does the speaker mean by "sodcasting"?</div>
+      <div class="options">
+        <label><input type="radio" name="p3_5" value="a"> A&nbsp; Posting personal opinions online without permission</label>
+        <label><input type="radio" name="p3_5" value="b"> B&nbsp; Speaking too quietly to be heard by an audience</label>
+        <label><input type="radio" name="p3_5" value="c"> C&nbsp; Carelessly imposing your sound or volume on the people around you</label>
+      </div>
+    </div>
+
+    <div class="clip" data-q="p3_6">
+      <div class="question">6&nbsp;&nbsp;What is the purpose of the vocal warm-up exercise he calls "the siren"?</div>
+      <div class="options">
+        <label><input type="radio" name="p3_6" value="a"> A&nbsp; It slides the voice from a high pitch to a low pitch to warm it up</label>
+        <label><input type="radio" name="p3_6" value="b"> B&nbsp; It trains speakers to eliminate long pauses completely</label>
+        <label><input type="radio" name="p3_6" value="c"> C&nbsp; It helps performers memorise a script more quickly</label>
+      </div>
+    </div>
+
+    <div class="clip" data-q="p3_7">
+      <div class="question">7&nbsp;&nbsp;What is the main "idea worth spreading" that the talk closes with?</div>
+      <div class="options">
+        <label><input type="radio" name="p3_7" value="a"> A&nbsp; Everyone should take professional voice-coaching lessons</label>
+        <label><input type="radio" name="p3_7" value="b"> B&nbsp; A world of conscious speaking and conscious listening would be more beautiful and understanding</label>
+        <label><input type="radio" name="p3_7" value="c"> C&nbsp; Silence should always be avoided in conversation</label>
+      </div>
+    </div>
+
+    <div class="check-row"><button class="btn" onclick="checkPart(3)">Check Part 3</button></div>
+    <div class="part-result" id="result3"></div>
+  </div>
+
+  <hr class="div">
+
+  <div class="final-card">
+    <div class="eyebrow" style="color:#cfd4e0;">Full test</div>
+    <div class="big"><span id="finalScore">0</span> / 19</div>
+    <p>Check every part above, then press the button below for your full result.</p>
+    <button class="btn secondary" style="border-color:#fff;color:#fff;margin-top:10px;" onclick="showFinal()">Show full result</button>
+    <button class="btn secondary" style="border-color:#fff;color:#fff;margin-top:10px;" onclick="resetAll()">Reset and try again</button>
+  </div>
+
+</div>
+
+<footer>
+  Built for one-to-one B2 exam practice. All clips are real, publicly available recordings (StoryCorps, NPR and TED) — not staged exam audio — so the listening challenge is genuine. Part 3 is audio only, exactly like the real Cambridge exam. Always feel free to replay a clip as many times as you like.
+</footer>
+
+<script>
+const ANSWERS = {
+  q1:'a', q2:'c', q3:'a', q4:'a',
+  g1:'third', g2:'christmas', g3:'1958', g4:'head', g5:'11', g6:'54', g7:'typed', g8:'parkinsons',
+  p3_1:'b', p3_2:'b', p3_3:'b', p3_4:'b', p3_5:'c', p3_6:'a', p3_7:'b'
+};
+const TOTAL = 19;
+let scoreByPart = {1:0,2:0,3:0};
+
+function norm(s){
+  return (s||'').toString().trim().toLowerCase().replace(/\s+/g,' ').replace(/['’]/g,'');
+}
+
+function checkPart(n){
+  let correct = 0, total = 0;
+  if(n===1){
+    for(let i=1;i<=4;i++){
+      total++;
+      const sel = document.querySelector('input[name="q'+i+'"]:checked');
+      const labels = document.querySelectorAll('#part1 .clip[data-q="'+i+'"] .options label');
+      labels.forEach(l=>{
+        l.classList.remove('correct','incorrect');
+        const val = l.querySelector('input').value;
+        if(val===ANSWERS['q'+i]) l.classList.add('correct');
+        else if(sel && val===sel.value) l.classList.add('incorrect');
+      });
+      if(sel && sel.value===ANSWERS['q'+i]) correct++;
+    }
+  }
+  if(n===2){
+    for(let i=1;i<=8;i++){
+      total++;
+      const inp = document.getElementById('g'+i);
+      const val = norm(inp.value);
+      const ans = ANSWERS['g'+i];
+      inp.classList.remove('correct','incorrect');
+      let ok = (val===ans);
+      if(ans==='christmas' && val.includes('christmas')) ok = true;
+      if(ans==='parkinsons' && val.includes('parkinson')) ok = true;
+      if(ok){ inp.classList.add('correct'); correct++; }
+      else { inp.classList.add('incorrect'); }
+    }
+  }
+  if(n===3){
+    const keys = ['p3_1','p3_2','p3_3','p3_4','p3_5','p3_6','p3_7'];
+    keys.forEach(k=>{
+      total++;
+      const sel = document.querySelector('input[name="'+k+'"]:checked');
+      const labels = document.querySelectorAll('.clip[data-q="'+k+'"] .options label');
+      labels.forEach(l=>{
+        l.classList.remove('correct','incorrect');
+        const val = l.querySelector('input').value;
+        if(val===ANSWERS[k]) l.classList.add('correct');
+        else if(sel && val===sel.value) l.classList.add('incorrect');
+      });
+      if(sel && sel.value===ANSWERS[k]) correct++;
+    });
+  }
+  scoreByPart[n] = correct;
+  document.getElementById('result'+n).textContent = 'Score: ' + correct + ' / ' + total;
+  updateScoreBar();
+}
+
+function updateScoreBar(){
+  const sum = scoreByPart[1]+scoreByPart[2]+scoreByPart[3];
+  document.getElementById('scoreNow').textContent = sum;
+  document.getElementById('finalScore').textContent = sum;
+}
+
+function showFinal(){
+  updateScoreBar();
+  document.querySelector('.final-card').scrollIntoView({behavior:'smooth', block:'center'});
+}
+
+function resetAll(){
+  document.querySelectorAll('input[type=radio]').forEach(r=>r.checked=false);
+  document.querySelectorAll('input[type=text]').forEach(t=>{t.value=''; t.classList.remove('correct','incorrect');});
+  document.querySelectorAll('.options label').forEach(l=>l.classList.remove('correct','incorrect'));
+  document.querySelectorAll('.part-result').forEach(p=>p.textContent='');
+  scoreByPart = {1:0,2:0,3:0};
+  updateScoreBar();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+</script>
+</body>
+</html>
