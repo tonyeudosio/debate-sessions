@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Writing — B2 First</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500;1,9..144,600&family=Inter:wght@400;500;600;700&family=Caveat:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FAF6EC;
+    --paper-edge:#EFE6CD;
+    --card:#FFFDF6;
+    --margin:#C0483B;
+    --margin-soft:#E4B7AE;
+    --ink:#23324A;
+    --ink-soft:#5C6B82;
+    --ink-faint:#93A0B4;
+    --tag-bg:#C0483B;
+    --tag-text:#FFF9EF;
+    --correct:#2F7A55;
+    --incorrect:#B4392C;
+    --gold:#B8863B;
+    --gold-soft:#F1E4C8;
+    --navy:#23324A;
+    --shadow: 0 1px 0 rgba(35,50,74,0.06), 0 12px 28px -18px rgba(35,50,74,0.35);
+    --shadow-lg: 0 2px 0 rgba(35,50,74,0.06), 0 24px 48px -24px rgba(35,50,74,0.45);
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+
+  body{
+    margin:0;
+    background: #E9E2CE;
+    background-image: radial-gradient(circle at 15% 10%, #F0E9D4 0%, #E9E2CE 55%);
+    color:var(--ink);
+    font-family:'Inter', sans-serif;
+    line-height:1.6;
+    padding: 0 0 100px;
+  }
+
+  .wrap{ max-width: 880px; margin: 0 auto; padding: 0 18px; }
+
+  h1,h2,h3,h4{ font-family:'Fraunces', serif; color:var(--ink); margin:0; }
+
+  a{ color: var(--margin); }
+
+  /* ---------- Sticky nav ---------- */
+  nav.jumpnav{
+    position: sticky; top:0; z-index: 50;
+    background: rgba(250,246,236,0.94);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--paper-edge);
+    box-shadow: 0 6px 18px -14px rgba(35,50,74,0.4);
+  }
+  nav.jumpnav .inner{
+    max-width: 880px; margin:0 auto; padding: 10px 18px;
+    display:flex; gap:6px; overflow-x:auto; scrollbar-width:none;
+  }
+  nav.jumpnav .inner::-webkit-scrollbar{ display:none; }
+  nav.jumpnav a{
+    flex: 0 0 auto;
+    font-family:'Inter',sans-serif; font-weight:600; font-size:0.78rem;
+    text-decoration:none; color:var(--ink-soft);
+    padding: 7px 12px; border-radius: 999px;
+    border: 1px solid transparent;
+    white-space:nowrap;
+    transition: all .15s ease;
+  }
+  nav.jumpnav a:hover{ color:var(--margin); border-color:var(--margin-soft); background:var(--card); }
+
+  /* ---------- Header ---------- */
+  header.top{
+    text-align:center;
+    padding: 44px 18px 30px;
+  }
+  .eyebrow{
+    font-family:'Caveat', cursive;
+    font-size: 1.35rem;
+    color: var(--margin);
+    font-weight:700;
+    display:inline-block;
+    transform: rotate(-2deg);
+    margin-bottom: 6px;
+  }
+  header.top h1{ font-size: clamp(2.1rem, 5vw, 3.1rem); font-weight:600; letter-spacing:-0.01em; }
+  header.top .sub{ color: var(--ink-soft); font-size:1.02rem; max-width:560px; margin: 12px auto 0; }
+
+  .factrow{
+    display:flex; flex-wrap:wrap; justify-content:center; gap:10px;
+    margin-top: 22px;
+  }
+  .factchip{
+    background: var(--card); border:1px solid var(--paper-edge);
+    border-radius: 10px; padding: 9px 14px;
+    font-size:0.82rem; font-weight:600; color:var(--ink);
+    box-shadow: var(--shadow);
+    display:flex; align-items:center; gap:6px;
+  }
+  .factchip b{ color:var(--margin); font-family:'Fraunces',serif; font-weight:700; }
+
+  /* ---------- Sections ---------- */
+  section{ padding: 54px 0 8px; scroll-margin-top: 64px; }
+  section > .sec-head{ margin-bottom: 26px; }
+  section > .sec-head .tag{
+    font-family:'Caveat',cursive; color:var(--margin); font-size:1.15rem; font-weight:700;
+  }
+  section > .sec-head h2{ font-size: clamp(1.5rem,3.4vw,2.05rem); margin-top:2px; }
+  section > .sec-head p.lede{ color:var(--ink-soft); max-width:640px; margin-top:10px; font-size:0.98rem; }
+
+  .divider{ height:1px; background: linear-gradient(90deg, transparent, var(--paper-edge) 15%, var(--paper-edge) 85%, transparent); margin: 54px 0 0; }
+
+  /* ---------- Cards ---------- */
+  .card{
+    background: var(--card);
+    border: 1px solid var(--paper-edge);
+    border-radius: 14px;
+    box-shadow: var(--shadow);
+    padding: 22px 24px;
+  }
+
+  .grid2{ display:grid; grid-template-columns: 1fr 1fr; gap:16px; }
+  .grid3{ display:grid; grid-template-columns: repeat(3,1fr); gap:14px; }
+  @media (max-width: 720px){ .grid2, .grid3{ grid-template-columns: 1fr; } }
+
+  /* ---------- Overview task cards ---------- */
+  .taskcard{ position:relative; }
+  .taskcard .num{
+    font-family:'Fraunces',serif; font-weight:700; font-size:1.6rem;
+    color: var(--gold); margin-bottom:6px; display:block;
+  }
+  .taskcard h3{ font-size:1.15rem; margin-bottom:8px; }
+  .taskcard ul{ margin:10px 0 0; padding-left:18px; color:var(--ink-soft); font-size:0.92rem; }
+  .taskcard li{ margin-bottom:4px; }
+  .pill{
+    display:inline-block; background:var(--gold-soft); color:#7A5A22;
+    font-size:0.72rem; font-weight:700; padding:3px 9px; border-radius:999px;
+    margin-right:6px; margin-bottom:6px;
+  }
+
+  /* ---------- Marking scale ---------- */
+  .scale-table{ width:100%; border-collapse:collapse; font-size:0.88rem; }
+  .scale-table th{
+    font-family:'Fraunces',serif; text-align:left; color:var(--ink);
+    padding:10px 12px; border-bottom:2px solid var(--ink);
+    font-size:0.95rem;
+  }
+  .scale-table td{ padding:12px; border-bottom:1px solid var(--paper-edge); vertical-align:top; color:var(--ink-soft); }
+  .scale-table tr:last-child td{ border-bottom:none; }
+  .band-badge{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:26px; height:26px; border-radius:50%;
+    font-family:'Fraunces',serif; font-weight:700; font-size:0.85rem;
+    color:#fff; flex-shrink:0;
+  }
+  .b5{ background: var(--correct); }
+  .b3{ background: var(--gold); }
+  .b1{ background: var(--incorrect); }
+  .b0{ background: var(--ink-faint); }
+
+  .quickcheck{
+    display:grid; grid-template-columns: repeat(4,1fr); gap:12px; margin-top:18px;
+  }
+  @media (max-width: 720px){ .quickcheck{ grid-template-columns: 1fr 1fr; } }
+  .quickcheck .qc{
+    background: var(--card); border:1px solid var(--paper-edge); border-radius:12px;
+    padding:14px 14px 16px; box-shadow:var(--shadow);
+  }
+  .quickcheck .qc h4{ font-size:0.95rem; color:var(--margin); margin-bottom:8px; }
+  .quickcheck .qc ul{ margin:0; padding-left:16px; font-size:0.82rem; color:var(--ink-soft); }
+  .quickcheck .qc li{ margin-bottom:4px; }
+
+  /* ---------- Genre sections ---------- */
+  .genre-block{ margin-top:8px; }
+  .genre-intro{ display:flex; gap:18px; align-items:flex-start; flex-wrap:wrap; }
+  .genre-taskcard{
+    background: var(--navy); color:#EDE8D8;
+    border-radius:14px; padding:20px 22px; flex:1 1 320px;
+    box-shadow: var(--shadow-lg);
+    position:relative;
+  }
+  .genre-taskcard::before{
+    content:"TASK"; position:absolute; top:14px; right:16px;
+    font-family:'Caveat',cursive; font-size:1.1rem; color:#C9A15A; font-weight:700;
+  }
+  .genre-taskcard p{ margin:0 0 8px; font-size:0.93rem; line-height:1.55; color:#DDE3EE; }
+  .genre-taskcard .notes{ margin-top:10px; font-size:0.87rem; color:#B9C2D4; }
+
+  .struct-plan{ flex:1 1 280px; }
+  .struct-plan ol{ margin:0; padding-left:0; list-style:none; counter-reset: sp; }
+  .struct-plan li{
+    counter-increment: sp; position:relative; padding: 8px 0 8px 40px;
+    border-bottom:1px dashed var(--paper-edge); font-size:0.9rem; color:var(--ink);
+  }
+  .struct-plan li:last-child{ border-bottom:none; }
+  .struct-plan li::before{
+    content: counter(sp); position:absolute; left:0; top:6px;
+    width:26px; height:26px; border-radius:50%; background:var(--gold-soft); color:#7A5A22;
+    font-family:'Fraunces',serif; font-weight:700; font-size:0.82rem;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .struct-plan li b{ color:var(--margin); }
+
+  .register-box{
+    margin-top:20px; background: var(--gold-soft); border-radius:12px;
+    padding:18px 20px; border:1px solid #E4CE9C;
+  }
+  .register-box h4{ font-size:0.95rem; color:#7A5A22; margin-bottom:10px; }
+  .swap-table{ width:100%; border-collapse:collapse; font-size:0.86rem; }
+  .swap-table td{ padding:6px 8px; }
+  .swap-table td:first-child{ color:var(--incorrect); text-decoration: line-through; opacity:0.75; width:46%;}
+  .swap-table td:last-child{ color:var(--correct); font-weight:600; }
+  .swap-table tr{ border-bottom: 1px dashed #E4CE9C; }
+  .swap-table tr:last-child{ border-bottom:none; }
+
+  /* ---------- Annotated sample ---------- */
+  .sample{
+    margin-top:22px; background: var(--card); border-radius:14px;
+    border:1px solid var(--paper-edge); box-shadow:var(--shadow); overflow:hidden;
+  }
+  .sample .sample-head{
+    background: var(--paper-edge); padding:10px 20px;
+    font-family:'Caveat',cursive; font-size:1.15rem; color:var(--margin); font-weight:700;
+  }
+  .sample .sample-body{ padding: 20px 24px; font-size:0.96rem; }
+  .sample .sample-body p{ margin: 0 0 12px; }
+  .sample .sample-body sup a{
+    background: var(--margin); color:#fff; font-family:'Inter',sans-serif;
+    font-size:0.6rem; font-weight:700; padding:1px 5px; border-radius:5px;
+    text-decoration:none; margin-left:1px; vertical-align:2px;
+  }
+  .sample .notes-list{
+    border-top:1px dashed var(--paper-edge); padding: 14px 24px 18px;
+    font-size:0.85rem; color:var(--ink-soft);
+  }
+  .sample .notes-list .note-item{ display:flex; gap:10px; margin-bottom:9px; scroll-margin-top:80px; }
+  .sample .notes-list .note-item .n{
+    flex:0 0 auto; width:20px; height:20px; border-radius:50%; background:var(--margin); color:#fff;
+    font-size:0.65rem; font-weight:700; display:flex; align-items:center; justify-content:center;
+    font-family:'Inter',sans-serif;
+  }
+  .note-item .criterion{ font-weight:700; color:var(--ink); }
+  .note-item:target, .note-item.flash{ background: var(--gold-soft); border-radius:8px; }
+
+  /* ---------- Vocab bank ---------- */
+  .vocab-bank{ margin-top:22px; }
+  .vocab-bank h4{ font-size:1rem; margin-bottom:12px; }
+  .chipwrap{ display:flex; flex-wrap:wrap; gap:8px; }
+  .voc-chip{
+    background:#fff; border:1px solid var(--paper-edge); border-radius:9px;
+    padding: 8px 12px; font-size:0.85rem; box-shadow:var(--shadow);
+  }
+  .voc-chip b{ color:var(--margin); }
+
+  .mistakes{
+    margin-top:22px; background:#FBEDEB; border:1px solid #EFCBC5; border-radius:12px;
+    padding:16px 20px;
+  }
+  .mistakes h4{ color:var(--incorrect); font-size:0.95rem; margin-bottom:8px; }
+  .mistakes ul{ margin:0; padding-left:18px; font-size:0.87rem; color:#7A342C; }
+  .mistakes li{ margin-bottom:5px; }
+
+  /* ---------- Practice zone ---------- */
+  .practice-card{ margin-bottom:26px; }
+  .practice-card .ptop{ display:flex; justify-content:space-between; align-items:flex-start; gap:12px; flex-wrap:wrap; }
+  .practice-card h3{ font-size:1.1rem; }
+  .wordbadge{
+    font-family:'Inter',sans-serif; font-weight:700; font-size:0.78rem;
+    background: var(--gold-soft); color:#7A5A22; padding:5px 11px; border-radius:999px;
+  }
+  textarea.writebox{
+    width:100%; min-height:180px; margin-top:14px; padding:14px 16px;
+    border-radius:10px; border:1px solid var(--paper-edge); background:#FFFEFA;
+    font-family:'Inter',sans-serif; font-size:0.95rem; color:var(--ink); line-height:1.6;
+    resize:vertical;
+  }
+  textarea.writebox:focus{ outline:2px solid var(--margin-soft); outline-offset:2px; }
+  .counter-row{ display:flex; justify-content:space-between; align-items:center; margin-top:8px; font-size:0.8rem; color:var(--ink-soft); }
+  .counter-row .count.ok{ color:var(--correct); font-weight:700; }
+  .counter-row .count.warn{ color:var(--gold); font-weight:700; }
+  .counter-row .count.bad{ color:var(--incorrect); font-weight:700; }
+
+  details.reveal{ margin-top:16px; }
+  details.reveal > summary{
+    cursor:pointer; list-style:none; display:inline-flex; align-items:center; gap:8px;
+    font-weight:700; color:var(--margin); font-size:0.88rem;
+    padding:9px 16px; border:1px solid var(--margin-soft); border-radius:999px;
+    background:#fff;
+  }
+  details.reveal > summary::-webkit-details-marker{ display:none; }
+  details.reveal[open] > summary{ background: var(--margin); color:#fff; border-color:var(--margin); }
+  details.reveal .reveal-body{ margin-top:14px; }
+
+  .band-form{
+    margin-top:18px; background:var(--paper-edge); border-radius:12px; padding:16px 18px;
+  }
+  .band-form .brow{ display:flex; align-items:center; justify-content:space-between; gap:12px; padding:6px 0; flex-wrap:wrap; }
+  .band-form label{ font-size:0.86rem; font-weight:600; color:var(--ink); }
+  .band-form select{
+    font-family:'Inter',sans-serif; font-weight:600; padding:6px 10px; border-radius:8px;
+    border:1px solid var(--ink-faint); background:#fff; color:var(--ink);
+  }
+  .band-total{ margin-top:10px; padding-top:10px; border-top:1px dashed var(--ink-faint); text-align:right; font-weight:700; color:var(--margin); font-family:'Fraunces',serif; font-size:1.1rem; }
+
+  footer{ text-align:center; margin-top:70px; color:var(--ink-soft); font-size:0.85rem; }
+  footer .sig{ font-family:'Caveat',cursive; font-size:1.3rem; color:var(--margin); }
+</style>
+</head>
+<body>
+
+<nav class="jumpnav">
+  <div class="inner">
+    <a href="#overview">Overview</a>
+    <a href="#marking">Marking</a>
+    <a href="#essay">Essay</a>
+    <a href="#email">Email &amp; Letter</a>
+    <a href="#article">Article</a>
+    <a href="#report">Report</a>
+    <a href="#review">Review</a>
+    <a href="#story">Story</a>
+    <a href="#practice">Practice zone</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <header class="top">
+    <span class="eyebrow">Cambridge English · B2 First · Paper 2</span>
+    <h1>The Writing Exam</h1>
+    <p class="sub">Two parts, one hour twenty minutes, forty marks total. This page covers what each task actually asks for, how it's marked, and gives you real practice with a model answer to check against.</p>
+    <div class="factrow">
+      <div class="factchip"><b>1h 20</b>total time</div>
+      <div class="factchip"><b>2</b>parts</div>
+      <div class="factchip"><b>140–190</b>words per task</div>
+      <div class="factchip"><b>40</b>marks total (20 + 20)</div>
+    </div>
+  </header>
+
+  <section id="overview">
+    <div class="sec-head">
+      <span class="tag">First things first</span>
+      <h2>How the paper is built</h2>
+      <p class="lede">Part 1 is not optional — everyone writes the same kind of text. Part 2 gives you a choice, but only from a set of task types that rotate exam to exam.</p>
+    </div>
+    <div class="grid2">
+      <div class="card taskcard">
+        <span class="num">Part 1</span>
+        <h3>Essay — compulsory</h3>
+        <p style="color:var(--ink-soft); font-size:0.92rem;">Everyone answers this. You're given a statement, two notes on what to write about, and a blank third note for your own idea.</p>
+        <ul>
+          <li>140–190 words</li>
+          <li>Must give a clear opinion, with reasons</li>
+          <li>Must use <b>both</b> given notes + your own idea</li>
+          <li>Worth 20 of the 40 marks</li>
+        </ul>
+      </div>
+      <div class="card taskcard">
+        <span class="num">Part 2</span>
+        <h3>Choose 1 of 4 options</h3>
+        <p style="color:var(--ink-soft); font-size:0.92rem;">You'll see four task types on the paper and answer only one. Which four depends on the exam version.</p>
+        <div style="margin-top:10px;">
+          <span class="pill">Article</span><span class="pill">Email / Letter</span><span class="pill">Report</span><span class="pill">Review</span><span class="pill">Story*</span>
+        </div>
+        <p style="color:var(--ink-soft); font-size:0.8rem; margin-top:8px;">*Story usually replaces Report in the "for Schools" version. Article and Email/Letter appear in both — so those two are worth the most exam-proofing.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section id="marking">
+    <div class="sec-head">
+      <span class="tag">How you'll actually grade it</span>
+      <h2>The marking scale, in plain language</h2>
+      <p class="lede">Every piece of writing gets four separate marks, 0–5 each, not one overall impression. A student can nail the content and still lose marks on language — the scale is built to show you exactly where.</p>
+    </div>
+
+    <div class="card">
+      <table class="scale-table">
+        <tr><th>Criterion</th><th>What it's really asking</th></tr>
+        <tr><td><b>Content</b></td><td>Did they answer everything the task asked for — no missing points, nothing off-topic? Does the reader end up with all the information they needed?</td></tr>
+        <tr><td><b>Communicative Achievement</b></td><td>Does it actually read like the text type it's supposed to be? An email that sounds like an essay, or an article that opens "Dear Sir," loses marks here even if the grammar is perfect.</td></tr>
+        <tr><td><b>Organisation</b></td><td>Is it easy to follow? Are ideas linked together, not just listed? Paragraphing and linking words live in this box.</td></tr>
+        <tr><td><b>Language</b></td><td>Range and accuracy of vocabulary and grammar. Small mistakes that don't block meaning are fine — the question is always "can the reader still understand?"</td></tr>
+      </table>
+    </div>
+
+    <div class="quickcheck">
+      <div class="qc"><h4><span class="band-badge b5" style="width:18px;height:18px;font-size:0.7rem;">5</span> Strong</h4><ul><li>Every point covered, nothing spare</li><li>Reads naturally in its genre</li><li>Varied linking, rich vocabulary</li><li>Slips don't confuse the reader</li></ul></div>
+      <div class="qc"><h4><span class="band-badge b3" style="width:18px;height:18px;font-size:0.7rem;">3</span> Solid B2</h4><ul><li>Minor gaps or extra detail</li><li>Genre conventions mostly right</li><li>Coherent, some cohesive devices</li><li>Everyday vocabulary, controlled grammar</li></ul></div>
+      <div class="qc"><h4><span class="band-badge b1" style="width:18px;height:18px;font-size:0.7rem;">1</span> Still B1</h4><ul><li>Some misreading of the task</li><li>Genre conventions patchy</li><li>Basic linking only</li><li>Errors are noticeable but meaning survives</li></ul></div>
+      <div class="qc"><h4><span class="band-badge b0" style="width:18px;height:18px;font-size:0.7rem;">0</span> Off-task</h4><ul><li>Doesn't address the question</li><li>Reader is left uninformed</li><li>Below Band 1 in every other respect</li></ul></div>
+    </div>
+    <p style="font-size:0.82rem; color:var(--ink-soft); margin-top:14px;">Bands 2 and 4 sit between these — a mix of Band 1 and Band 3 features, or Band 3 and Band 5. A candidate averaging Band 3 or above is performing at genuine B2 level; Bands 1–2 still read as B1. You'll find a ready-to-fill version of this scale attached to every task in the practice zone below.</p>
+  </section>
+
+  <div class="divider"></div>
+
+  <section id="essay" class="genre-block">
+    <div class="sec-head">
+      <span class="tag">Part 1 · compulsory · 140–190 words</span>
+      <h2>The Essay</h2>
+      <p class="lede">An opinion essay built from a statement and two given notes, plus a third idea of the student's own. Everyone answers this one, so it's worth over-preparing.</p>
+    </div>
+
+    <div class="genre-intro">
+      <div class="genre-taskcard">
+        <p>In your English class you've been discussing student life. Your teacher has asked you to write an essay for homework.</p>
+        <p>Write your essay using <b>all</b> the notes and giving reasons for your point of view.</p>
+        <p style="font-style:italic; color:#F1E4C8;">"Studying part of your degree abroad brings more benefits than drawbacks." Do you agree?</p>
+        <div class="notes">Notes — write about: 1. independence&nbsp; 2. career opportunities&nbsp; 3. ______ (your own idea)</div>
+      </div>
+      <div class="struct-plan card">
+        <ol>
+          <li><b>Introduction</b> — paraphrase the statement, state your opinion clearly from the start</li>
+          <li><b>Given note 1</b> — one idea, developed with a reason or example</li>
+          <li><b>Given note 2</b> — same treatment, don't just list it</li>
+          <li><b>Your own idea</b> — a full paragraph, not a throwaway line</li>
+          <li><b>Conclusion</b> — restate your opinion in different words, close firmly</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="register-box">
+      <h4>Swap it: essay register</h4>
+      <table class="swap-table">
+        <tr><td>I think...</td><td>In my opinion... / I firmly believe...</td></tr>
+        <tr><td>But...</td><td>However, ... / Nevertheless, ...</td></tr>
+        <tr><td>Also...</td><td>Furthermore, ... / What is more, ...</td></tr>
+        <tr><td>A lot of people</td><td>Many people / The majority of people</td></tr>
+        <tr><td>In the end...</td><td>To conclude, ... / Taking everything into account, ...</td></tr>
+      </table>
+    </div>
+
+    <div class="sample">
+      <div class="sample-head">Annotated sample — Band 5</div>
+      <div class="sample-body">
+        <p>Nowadays, more and more university students choose to spend a semester in another country, and in my opinion, the advantages of this experience clearly outweigh any difficulties.<sup><a href="#note-e1">1</a></sup></p>
+        <p>Firstly, living abroad forces students to manage their own daily life for the first time — from cooking to paying bills — which builds a level of independence<sup><a href="#note-e2">2</a></sup> that a normal semester at home simply cannot offer. Furthermore<sup><a href="#note-e3">3</a></sup>, employers increasingly value candidates with international experience, since it shows adaptability and strong communication skills, so studying abroad can open doors to better career opportunities<sup><a href="#note-e4">4</a></sup> after graduation.</p>
+        <p>What is more, being surrounded by a different language every day is, in my view<sup><a href="#note-e6">6</a></sup>, one of the fastest ways to genuinely improve it — far more effective than any classroom.<sup><a href="#note-e5">5</a></sup></p>
+        <p>Of course, homesickness and the cost of living abroad are real concerns. Nevertheless<sup><a href="#note-e7">7</a></sup>, I firmly believe that the personal and professional growth gained abroad makes it a risk worth taking.<sup><a href="#note-e8">8</a></sup></p>
+      </div>
+      <div class="notes-list">
+        <div class="note-item" id="note-e1"><span class="n">1</span><span><span class="criterion">Organisation —</span> paraphrases the statement and states an opinion immediately, so the whole essay has a clear direction from line one.</span></div>
+        <div class="note-item" id="note-e2"><span class="n">2</span><span><span class="criterion">Content —</span> given note 1 (independence) is addressed head-on, not just mentioned in passing.</span></div>
+        <div class="note-item" id="note-e3"><span class="n">3</span><span><span class="criterion">Language —</span> "Furthermore" instead of another "Also" — range in linking devices.</span></div>
+        <div class="note-item" id="note-e4"><span class="n">4</span><span><span class="criterion">Content —</span> given note 2 (career opportunities) covered with a concrete reason, not just named.</span></div>
+        <div class="note-item" id="note-e5"><span class="n">5</span><span><span class="criterion">Content —</span> this whole paragraph is the candidate's own idea, the required third note — missing this costs marks even if the other two are excellent.</span></div>
+        <div class="note-item" id="note-e6"><span class="n">6</span><span><span class="criterion">Language —</span> "in my view" instead of a third "I think" — varying the opinion language on purpose.</span></div>
+        <div class="note-item" id="note-e7"><span class="n">7</span><span><span class="criterion">Organisation —</span> "Of course... Nevertheless" acknowledges the other side before returning to the argument — examiners reward this at the top band.</span></div>
+        <div class="note-item" id="note-e8"><span class="n">8</span><span><span class="criterion">Communicative Achievement —</span> the conclusion restates the opinion in new words and closes firmly, matching essay register throughout.</span></div>
+      </div>
+    </div>
+
+    <div class="vocab-bank">
+      <h4>Language bank — opinion &amp; linking</h4>
+      <div class="chipwrap">
+        <span class="voc-chip"><b>Opinion:</b> In my view / As far as I'm concerned / I am convinced that</span>
+        <span class="voc-chip"><b>Addition:</b> Furthermore / Moreover / What is more</span>
+        <span class="voc-chip"><b>Contrast:</b> Nevertheless / On the other hand / Having said that</span>
+        <span class="voc-chip"><b>Conclusion:</b> To conclude / All things considered / Taking everything into account</span>
+        <span class="voc-chip"><b>Emphasis:</b> Undoubtedly / It goes without saying that</span>
+      </div>
+    </div>
+
+    <div class="mistakes">
+      <h4>Watch out for</h4>
+      <ul>
+        <li>Copying the essay title as the opening sentence instead of paraphrasing it.</li>
+        <li>Skipping a given note because the student disagrees with it — they must discuss it, not necessarily agree.</li>
+        <li>Squeezing the "own idea" into one clause instead of giving it a full paragraph.</li>
+        <li>Contractions and casual words (a lot of, stuff, kids) — essay register is semi-formal.</li>
+        <li>Sitting on the fence — the task always asks for a clear opinion.</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section id="email" class="genre-block">
+    <div class="sec-head">
+      <span class="tag">Part 2 · optional · 140–190 words</span>
+      <h2>Email &amp; Letter</h2>
+      <p class="lede">One task type, two possible registers. The exam gives you an email or letter to react to, plus notes — your job is choosing the right tone as much as answering the points.</p>
+    </div>
+
+    <div class="genre-intro">
+      <div class="genre-taskcard">
+        <p>You have just received an email from your English-speaking friend, Alex.</p>
+        <p style="font-style:italic; color:#F1E4C8;">"Hi! I heard your football team won the regional tournament — congratulations! Tell me how you celebrated. Also, would you like to come and visit me here in Manchester this summer? Let me know!"</p>
+        <p>Write your email, using all the notes.</p>
+        <div class="notes">Notes — write about: the celebration&nbsp; · &nbsp;the visit&nbsp; · &nbsp;______ (your own idea)</div>
+      </div>
+      <div class="struct-plan card">
+        <ol>
+          <li><b>Greeting</b> — Hi/Dear + name (informal) or Dear Mr/Ms Surname (formal)</li>
+          <li><b>Opening line</b> — react briefly to what they told you</li>
+          <li><b>Respond to each point</b> — in the order they were raised</li>
+          <li><b>Weave in your own idea</b> — naturally, not bolted on</li>
+          <li><b>Closing + sign-off</b> — must match the greeting's register</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="register-box">
+      <h4>Swap it: informal → formal</h4>
+      <table class="swap-table">
+        <tr><td>Hi Alex,</td><td>Dear Mr Brown, / Dear Sir or Madam,</td></tr>
+        <tr><td>Thanks a lot!</td><td>I would be very grateful if...</td></tr>
+        <tr><td>I can't wait to...</td><td>I very much look forward to...</td></tr>
+        <tr><td>Let me know!</td><td>I look forward to hearing from you.</td></tr>
+        <tr><td>See you soon, / Love,</td><td>Yours sincerely, / Yours faithfully,</td></tr>
+      </table>
+      <p style="font-size:0.8rem; color:#7A5A22; margin-top:10px;">Rule of thumb: know the person's name → <b>Yours sincerely</b>. Wrote "Dear Sir/Madam" → <b>Yours faithfully</b>.</p>
+    </div>
+
+    <div class="sample">
+      <div class="sample-head">Annotated sample — informal register, Band 5</div>
+      <div class="sample-body">
+        <p>Hi Alex,<sup><a href="#note-m1">1</a></sup></p>
+        <p>Thanks for your email — huge news about the tournament!<sup><a href="#note-m2">2</a></sup> To celebrate, the whole team went for pizza afterwards and our coach even let us keep the trophy in the changing room for a week, which was hilarious.<sup><a href="#note-m3">3</a></sup></p>
+        <p>As for visiting you in Manchester, I'd absolutely love to!<sup><a href="#note-m4">4</a></sup> I'm free basically all of July, so any weekend works for me. One thing though — do you think I could stay at your place, or would it be easier to book a cheap hostel nearby?<sup><a href="#note-m5">5</a></sup> I really don't want to be a burden!</p>
+        <p>Anyway, I can't wait to catch up properly and hear all about your own season.<sup><a href="#note-m6">6</a></sup> Let me know about dates soon!</p>
+        <p>Speak soon,<br>Sam<sup><a href="#note-m7">7</a></sup></p>
+      </div>
+      <div class="notes-list">
+        <div class="note-item" id="note-m1"><span class="n">1</span><span><span class="criterion">Communicative Achievement —</span> first-name greeting matches an email between close friends.</span></div>
+        <div class="note-item" id="note-m2"><span class="n">2</span><span><span class="criterion">Content —</span> reacts to Alex's news before anything else — the natural first move in a reply.</span></div>
+        <div class="note-item" id="note-m3"><span class="n">3</span><span><span class="criterion">Content —</span> answers point 1 (the celebration) with a specific, personal detail, not a vague sentence.</span></div>
+        <div class="note-item" id="note-m4"><span class="n">4</span><span><span class="criterion">Content —</span> point 2 (the visit) answered clearly and enthusiastically.</span></div>
+        <div class="note-item" id="note-m5"><span class="n">5</span><span><span class="criterion">Content —</span> the candidate's own added idea (accommodation) — shows initiative beyond the two given notes.</span></div>
+        <div class="note-item" id="note-m6"><span class="n">6</span><span><span class="criterion">Language —</span> contractions and casual phrasing ("can't," "catch up") kept consistent throughout — no slips into formal register.</span></div>
+        <div class="note-item" id="note-m7"><span class="n">7</span><span><span class="criterion">Organisation —</span> informal sign-off matches the informal greeting used at the top.</span></div>
+      </div>
+    </div>
+
+    <div class="vocab-bank">
+      <h4>Language bank</h4>
+      <div class="chipwrap">
+        <span class="voc-chip"><b>Informal open:</b> It was great to hear from you / Thanks for your email</span>
+        <span class="voc-chip"><b>Informal close:</b> Write back soon! / Take care</span>
+        <span class="voc-chip"><b>Formal open:</b> I am writing in response to... / I am writing to inform you that...</span>
+        <span class="voc-chip"><b>Formal close:</b> I look forward to hearing from you</span>
+        <span class="voc-chip"><b>Polite request:</b> I would be grateful if you could...</span>
+      </div>
+    </div>
+
+    <div class="mistakes">
+      <h4>Watch out for</h4>
+      <ul>
+        <li>Mixing registers mid-text — one contraction in an otherwise formal letter stands out badly.</li>
+        <li>Sign-off that doesn't match the greeting (Dear Sir/Madam... Love, Sam ❌).</li>
+        <li>Opening a formal letter like an essay ("Nowadays, many people...") instead of stating the purpose directly.</li>
+        <li>Missing one of the points raised in the original email — every point needs a response.</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section id="article" class="genre-block">
+    <div class="sec-head">
+      <span class="tag">Part 2 · optional · 140–190 words</span>
+      <h2>Article</h2>
+      <p class="lede">Written for a magazine or website — the one genre where the exam actually wants personality. Grab attention, stay engaging, round it off.</p>
+    </div>
+
+    <div class="genre-intro">
+      <div class="genre-taskcard">
+        <p>You see this notice on an English-language website for teenagers:</p>
+        <p style="font-style:italic; color:#F1E4C8;">"Free time — what do you and your friends do to relax after a busy week at school? Write us an article about your favourite way to unwind, and tell us why you'd recommend it. The best articles will be published on the site."</p>
+        <p>Write your article.</p>
+      </div>
+      <div class="struct-plan card">
+        <ol>
+          <li><b>Title</b> — short, specific, makes someone want to click</li>
+          <li><b>Hook</b> — a question, direct address, or surprising line</li>
+          <li><b>Body 1</b> — the main idea, with a real example</li>
+          <li><b>Body 2</b> — a second angle or a practical tip</li>
+          <li><b>Round off</b> — echo the opening, invite the reader in</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="register-box">
+      <h4>Swap it: flat → engaging</h4>
+      <table class="swap-table">
+        <tr><td>Free time is important.</td><td>Ever get to Friday and feel completely drained?</td></tr>
+        <tr><td>I like reading.</td><td>There's nothing quite like losing yourself in a good book.</td></tr>
+        <tr><td>This is good for teenagers.</td><td>If you never seem to switch off, this one's for you.</td></tr>
+        <tr><td>In conclusion,</td><td>So, next time the week wears you out, why not give it a try?</td></tr>
+      </table>
+    </div>
+
+    <div class="sample">
+      <div class="sample-head">Annotated sample — Band 5</div>
+      <div class="sample-body">
+        <p><b>Why Baking Is My Favourite Way to Switch Off</b></p>
+        <p>Ever get to Friday evening and feel like your brain has simply stopped working?<sup><a href="#note-a1">1</a></sup> For me, the answer isn't scrolling through my phone — it's flour, butter and a mixing bowl.<sup><a href="#note-a2">2</a></sup></p>
+        <p>Baking forces you to slow down. You can't rush a loaf of bread or a batch of cookies, and that's exactly the point: for an hour or two, homework and exam stress genuinely disappear.<sup><a href="#note-a3">3</a></sup> There's also something deeply satisfying about ending up with a result you can share — nothing beats watching your family devour a cake you made from scratch!<sup><a href="#note-a4">4</a></sup></p>
+        <p>If you've never tried it, start small.<sup><a href="#note-a5">5</a></sup> A simple batch of chocolate chip cookies takes under thirty minutes and barely any skill, yet it still feels like a real achievement.</p>
+        <p>So, next time the week has completely worn you out, put your phone down and preheat the oven instead.<sup><a href="#note-a6">6</a></sup> Trust me — your Friday self will thank you.<sup><a href="#note-a7">7</a></sup></p>
+      </div>
+      <div class="notes-list">
+        <div class="note-item" id="note-a1"><span class="n">1</span><span><span class="criterion">Communicative Achievement —</span> a rhetorical question hooks the reader in the very first line, a classic article opener.</span></div>
+        <div class="note-item" id="note-a2"><span class="n">2</span><span><span class="criterion">Organisation —</span> "isn't X — it's Y" gives a punchy, magazine-style rhythm to the opening.</span></div>
+        <div class="note-item" id="note-a3"><span class="n">3</span><span><span class="criterion">Content —</span> answers the notice's actual question directly, with a specific reason.</span></div>
+        <div class="note-item" id="note-a4"><span class="n">4</span><span><span class="criterion">Language —</span> vivid, informal vocabulary ("devour," "from scratch") suited to article register.</span></div>
+        <div class="note-item" id="note-a5"><span class="n">5</span><span><span class="criterion">Communicative Achievement —</span> direct address to the reader ("you") plus a practical tip — engages rather than just informs.</span></div>
+        <div class="note-item" id="note-a6"><span class="n">6</span><span><span class="criterion">Organisation —</span> the conclusion echoes the opening image (phone / oven) instead of just summarising — a strong closing technique.</span></div>
+        <div class="note-item" id="note-a7"><span class="n">7</span><span><span class="criterion">Communicative Achievement —</span> a light, personal closing line keeps the friendly magazine voice right to the end.</span></div>
+      </div>
+    </div>
+
+    <div class="vocab-bank">
+      <h4>Language bank</h4>
+      <div class="chipwrap">
+        <span class="voc-chip"><b>Hooks:</b> Have you ever...? / Picture this: / Believe it or not,...</span>
+        <span class="voc-chip"><b>Vivid adjectives:</b> breathtaking / surprisingly simple / downright addictive</span>
+        <span class="voc-chip"><b>Direct address:</b> If you're anything like me,... / You might be thinking...</span>
+        <span class="voc-chip"><b>Rounding off:</b> So, why not give it a try? / Whatever you choose,...</span>
+      </div>
+    </div>
+
+    <div class="mistakes">
+      <h4>Watch out for</h4>
+      <ul>
+        <li>No title, or a bland one ("My Free Time Essay").</li>
+        <li>Opening with "In this article I will talk about..." — too academic for the genre.</li>
+        <li>Never actually addressing the reader directly ("you").</li>
+        <li>Drifting away from the notice's real question.</li>
+        <li>Ending abruptly instead of rounding the idea off.</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section id="report" class="genre-block">
+    <div class="sec-head">
+      <span class="tag">Part 2 · optional (standard version) · 140–190 words</span>
+      <h2>Report</h2>
+      <p class="lede">Written for someone with authority to act on it — a principal, a manager, a committee. Objective, headed, and built to be scanned, not enjoyed.</p>
+    </div>
+
+    <div class="genre-intro">
+      <div class="genre-taskcard">
+        <p>You have been asked by your college principal to write a report about the sports facilities at your college.</p>
+        <p>You should say what facilities are currently available, describe any problems, and suggest improvements.</p>
+        <p>Write your report.</p>
+      </div>
+      <div class="struct-plan card">
+        <ol>
+          <li><b>Heading</b> — "Report on..." states the subject plainly</li>
+          <li><b>Introduction</b> — purpose and method in a sentence or two</li>
+          <li><b>Findings, subheaded</b> — group by theme, not chronology</li>
+          <li><b>Second findings section</b> — problems or gaps identified</li>
+          <li><b>Recommendations</b> — clear, actionable, easy to scan</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="register-box">
+      <h4>Swap it: opinion → neutral report register</h4>
+      <table class="swap-table">
+        <tr><td>I think the gym is rubbish.</td><td>The gym appears to be in need of significant improvement.</td></tr>
+        <tr><td>Everyone says...</td><td>The majority of students surveyed reported...</td></tr>
+        <tr><td>You should build a new hall.</td><td>It is recommended that a new hall be built.</td></tr>
+        <tr><td>Basically,...</td><td>Overall,...</td></tr>
+      </table>
+    </div>
+
+    <div class="sample">
+      <div class="sample-head">Annotated sample — Band 5</div>
+      <div class="sample-body">
+        <p><b>Report on After-School Clubs</b></p>
+        <p><b>Introduction</b><br>The purpose of this report is to assess the current range of after-school clubs available to students and to suggest possible improvements, based on a short survey completed by 40 pupils.<sup><a href="#note-r1">1</a></sup></p>
+        <p><b>Current Provision</b><br>At present, the school offers three clubs: football, chess and drama.<sup><a href="#note-r2">2</a></sup> According to the survey, football is by far the most popular. However, several students noted that no clubs are currently available for anyone interested in art or coding, which limits choice considerably.<sup><a href="#note-r3">3</a></sup></p>
+        <p><b>Areas for Improvement</b><br>The main issue raised was timing: most clubs run immediately after lessons, which clashes with the school bus for pupils who live further away.<sup><a href="#note-r4">4</a></sup> A number of students also mentioned that the drama club lacks proper rehearsal space.</p>
+        <p><b>Recommendations</b><br>Based on these findings, it is recommended that the school introduce a coding club, adjust club timings to avoid the bus clash, and allocate a larger room for drama rehearsals.<sup><a href="#note-r5">5</a></sup></p>
+      </div>
+      <div class="notes-list">
+        <div class="note-item" id="note-r1"><span class="n">1</span><span><span class="criterion">Organisation —</span> headings plus a clear statement of purpose and method set report register from the first line.</span></div>
+        <div class="note-item" id="note-r2"><span class="n">2</span><span><span class="criterion">Content —</span> factual, itemised information delivered plainly, with no personal opinion language.</span></div>
+        <div class="note-item" id="note-r3"><span class="n">3</span><span><span class="criterion">Content —</span> the gap identified is backed by survey evidence, not a personal complaint.</span></div>
+        <div class="note-item" id="note-r4"><span class="n">4</span><span><span class="criterion">Communicative Achievement —</span> impersonal phrasing ("was raised," "was noted") is exactly the register a report needs — an article or email would sound wrong here.</span></div>
+        <div class="note-item" id="note-r5"><span class="n">5</span><span><span class="criterion">Organisation —</span> a clearly headed Recommendations section with distinct, actionable points — easy for a busy reader to scan.</span></div>
+      </div>
+    </div>
+
+    <div class="vocab-bank">
+      <h4>Language bank</h4>
+      <div class="chipwrap">
+        <span class="voc-chip"><b>Purpose:</b> The purpose of this report is to... / This report aims to...</span>
+        <span class="voc-chip"><b>Reporting findings:</b> It was found that... / Respondents indicated that...</span>
+        <span class="voc-chip"><b>Recommending:</b> It is recommended that... / The school could consider...</span>
+        <span class="voc-chip"><b>Headings:</b> Introduction / Findings / Areas for Improvement / Recommendations</span>
+      </div>
+    </div>
+
+    <div class="mistakes">
+      <h4>Watch out for</h4>
+      <ul>
+        <li>Writing in first-person opinion throughout ("I think... I feel...").</li>
+        <li>No headings — a report should never look like a wall of text.</li>
+        <li>Asserting things without framing them as findings ("The gym is bad" vs "The gym was reported to be...").</li>
+        <li>Missing a clearly separate Recommendations section.</li>
+        <li>A chatty, informal tone that belongs in an email, not a report.</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section id="review" class="genre-block">
+    <div class="sec-head">
+      <span class="tag">Part 2 · optional · 140–190 words</span>
+      <h2>Review</h2>
+      <p class="lede">Part description, part verdict. The reader wants to know what something was like <i>and</i> whether they should bother — both halves need to be there.</p>
+    </div>
+
+    <div class="genre-intro">
+      <div class="genre-taskcard">
+        <p>You see this announcement on an English-language website:</p>
+        <p style="font-style:italic; color:#F1E4C8;">"Reviews wanted! Have you visited a café, restaurant or shop recently that you'd recommend — or wouldn't? Write us a review saying what it was like, and whether other readers should go."</p>
+        <p>Write your review.</p>
+      </div>
+      <div class="struct-plan card">
+        <ol>
+          <li><b>Title</b> — tells the reader what's being reviewed</li>
+          <li><b>Intro</b> — what it is, brief context</li>
+          <li><b>Description</b> — what you actually experienced</li>
+          <li><b>Evaluation</b> — strengths <i>and</i> weaknesses, balanced</li>
+          <li><b>Verdict</b> — clear recommendation, who it suits</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="register-box">
+      <h4>Swap it: bland → evaluative</h4>
+      <table class="swap-table">
+        <tr><td>The food was good.</td><td>The food was absolutely mouth-watering.</td></tr>
+        <tr><td>It was expensive.</td><td>It was a little overpriced for what you get.</td></tr>
+        <tr><td>I recommend it.</td><td>I'd wholeheartedly recommend it to anyone who...</td></tr>
+        <tr><td>It was bad.</td><td>It fell rather flat, unfortunately.</td></tr>
+      </table>
+    </div>
+
+    <div class="sample">
+      <div class="sample-head">Annotated sample — Band 5</div>
+      <div class="sample-body">
+        <p><b>The Rusty Kettle: Worth the Queue?</b></p>
+        <p>Tucked away on a side street near my school, The Rusty Kettle has quickly become the place everyone's talking about — and after finally trying it last weekend, I can see why.<sup><a href="#note-rv1">1</a></sup></p>
+        <p>The moment you walk in, the smell of freshly baked cinnamon rolls hits you, and the cosy, mismatched furniture makes it feel more like a friend's living room than a café.<sup><a href="#note-rv2">2</a></sup> I ordered the hot chocolate with marshmallows, which was rich without being sickly, and a slice of carrot cake that might be the best I've ever had.<sup><a href="#note-rv3">3</a></sup></p>
+        <p>That said, it isn't perfect: service was painfully slow on a busy Saturday afternoon, and prices are a little steeper than most cafés nearby.<sup><a href="#note-rv4">4</a></sup></p>
+        <p>Still, if you're after somewhere cosy to study or catch up with friends, and you don't mind waiting a little, I'd wholeheartedly recommend giving it a try.<sup><a href="#note-rv5">5</a></sup> Just maybe avoid weekend afternoons!</p>
+      </div>
+      <div class="notes-list">
+        <div class="note-item" id="note-rv1"><span class="n">1</span><span><span class="criterion">Communicative Achievement —</span> title plus a hook line establishes context before the evaluation even starts.</span></div>
+        <div class="note-item" id="note-rv2"><span class="n">2</span><span><span class="criterion">Language —</span> sensory, descriptive vocabulary creates atmosphere — a hallmark of strong reviews.</span></div>
+        <div class="note-item" id="note-rv3"><span class="n">3</span><span><span class="criterion">Content —</span> specific items named and evaluated individually, not a vague "the food was nice."</span></div>
+        <div class="note-item" id="note-rv4"><span class="n">4</span><span><span class="criterion">Organisation —</span> "That said" signals balance — strengths and weaknesses both covered, which a fair review needs.</span></div>
+        <div class="note-item" id="note-rv5"><span class="n">5</span><span><span class="criterion">Communicative Achievement —</span> a clear final verdict aimed at a specific kind of reader — the genre's defining move.</span></div>
+      </div>
+    </div>
+
+    <div class="vocab-bank">
+      <h4>Language bank</h4>
+      <div class="chipwrap">
+        <span class="voc-chip"><b>Positive:</b> mouth-watering / breathtaking / a hidden gem</span>
+        <span class="voc-chip"><b>Negative:</b> a letdown / overpriced / underwhelming</span>
+        <span class="voc-chip"><b>Comparing:</b> nowhere near as good as / far superior to</span>
+        <span class="voc-chip"><b>Recommending:</b> well worth a visit / I'd give it a miss</span>
+      </div>
+    </div>
+
+    <div class="mistakes">
+      <h4>Watch out for</h4>
+      <ul>
+        <li>Pure description with no personal opinion at all.</li>
+        <li>Only positives, or only negatives — a fair review balances both.</li>
+        <li>No clear recommendation at the end.</li>
+        <li>Missing a title.</li>
+        <li>Sounding like a report — lists of facts instead of an evaluative voice.</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section id="story" class="genre-block">
+    <div class="sec-head">
+      <span class="tag">Part 2 · optional (Schools version) · 140–190 words</span>
+      <h2>Story</h2>
+      <p class="lede">A given opening line plus two required elements to weave in naturally. Tense control does more work here than in any other task type.</p>
+    </div>
+
+    <div class="genre-intro">
+      <div class="genre-taskcard">
+        <p>You have seen this announcement in an English-language magazine for teenagers.</p>
+        <p style="font-style:italic; color:#F1E4C8;">Your story must begin with this sentence: "As soon as Maya stepped off the train, she knew something wasn't right."</p>
+        <p>Your story must include:</p>
+        <div class="notes">a decision&nbsp; ·&nbsp; a stranger</div>
+      </div>
+      <div class="struct-plan card">
+        <ol>
+          <li><b>Opening</b> — use the given line to set the scene immediately</li>
+          <li><b>Development</b> — build tension, work the required elements in naturally</li>
+          <li><b>Turning point</b> — a complication or decision</li>
+          <li><b>Climax</b> — the peak moment</li>
+          <li><b>Resolution</b> — a real ending, not a fade-out</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="register-box">
+      <h4>Swap it: flat narration → vivid narrative</h4>
+      <table class="swap-table">
+        <tr><td>She was scared.</td><td>Her heart hammered against her ribs.</td></tr>
+        <tr><td>Then something happened.</td><td>Without warning, the door creaked open.</td></tr>
+        <tr><td>She waited two hours before he came.</td><td>She had been waiting for nearly two hours when he finally arrived.</td></tr>
+        <tr><td>The end.</td><td>[close on a final image or realisation instead]</td></tr>
+      </table>
+    </div>
+
+    <div class="sample">
+      <div class="sample-head">Annotated sample — Band 5</div>
+      <div class="sample-body">
+        <p>As soon as Maya stepped off the train, she knew something wasn't right.<sup><a href="#note-s1">1</a></sup></p>
+        <p>The platform was completely empty, and the station clock had stopped at half past three — the exact time she'd texted her sister to say she'd arrived.<sup><a href="#note-s2">2</a></sup> She pulled out her phone. No signal.</p>
+        <p>Trying to stay calm, she followed the exit signs down a narrow corridor, her footsteps echoing far too loudly. That was when she noticed the stranger sitting alone on a bench, watching her.<sup><a href="#note-s3">3</a></sup> He had been waiting there for a while, judging by the coffee cup, now completely cold, resting by his feet.<sup><a href="#note-s4">4</a></sup></p>
+        <p>"You're not supposed to be here yet," he said quietly. "The next train doesn't arrive for another hour."</p>
+        <p>Maya froze. She had to decide, right there, whether to trust a total stranger or walk back into the dark, empty street alone.<sup><a href="#note-s5">5</a></sup> Taking a slow breath, she sat down beside him.</p>
+        <p>"Then you'd better tell me what's going on," she said.<sup><a href="#note-s6">6</a></sup></p>
+      </div>
+      <div class="notes-list">
+        <div class="note-item" id="note-s1"><span class="n">1</span><span><span class="criterion">Content —</span> opens with the exact given first line, as the task requires.</span></div>
+        <div class="note-item" id="note-s2"><span class="n">2</span><span><span class="criterion">Language —</span> past perfect ("had stopped," "she'd texted") correctly sequences events relative to the main timeline.</span></div>
+        <div class="note-item" id="note-s3"><span class="n">3</span><span><span class="criterion">Content —</span> the required element (a stranger) enters naturally within the action, not bolted on.</span></div>
+        <div class="note-item" id="note-s4"><span class="n">4</span><span><span class="criterion">Language —</span> past perfect continuous used correctly for background action — a mark of real narrative control.</span></div>
+        <div class="note-item" id="note-s5"><span class="n">5</span><span><span class="criterion">Content —</span> the required element (a decision) is explicit and central to the tension, not incidental.</span></div>
+        <div class="note-item" id="note-s6"><span class="n">6</span><span><span class="criterion">Communicative Achievement —</span> ending on a line of dialogue leaves the story open and intriguing, engaging the reader right to the last word.</span></div>
+      </div>
+    </div>
+
+    <div class="vocab-bank">
+      <h4>Language bank</h4>
+      <div class="chipwrap">
+        <span class="voc-chip"><b>Tenses:</b> past simple (main events) / past continuous (background) / past perfect (earlier events)</span>
+        <span class="voc-chip"><b>Descriptive verbs:</b> crept / hammered / glanced / froze</span>
+        <span class="voc-chip"><b>Building tension:</b> Without warning,... / Suddenly,... / Little did she know...</span>
+        <span class="voc-chip"><b>Pacing:</b> short sentences for tension, longer ones for description</span>
+      </div>
+    </div>
+
+    <div class="mistakes">
+      <h4>Watch out for</h4>
+      <ul>
+        <li>Forgetting one of the required elements from the prompt.</li>
+        <li>Past simple only, throughout — flat, with no real sense of sequence.</li>
+        <li>Not actually starting with the given first line.</li>
+        <li>A rushed or unclear ending.</li>
+        <li>Dialogue without correct punctuation (new line per speaker, quotation marks).</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section id="practice">
+    <div class="sec-head">
+      <span class="tag">Your turn</span>
+      <h2>Practice zone</h2>
+      <p class="lede">One fresh task per genre. Write it, check the word count as you go, then reveal the model answer and mark your own attempt with the same four-criteria scale examiners use.</p>
+    </div>
+
+    <!-- ESSAY PRACTICE -->
+    <div class="practice-card card">
+      <div class="ptop"><h3>Essay — the environment</h3><span class="wordbadge">140–190 words</span></div>
+      <p style="color:var(--ink-soft); font-size:0.92rem;">In your English class you've been talking about the environment. Your teacher has asked you to write an essay: <i>"Schools should do more to teach students about protecting the environment." Do you agree?</i> Notes: 1. recycling &nbsp;2. saving energy &nbsp;3. ______ (your own idea)</p>
+      <textarea class="writebox" id="write-essay" placeholder="Write your essay here..."></textarea>
+      <div class="counter-row"><span>Aim for 140–190 words</span><span class="count" id="count-essay">0 words</span></div>
+      <details class="reveal">
+        <summary>Show model answer &amp; marking notes</summary>
+        <div class="reveal-body">
+          <div class="card" style="background:#FFFEFA;">
+            <p style="margin:0 0 10px;">Protecting the environment concerns everyone, and in my opinion, schools have a real responsibility to teach students how to do their part.</p>
+            <p style="margin:0 0 10px;">To begin with, most students only learn to recycle properly if someone shows them how — separating paper, plastic and food waste isn't always obvious, and schools are perfectly placed to build that habit early. Equally, lessons on saving energy, such as simply switching off lights or unplugging devices, could make a genuine difference if repeated daily across an entire school.</p>
+            <p style="margin:0 0 10px;">What is more, I believe schools should also teach students to question the products they buy, since reducing consumption often matters more than recycling what's already been bought.</p>
+            <p style="margin:0;">To conclude, while parents also play a role, schools reach every student equally, which makes them the ideal place to build these habits for life.</p>
+          </div>
+          <p style="font-size:0.85rem; color:var(--ink-soft); margin-top:10px;"><b>Quick check:</b> clear opinion from line one · both given notes developed, not listed · own idea gets its own paragraph · varied linking (To begin with / Equally / What is more / To conclude).</p>
+        </div>
+      </details>
+      <div class="band-form" id="bandform-essay">
+        <div class="brow"><label>Content</label><select data-c><option value="">–</option><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
+        <div class="brow"><label>Communicative Achievement</label><select data-c><option value="">–</option><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
+        <div class="brow"><label>Organisation</label><select data-c><option value="">–</option><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
+        <div class="brow"><label>Language</label><select data-c><option value="">–</option><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
+        <div class="band-total" id="total-essay">Total: — / 20</div>
+      </div>
+    </div>
+
+    <!-- EMAIL PRACTICE -->
+    <div class="practice-card card">
+      <div class="ptop"><h3>Email — the borrowed bike</h3><span class="wordbadge">140–190 words</span></div>
+      <p style="color:var(--ink-soft); font-size:0.92rem;">You recently borrowed a bike from your English friend, Robin, and it got a flat tyre while you were using it. Write an email to Robin explaining what happened, apologising, and adding your own idea about how to sort it out.</p>
+      <textarea class="writebox" id="write-email" placeholder="Write your email here..."></textarea>
+      <div class="counter-row"><span>Aim for 140–190 words</span><span class="count" id="count-email">0 words</span></div>
+      <details class="reveal">
+        <summary>Show model answer &amp; marking notes</summary>
+        <div class="reveal-body">
+          <div class="card" style="background:#FFFEFA;">
+            <p style="margin:0 0 10px;">Hi Robin,</p>
+            <p style="margin:0 0 10px;">I hope you're doing well! I need to tell you something and I'm really sorry in advance.</p>
+            <p style="margin:0 0 10px;">I took the bike out on Saturday, and about halfway through the ride the back tyre suddenly went completely flat — I think I must have hit something sharp without noticing. I managed to walk it home, so at least it's safe, but I felt awful knowing it happened while I was borrowing it from you.</p>
+            <p style="margin:0 0 10px;">I've already looked up a repair shop near yours that can fix it this week, and of course I'll cover the full cost — it's the least I can do. Would it be alright if I dropped it off there myself on Thursday?</p>
+            <p style="margin:0;">Again, I'm really sorry about this. Let me know what you think!<br>Speak soon,<br>Jamie</p>
+          </div>
+          <p style="font-size:0.85rem; color:var(--ink-soft); margin-top:10px;"><b>Quick check:</b> apology comes early and clearly · explains what happened with specific detail · own idea (repair shop) offered, not just asked for · informal register held throughout, sign-off matches greeting.</p>
+        </div>
+      </details>
+      <div class="band-form" id="bandform-email">
+        <div class="brow"><label>Content</label><select data-c><option value="">–</option><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
+        <div class="brow"><label>Communicative Achievement</label><select data-c><option value="">–</option><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
+        <div class="brow"><label>Organisation</label><select data-c><option value="">–</option><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
+        <div class="brow"><label>Language</label><select data-c><option value="">–</option><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
+        <div class="band-total" id="total-email">Total: — / 20</div>
+      </div>
+    </div>
+
+    <!-- ARTICLE PRACTICE -->
+    <div class="practice-card card">
+      <div class="ptop"><h3>Article — technology that changed your life</h3><span class="wordbadge">140–190 words</span></div>
+      <p style="color:var(--ink-soft); font-size:0.92rem;">You see this notice on a website: <i>"Technology — how has a piece of technology changed the way you live? Write us an article!"</i> Write your article.</p>
+      <textarea class="writebox" id="write-article" placeholder="Write your article here..."></textarea>
+      <div class="counter-row"><span>Aim for 140–190 words</span><span class="count" id="count-article">0 words</span></div>
+      <details class="reveal">
+        <summary>Show model answer &amp; marking notes</summary>
+        <div class="reveal-body">
+          <div class="card" style="background:#FFFEFA;">
+            <p style="margin:0 0 10px;"><b>The Tiny Device That Changed My Mornings</b></p>
+            <p style="margin:0 0 10px;">Would you believe a five-euro alarm clock changed my entire routine? It sounds unlikely, but let me explain.</p>
+            <p style="margin:0 0 10px;">For years, I used my phone as an alarm — which meant scrolling through messages before I'd even got out of bed. When I switched to an old-fashioned clock instead, something surprising happened: my mornings got calmer, and I found myself reaching for my phone an hour later than before.</p>
+            <p style="margin:0 0 10px;">It wasn't really about the technology itself, but about what it replaced. Sometimes the most life-changing gadget is the simplest one, precisely because of what it lets you avoid.</p>
+            <p style="margin:0;">So if your mornings feel chaotic, maybe the answer isn't a newer piece of tech — it might be an older one.</p>
+          </div>
+          <p style="font-size:0.85rem; color:var(--ink-soft); margin-top:10px;"><b>Quick check:</b> title makes a promise · opens with a hook, not a fact statement · personal, specific example · direct address to reader in the closing line.</p>
+        </div>
+      </details>
+      <div class="band-form" id="bandform-article">
+        <div class="brow"><label>Content</label><select data-c><option value="">–</option><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
+        <div class="brow"><label>Communicative Achievement</label><select data-c><option value="">–</option><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
+        <div class="brow"><label>Organisation</label><select data-c><option value="">–</option><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
+        <div class="brow"><label>Language</label><select data-c><option value="">–</option><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
+        <div class="band-total" id="total-article">Total: — / 20</div>
+      </div>
+    </div>
+
+    <!-- REPORT PRACTICE -->
+    <div class="practice-card card">
+      <div class="ptop"><h3>Report — the school canteen</h3><span class="wordbadge">140–190 words</span></div>
+      <p style="color:var(--ink-soft); font-size:0.92rem;">Your English teacher has asked you to write a report about the canteen at your school, describing the current situation and suggesting improvements.</p>
+      <textarea class="writebox" id="write-report" placeholder="Write your report here..."></textarea>
+      <div class="counter-row"><span>Aim for 140–190 words</span><span class="count" id="count-report">0 words</span></div>
+      <details class="reveal">
+        <summary>Show model answer &amp; marking notes</summary>
+        <div class="reveal-body">
+          <div class="card" style="background:#FFFEFA;">
+            <p style="margin:0 0 10px;"><b>Report on the School Canteen</b></p>
+            <p style="margin:0 0 10px;"><b>Introduction</b><br>This report evaluates the current canteen service and outlines suggestions for improvement, based on informal feedback gathered from classmates.</p>
+            <p style="margin:0 0 10px;"><b>Current Situation</b><br>The canteen currently offers a fixed daily menu with little variety, and vegetarian options are limited to a single dish. Queuing times during the lunch break are also considerably longer than most students would like.</p>
+            <p style="margin:0 0 10px;"><b>Recommendations</b><br>It is recommended that the canteen introduce a rotating weekly menu, add at least one further vegetarian option daily, and open a second serving point to reduce queuing times.</p>
+            <p style="margin:0;">Overall, these changes would likely improve student satisfaction considerably at a relatively low cost.</p>
+          </div>
+          <p style="font-size:0.85rem; color:var(--ink-soft); margin-top:10px;"><b>Quick check:</b> headings present · no first-person opinion language · findings framed neutrally · Recommendations section is separate and actionable.</p>
+        </div>
+      </details>
+      <div class="band-form" id="bandform-report">
+        <div class="brow"><label>Content</label><select data-c><option value="">–</option><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
+        <div class="brow"><label>Communicative Achievement</label><select data-c><option value="">–</option><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
+        <div class="brow"><label>Organisation</label><select data-c><option value="">–</option><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
+        <div class="brow"><label>Language</label><select data-c><option value="">–</option><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
+        <div class="band-total" id="total-report">Total: — / 20</div>
+      </div>
+    </div>
+
+    <!-- REVIEW PRACTICE -->
+    <div class="practice-card card">
+      <div class="ptop"><h3>Review — an app you use often</h3><span class="wordbadge">140–190 words</span></div>
+      <p style="color:var(--ink-soft); font-size:0.92rem;">You see this notice: <i>"Reviews wanted! Tell us about an app or game you use often. Would you recommend it to other readers?"</i> Write your review.</p>
+      <textarea class="writebox" id="write-review" placeholder="Write your review here..."></textarea>
+      <div class="counter-row"><span>Aim for 140–190 words</span><span class="count" id="count-review">0 words</span></div>
+      <details class="reveal">
+        <summary>Show model answer &amp; marking notes</summary>
+        <div class="reveal-body">
+          <div class="card" style="background:#FFFEFA;">
+            <p style="margin:0 0 10px;"><b>An App That Actually Gets Me Studying</b></p>
+            <p style="margin:0 0 10px;">I'll admit it: I downloaded this flashcard app expecting to delete it within a week, like most study apps. Six months later, I still use it daily.</p>
+            <p style="margin:0 0 10px;">What sets it apart is how simple it is — you type in whatever you're learning, and it quietly reminds you to review it right before you'd normally forget it. No flashy animations, no distracting notifications, just genuinely useful timing.</p>
+            <p style="margin:0 0 10px;">The only real downside is the free version's daily limit, which serious students will hit fairly quickly and end up wanting to remove by upgrading.</p>
+            <p style="margin:0;">Even so, if you're tired of apps that promise everything and deliver nothing, this one's well worth a try — just be ready to eventually pay for it.</p>
+          </div>
+          <p style="font-size:0.85rem; color:var(--ink-soft); margin-top:10px;"><b>Quick check:</b> title hints at the verdict · personal voice throughout · one clear weakness balances the praise · closing line gives a specific recommendation.</p>
+        </div>
+      </details>
+      <div class="band-form" id="bandform-review">
+        <div class="brow"><label>Content</label><select data-c><option value="">–</option><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
+        <div class="brow"><label>Communicative Achievement</label><select data-c><option value="">–</option><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
+        <div class="brow"><label>Organisation</label><select data-c><option value="">–</option><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
+        <div class="brow"><label>Language</label><select data-c><option value="">–</option><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
+        <div class="band-total" id="total-review">Total: — / 20</div>
+      </div>
+    </div>
+
+    <!-- STORY PRACTICE -->
+    <div class="practice-card card">
+      <div class="ptop"><h3>Story — the phone call</h3><span class="wordbadge">140–190 words</span></div>
+      <p style="color:var(--ink-soft); font-size:0.92rem;">Your story must begin with this sentence: <i>"Tom checked his phone one last time before switching it off completely."</i> Your story must include: <b>a secret</b> and <b>a phone call</b>.</p>
+      <textarea class="writebox" id="write-story" placeholder="Write your story here..."></textarea>
+      <div class="counter-row"><span>Aim for 140–190 words</span><span class="count" id="count-story">0 words</span></div>
+      <details class="reveal">
+        <summary>Show model answer &amp; marking notes</summary>
+        <div class="reveal-body">
+          <div class="card" style="background:#FFFEFA;">
+            <p style="margin:0 0 10px;">Tom checked his phone one last time before switching it off completely. He'd been carrying the secret for three days now, and he was fairly sure it was written all over his face.</p>
+            <p style="margin:0 0 10px;">His sister had trusted him with the truth about the surprise party, and every time his mum asked a casual question, he panicked slightly more than the last time. He'd nearly given it away twice already.</p>
+            <p style="margin:0 0 10px;">Just as he'd finally relaxed, his phone buzzed back to life against his will — a battery he hadn't managed to fully drain. It was his mum calling. He hesitated, then answered.</p>
+            <p style="margin:0;">"Tom," she said slowly, "you're a terrible liar, you know that?" There was a pause, then she laughed. "I already know. Your sister told me an hour ago."</p>
+          </div>
+          <p style="font-size:0.85rem; color:var(--ink-soft); margin-top:10px;"><b>Quick check:</b> opens with the exact given line · both required elements (secret, phone call) are central, not decorative · mixed narrative tenses used correctly · ending lands on dialogue rather than fading out.</p>
+        </div>
+      </details>
+      <div class="band-form" id="bandform-story">
+        <div class="brow"><label>Content</label><select data-c><option value="">–</option><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
+        <div class="brow"><label>Communicative Achievement</label><select data-c><option value="">–</option><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
+        <div class="brow"><label>Organisation</label><select data-c><option value="">–</option><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
+        <div class="brow"><label>Language</label><select data-c><option value="">–</option><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
+        <div class="band-total" id="total-story">Total: — / 20</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <footer>
+    <div class="sig">Made for my B2 crew — Gabri</div>
+    <div style="margin-top:6px;">Part of the B2 First exam series · Writing</div>
+  </footer>
+
+</div>
+
+<script>
+  // Word counter utility
+  function attachCounter(taId, countId, min, max){
+    const ta = document.getElementById(taId);
+    const cn = document.getElementById(countId);
+    if(!ta || !cn) return;
+    function update(){
+      const words = ta.value.trim().length ? ta.value.trim().split(/\s+/).length : 0;
+      cn.textContent = words + ' words';
+      cn.className = 'count ' + (words === 0 ? '' : (words < min ? 'warn' : (words > max ? 'bad' : 'ok')));
+    }
+    ta.addEventListener('input', update);
+    update();
+  }
+
+  // Band score total
+  function attachBandTotal(formId, totalId){
+    const form = document.getElementById(formId);
+    const total = document.getElementById(totalId);
+    if(!form || !total) return;
+    const selects = form.querySelectorAll('select');
+    function update(){
+      let sum = 0, any = false;
+      selects.forEach(s => { if(s.value !== ''){ sum += parseInt(s.value); any = true; } });
+      total.textContent = any ? ('Total: ' + sum + ' / 20') : 'Total: — / 20';
+    }
+    selects.forEach(s => s.addEventListener('change', update));
+    update();
+  }
+
+  // Wire up word counters for every practice task
+  attachCounter('write-essay', 'count-essay', 140, 190);
+  attachCounter('write-email', 'count-email', 140, 190);
+  attachCounter('write-article', 'count-article', 140, 190);
+  attachCounter('write-report', 'count-report', 140, 190);
+  attachCounter('write-review', 'count-review', 140, 190);
+  attachCounter('write-story', 'count-story', 140, 190);
+
+  // Wire up band-score totals for every practice task
+  attachBandTotal('bandform-essay', 'total-essay');
+  attachBandTotal('bandform-email', 'total-email');
+  attachBandTotal('bandform-article', 'total-article');
+  attachBandTotal('bandform-report', 'total-report');
+  attachBandTotal('bandform-review', 'total-review');
+  attachBandTotal('bandform-story', 'total-story');
+
+  // Note flash-highlight when jumping via footnote links
+  document.querySelectorAll('.sample-body sup a').forEach(a=>{
+    a.addEventListener('click', function(){
+      const id = this.getAttribute('href').slice(1);
+      const target = document.getElementById(id);
+      if(target){
+        document.querySelectorAll('.note-item.flash').forEach(el=>el.classList.remove('flash'));
+        target.classList.add('flash');
+        setTimeout(()=>target.classList.remove('flash'), 1600);
+      }
+    });
+  });
+</script>
+</body>
+</html>
