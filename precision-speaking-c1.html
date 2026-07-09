@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Precision Under Pressure — C1 Advanced Speaking</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy: #16324F;
+    --navy-deep: #0E2038;
+    --teal: #2C7873;
+    --teal-soft: #DCEDEA;
+    --gold: #C9A227;
+    --gold-soft: #F3E9C7;
+    --ink: #1A2B3C;
+    --paper: #F7F5F0;
+    --paper-card: #FFFFFF;
+    --line: #E1E0D9;
+    --ok: #3F8C6F;
+    --alert: #B0473F;
+    --alert-soft: #F6E1DE;
+  }
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+  body{ margin:0; background: var(--paper); color: var(--ink); font-family: 'Inter', sans-serif; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+  @media (prefers-reduced-motion: reduce){ *{ animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; } }
+  a{ color: var(--teal); }
+  .wrap{ max-width: 760px; margin: 0 auto; padding: 0 20px 80px; }
+
+  header.hero{ background: linear-gradient(180deg, var(--navy-deep) 0%, var(--navy) 100%); color: #F2EFE6; padding: 52px 20px 70px; text-align: center; }
+  header.hero .eyebrow{ font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold-soft); opacity: 0.85; margin-bottom: 14px; }
+  header.hero h1{ font-family: 'Fraunces', serif; font-weight: 600; font-size: clamp(2.1rem, 5vw, 3rem); margin: 0 0 14px; letter-spacing: -0.01em; }
+  header.hero p.lede{ max-width: 500px; margin: 0 auto; font-size: 1.05rem; color: #D9DEE6; }
+  header.hero .rule{ width: 46px; height: 3px; background: var(--gold); margin: 22px auto 0; border-radius: 2px; }
+
+  /* ---------- SESSION METER (stopwatch signature) ---------- */
+  .meter-panel{ max-width: 760px; margin: -40px auto 40px; padding: 0 20px; }
+  .meter-card{ background: var(--paper-card); border: 1px solid var(--line); border-radius: 16px; padding: 22px 24px; display: flex; align-items: center; gap: 20px; box-shadow: 0 12px 30px -18px rgba(14,32,56,0.35); }
+  .watch-wrap{ position: relative; width: 52px; height: 52px; flex-shrink: 0; }
+  .watch-wrap svg{ width: 100%; height: 100%; }
+  .watch-dot{ transform-origin: 26px 28px; }
+  .live-dot{ position:absolute; top:2px; right:2px; width:8px; height:8px; border-radius:50%; background: var(--alert); opacity:0; }
+  .live-dot.on{ opacity:1; animation: blink 1.1s ease-in-out infinite; }
+  @keyframes blink{ 0%,100%{ opacity:1;} 50%{opacity:.25;} }
+  .meter-text{ flex: 1; }
+  .meter-text .label{ font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--teal); margin-bottom: 6px; }
+  .meter-track{ height: 8px; background: var(--teal-soft); border-radius: 6px; overflow: hidden; }
+  .meter-fill{ height: 100%; width: 0%; background: linear-gradient(90deg, var(--teal), var(--ok)); border-radius: 6px; transition: width .5s ease; }
+  .meter-count{ font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--navy); min-width: 46px; text-align: right; }
+
+  .note{ background: var(--gold-soft); border: 1px solid #E4D28F; border-radius: 14px; padding: 18px 20px; margin: 0 0 32px; font-size: .95rem; }
+  .note strong{ color: var(--navy); }
+
+  .format-strip{ display:flex; gap:8px; flex-wrap:wrap; margin: 0 0 40px; }
+  .format-strip span{
+    font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing:.04em;
+    background: var(--navy); color: #F2EFE6; padding: 6px 11px; border-radius: 8px;
+  }
+
+  section.scenarios{ display: flex; flex-direction: column; gap: 22px; }
+
+  .part-divider{
+    display:flex; align-items:center; gap: 14px; margin: 8px 0 -4px;
+  }
+  .part-divider .line{ flex:1; height:1px; background: var(--line); }
+  .part-divider span{
+    font-family:'IBM Plex Mono', monospace; font-size: 11.5px; letter-spacing:.1em;
+    text-transform: uppercase; color: var(--navy); white-space:nowrap;
+  }
+
+  .card{ background: var(--paper-card); border: 1px solid var(--line); border-radius: 18px; padding: 26px 26px 24px; position: relative; transition: box-shadow .25s ease; }
+  .card.done{ border-color: #BFE0D3; background: linear-gradient(180deg, #FFFFFF 0%, #F6FBF8 100%); }
+  .card-head{ display:flex; align-items: flex-start; justify-content: space-between; gap: 14px; margin-bottom: 14px; }
+  .card-head .tag{ font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--navy); background: var(--teal-soft); padding: 5px 10px; border-radius: 20px; white-space: nowrap; }
+  .card-head h2{ font-family: 'Fraunces', serif; font-weight: 500; font-size: 1.32rem; margin: 0; color: var(--navy-deep); }
+  .done-badge{ font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ok); display: none; align-items: center; gap: 5px; }
+  .card.done .done-badge{ display: inline-flex; }
+
+  .prompt-bubble{ background: var(--navy); color: #F2EFE6; padding: 16px 18px; border-radius: 14px 14px 14px 4px; font-size: 1.02rem; margin-bottom: 6px; }
+  .prompt-context{ font-size: .85rem; color: #6B7686; margin-bottom: 18px; font-style: italic; }
+
+  /* ---------- TIMER BLOCK ---------- */
+  .timer-block{
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 16px 18px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 18px;
+  }
+  .timer-digits{
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 1.9rem;
+    font-weight: 600;
+    color: var(--navy-deep);
+    min-width: 74px;
+  }
+  .timer-digits.warn{ color: var(--alert); }
+  .timer-bar-wrap{ flex: 1; }
+  .timer-bar-track{ height: 10px; background: var(--teal-soft); border-radius: 6px; overflow: hidden; }
+  .timer-bar-fill{ height: 100%; width: 100%; background: linear-gradient(90deg, var(--teal), var(--ok)); border-radius: 6px; transition: width 1s linear, background .3s ease; }
+  .timer-bar-fill.warn{ background: linear-gradient(90deg, #D98F71, var(--alert)); }
+  .timer-limit{ font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #8A93A1; margin-top: 6px; }
+
+  .practice-row{ display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 6px; }
+  button{ font-family: 'Inter', sans-serif; font-weight: 600; font-size: .92rem; border: none; border-radius: 10px; padding: 11px 16px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: transform .15s ease, background .15s ease; }
+  button:focus-visible{ outline: 3px solid var(--gold); outline-offset: 2px; }
+  button:active{ transform: translateY(1px); }
+
+  .btn-start{ background: var(--navy); color: #fff; }
+  .btn-start:hover{ background: var(--navy-deep); }
+  .btn-start.active{ background: var(--alert); }
+  .btn-start.active:hover{ background: #973830; }
+
+  .btn-reveal{ background: var(--teal-soft); color: var(--navy-deep); }
+  .btn-reveal:hover{ background: #C9E6E1; }
+  .btn-reveal:disabled{ opacity: .5; cursor: not-allowed; }
+
+  .btn-done{ background: var(--ok); color: #fff; margin-left: auto; }
+  .btn-done:hover{ filter: brightness(1.05); }
+  .card.done .btn-done{ background: #A9BFB4; cursor: default; }
+
+  audio{ display:block; margin-top: 10px; width: 100%; max-width: 320px; }
+  .rec-hint{ font-size: .82rem; color: #6B7686; margin-top: 6px; }
+
+  .bank{ margin-top: 16px; display: none; border-top: 1px dashed var(--line); padding-top: 16px; }
+  .bank.show{ display: block; }
+  .bank .bank-title{ font-family:'IBM Plex Mono', monospace; font-size: 11px; letter-spacing:.06em; text-transform:uppercase; color: var(--teal); margin-bottom: 10px; }
+  .bank .phrase-line{ background: var(--paper); border-left: 3px solid var(--gold); padding: 9px 14px; border-radius: 0 8px 8px 0; margin-bottom: 7px; font-size: .95rem; }
+  .bank .phrase-line em{ display:block; font-size: .8rem; color: var(--teal); font-style: normal; margin-top: 3px; }
+
+  .card-footer{ display:flex; align-items:center; margin-top: 18px; }
+
+  .finale{ text-align: center; background: linear-gradient(180deg, var(--navy) 0%, var(--navy-deep) 100%); color: #F2EFE6; border-radius: 18px; padding: 46px 30px; margin-top: 30px; display: none; }
+  .finale.show{ display: block; }
+  .finale h2{ font-family: 'Fraunces', serif; font-size: 1.8rem; margin: 0 0 12px; font-weight: 500; }
+  .finale p{ color: #D9DEE6; max-width: 480px; margin: 0 auto; }
+
+  footer.pagefoot{ text-align: center; font-size: .82rem; color: #93949c; margin-top: 50px; }
+
+  @media (max-width: 480px){
+    header.hero{ padding: 42px 16px 56px; }
+    .meter-panel{ margin-top: -32px; }
+    .card{ padding: 20px 18px 18px; }
+    .timer-block{ flex-wrap: wrap; }
+    .timer-digits{ font-size: 1.6rem; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="eyebrow">Speaking Practice · C1 Advanced (CAE)</div>
+  <h1>Precision Under Pressure</h1>
+  <p class="lede">You already have the vocabulary. This is about deploying it exactly, inside the time the exam actually gives you.</p>
+  <div class="rule"></div>
+</header>
+
+<div class="meter-panel">
+  <div class="meter-card">
+    <div class="watch-wrap">
+      <div class="live-dot" id="liveDot"></div>
+      <svg viewBox="0 0 52 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="20" y="2" width="12" height="6" rx="2" fill="#16324F"/>
+        <circle cx="26" cy="30" r="22" stroke="#16324F" stroke-width="2.5"/>
+        <line x1="26" y1="30" x2="26" y2="16" stroke="#2C7873" stroke-width="2.5" stroke-linecap="round" class="watch-dot" id="watchHand"/>
+        <circle cx="26" cy="30" r="2.4" fill="#16324F"/>
+      </svg>
+    </div>
+    <div class="meter-text">
+      <div class="label">Session progress</div>
+      <div class="meter-track"><div class="meter-fill" id="meterFill"></div></div>
+    </div>
+    <div class="meter-count" id="meterCount">0 / 7</div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <div class="note">
+    <strong>How this works:</strong> each task has the same time limit you'll get in the real exam. Press <strong>Start & Record</strong> — it records and counts down together, and stops itself the moment time is up, whether you've finished your sentence or not. That's deliberate: the exam won't wait for you either. Afterwards, check the language bank for sharper alternatives to whatever you reached for.
+  </div>
+
+  <div class="format-strip">
+    <span>PART 1 · Interview · ~20s each</span>
+    <span>PART 2 · Long turn · 60s</span>
+    <span>PART 3 · Collaborative task · 120s</span>
+    <span>PART 4 · Discussion · ~45s each</span>
+  </div>
+
+  <section class="scenarios" id="scenarios">
+
+    <div class="part-divider"><span>Part 1 — Interview</span><div class="line"></div></div>
+
+    <article class="card" data-id="1" data-duration="20">
+      <div class="card-head"><div><div class="tag">Interview</div></div><div class="done-badge">✓ done</div></div>
+      <h2>Technology, honestly assessed</h2>
+      <div class="prompt-bubble">"What's a piece of technology you think is overrated, and why?"</div>
+      <div class="prompt-context">Real Part 1 questions are short and personal. The examiner expects a direct, well-organized answer — not a rehearsed speech.</div>
+
+      <div class="timer-block">
+        <div class="timer-digits" data-role="digits">0:20</div>
+        <div class="timer-bar-wrap">
+          <div class="timer-bar-track"><div class="timer-bar-fill" data-role="bar"></div></div>
+          <div class="timer-limit">Time limit: 20 seconds</div>
+        </div>
+      </div>
+
+      <div class="practice-row">
+        <button class="btn-start" data-action="toggle">▶ Start &amp; Record</button>
+        <button class="btn-reveal" data-action="reveal" disabled>See language bank</button>
+      </div>
+      <div class="rec-hint" style="display:none;"></div>
+      <audio controls style="display:none;"></audio>
+
+      <div class="bank">
+        <div class="bank-title">Sharper alternatives</div>
+        <div class="phrase-line">If I had to pick one, I'd say...<em>Signals a considered opinion, not a snap judgement — sounds more C1 than "I think."</em></div>
+        <div class="phrase-line">It's not that it's bad, exactly — it's more that it's overhyped.<em>A hedge that adds precision instead of vagueness: useful when your opinion is nuanced, not black-and-white.</em></div>
+      </div>
+
+      <div class="card-footer"><button class="btn-done" data-action="done">Mark as practiced</button></div>
+    </article>
+
+    <article class="card" data-id="2" data-duration="20">
+      <div class="card-head"><div><div class="tag">Interview</div></div><div class="done-badge">✓ done</div></div>
+      <h2>Looking ahead in your field</h2>
+      <div class="prompt-bubble">"How do you think teaching will change over the next ten years?"</div>
+      <div class="prompt-context">A speculation question — the examiner wants to hear how you handle uncertainty, not a confident prediction.</div>
+
+      <div class="timer-block">
+        <div class="timer-digits" data-role="digits">0:20</div>
+        <div class="timer-bar-wrap">
+          <div class="timer-bar-track"><div class="timer-bar-fill" data-role="bar"></div></div>
+          <div class="timer-limit">Time limit: 20 seconds</div>
+        </div>
+      </div>
+
+      <div class="practice-row">
+        <button class="btn-start" data-action="toggle">▶ Start &amp; Record</button>
+        <button class="btn-reveal" data-action="reveal" disabled>See language bank</button>
+      </div>
+      <div class="rec-hint" style="display:none;"></div>
+      <audio controls style="display:none;"></audio>
+
+      <div class="bank">
+        <div class="bank-title">Sharper alternatives</div>
+        <div class="phrase-line">I'd imagine we'll see a real shift towards...<em>"I'd imagine" is more precise than "maybe" — it flags speculation while still sounding assured.</em></div>
+        <div class="phrase-line">There's a good chance that... though it's hard to say for certain.<em>Hedged prediction — exactly the kind of controlled uncertainty C1 examiners are listening for.</em></div>
+      </div>
+
+      <div class="card-footer"><button class="btn-done" data-action="done">Mark as practiced</button></div>
+    </article>
+
+    <article class="card" data-id="3" data-duration="20">
+      <div class="card-head"><div><div class="tag">Interview</div></div><div class="done-badge">✓ done</div></div>
+      <h2>What actually satisfies you</h2>
+      <div class="prompt-bubble">"What's something you find genuinely satisfying about your job?"</div>
+      <div class="prompt-context">Personal and reflective — a chance to show range of vocabulary around feelings and motivation, not just facts.</div>
+
+      <div class="timer-block">
+        <div class="timer-digits" data-role="digits">0:20</div>
+        <div class="timer-bar-wrap">
+          <div class="timer-bar-track"><div class="timer-bar-fill" data-role="bar"></div></div>
+          <div class="timer-limit">Time limit: 20 seconds</div>
+        </div>
+      </div>
+
+      <div class="practice-row">
+        <button class="btn-start" data-action="toggle">▶ Start &amp; Record</button>
+        <button class="btn-reveal" data-action="reveal" disabled>See language bank</button>
+      </div>
+      <div class="rec-hint" style="display:none;"></div>
+      <audio controls style="display:none;"></audio>
+
+      <div class="bank">
+        <div class="bank-title">Sharper alternatives</div>
+        <div class="phrase-line">There's something really rewarding about watching a concept finally click.<em>"Click" is a natural collocation for sudden understanding — precise and idiomatic, not textbook.</em></div>
+        <div class="phrase-line">It's probably the moment when a student who was struggling suddenly gets it.<em>Specific, concrete detail beats a general statement — examiners consistently reward this at C1.</em></div>
+      </div>
+
+      <div class="card-footer"><button class="btn-done" data-action="done">Mark as practiced</button></div>
+    </article>
+
+    <div class="part-divider"><span>Part 2 — Long Turn</span><div class="line"></div></div>
+
+    <article class="card" data-id="4" data-duration="60">
+      <div class="card-head"><div><div class="tag">Long turn · No interruptions</div></div><div class="done-badge">✓ done</div></div>
+      <h2>Comparing two ways of learning</h2>
+      <div class="prompt-bubble">Picture two classrooms. In one, students sit in rows, following a teacher at a whiteboard. In the other, each student wears a VR headset, working through a simulation alone. Compare the two situations, and say which you think leads to better learning — and why.</div>
+      <div class="prompt-context">This is the real format: no photos here, just a vivid description — you'll get an actual image pair in the exam, but the skill is identical: compare, speculate, and reach a view, alone, for a full uninterrupted minute.</div>
+
+      <div class="timer-block">
+        <div class="timer-digits" data-role="digits">1:00</div>
+        <div class="timer-bar-wrap">
+          <div class="timer-bar-track"><div class="timer-bar-fill" data-role="bar"></div></div>
+          <div class="timer-limit">Time limit: 60 seconds</div>
+        </div>
+      </div>
+
+      <div class="practice-row">
+        <button class="btn-start" data-action="toggle">▶ Start &amp; Record</button>
+        <button class="btn-reveal" data-action="reveal" disabled>See language bank</button>
+      </div>
+      <div class="rec-hint" style="display:none;"></div>
+      <audio controls style="display:none;"></audio>
+
+      <div class="bank">
+        <div class="bank-title">Comparison &amp; speculation language</div>
+        <div class="phrase-line">Whereas the first relies on..., the second seems to prioritize...<em>"Whereas" is cleaner and more C1 than "but" for structured comparison — use it to open your comparing sentence.</em></div>
+        <div class="phrase-line">What stands out to me is the level of independence each one demands.<em>A strong opening for your opinion after comparing — signals you're synthesizing, not just describing.</em></div>
+        <div class="phrase-line">It could be argued that the traditional setup offers more... whereas the VR one arguably offers more...<em>"It could be argued" lets you present a balanced view before landing on your own — exactly what examiners want in a long turn.</em></div>
+      </div>
+
+      <div class="card-footer"><button class="btn-done" data-action="done">Mark as practiced</button></div>
+    </article>
+
+    <div class="part-divider"><span>Part 3 — Collaborative Task</span><div class="line"></div></div>
+
+    <article class="card" data-id="5" data-duration="120">
+      <div class="card-head"><div><div class="tag">Negotiate &amp; decide</div></div><div class="done-badge">✓ done</div></div>
+      <h2>Choosing one investment</h2>
+      <div class="prompt-bubble">Your school has budget for exactly one new classroom technology this year: interactive whiteboards, VR headsets, coding robots, or extra tablets. Talk through the options, weighing them against each other, and reach a decision.</div>
+      <div class="prompt-context">Normally this is done with a partner. Practicing solo, argue both sides yourself out loud — for the exam, what matters most is the language you use to negotiate, not who "wins."</div>
+
+      <div class="timer-block">
+        <div class="timer-digits" data-role="digits">2:00</div>
+        <div class="timer-bar-wrap">
+          <div class="timer-bar-track"><div class="timer-bar-fill" data-role="bar"></div></div>
+          <div class="timer-limit">Time limit: 120 seconds</div>
+        </div>
+      </div>
+
+      <div class="practice-row">
+        <button class="btn-start" data-action="toggle">▶ Start &amp; Record</button>
+        <button class="btn-reveal" data-action="reveal" disabled>See language bank</button>
+      </div>
+      <div class="rec-hint" style="display:none;"></div>
+      <audio controls style="display:none;"></audio>
+
+      <div class="bank">
+        <div class="bank-title">Negotiation language</div>
+        <div class="phrase-line">I see where you're coming from, but have you considered...?<em>Acknowledges a point before countering — the collaborative move examiners specifically listen for in Part 3.</em></div>
+        <div class="phrase-line">Perhaps we should prioritize whichever has the broadest impact.<em>"Prioritize" plus a criterion is a clean way to steer a decision without dismissing other options.</em></div>
+        <div class="phrase-line">What if we compromised and looked at cost per student instead?<em>Reframing the criteria is a strong negotiating move — shows flexibility, a key Part 3 skill.</em></div>
+      </div>
+
+      <div class="card-footer"><button class="btn-done" data-action="done">Mark as practiced</button></div>
+    </article>
+
+    <div class="part-divider"><span>Part 4 — Discussion</span><div class="line"></div></div>
+
+    <article class="card" data-id="6" data-duration="45">
+      <div class="card-head"><div><div class="tag">Justify &amp; extend</div></div><div class="done-badge">✓ done</div></div>
+      <h2>Taking a firm position</h2>
+      <div class="prompt-bubble">"Some people think schools should ban smartphones altogether. Do you agree?"</div>
+      <div class="prompt-context">Part 4 rewards depth: one clear opinion, developed with a reason and an example — not three shallow points.</div>
+
+      <div class="timer-block">
+        <div class="timer-digits" data-role="digits">0:45</div>
+        <div class="timer-bar-wrap">
+          <div class="timer-bar-track"><div class="timer-bar-fill" data-role="bar"></div></div>
+          <div class="timer-limit">Time limit: 45 seconds</div>
+        </div>
+      </div>
+
+      <div class="practice-row">
+        <button class="btn-start" data-action="toggle">▶ Start &amp; Record</button>
+        <button class="btn-reveal" data-action="reveal" disabled>See language bank</button>
+      </div>
+      <div class="rec-hint" style="display:none;"></div>
+      <audio controls style="display:none;"></audio>
+
+      <div class="bank">
+        <div class="bank-title">Sharper alternatives</div>
+        <div class="phrase-line">On balance, I'd say a full ban is too blunt an approach.<em>"On balance" signals you've weighed both sides — precise, economical, very C1.</em></div>
+        <div class="phrase-line">Take my own classroom, for instance — the issue isn't the phone, it's how it's used.<em>Bringing in a concrete example is what pushes an answer from "good" to "excellent" at this level.</em></div>
+      </div>
+
+      <div class="card-footer"><button class="btn-done" data-action="done">Mark as practiced</button></div>
+    </article>
+
+    <article class="card" data-id="7" data-duration="45">
+      <div class="card-head"><div><div class="tag">Justify &amp; extend</div></div><div class="done-badge">✓ done</div></div>
+      <h2>Fairness of the expectation</h2>
+      <div class="prompt-bubble">"Is it fair to expect all students to become proficient with AI tools?"</div>
+      <div class="prompt-context">An abstract question with no obvious right answer — the examiner is assessing how you build an argument, not which side you take.</div>
+
+      <div class="timer-block">
+        <div class="timer-digits" data-role="digits">0:45</div>
+        <div class="timer-bar-wrap">
+          <div class="timer-bar-track"><div class="timer-bar-fill" data-role="bar"></div></div>
+          <div class="timer-limit">Time limit: 45 seconds</div>
+        </div>
+      </div>
+
+      <div class="practice-row">
+        <button class="btn-start" data-action="toggle">▶ Start &amp; Record</button>
+        <button class="btn-reveal" data-action="reveal" disabled>See language bank</button>
+      </div>
+      <div class="rec-hint" style="display:none;"></div>
+      <audio controls style="display:none;"></audio>
+
+      <div class="bank">
+        <div class="bank-title">Sharper alternatives</div>
+        <div class="phrase-line">To some extent, yes — but it depends heavily on access.<em>"To some extent" avoids a flat yes/no, letting you qualify the claim precisely.</em></div>
+        <div class="phrase-line">The real issue isn't whether it's fair, but whether it's realistic.<em>Reframing the question is an advanced move — shows you're evaluating the premise, not just answering it.</em></div>
+      </div>
+
+      <div class="card-footer"><button class="btn-done" data-action="done">Mark as practiced</button></div>
+    </article>
+
+  </section>
+
+  <div class="finale" id="finale">
+    <h2>Seven tasks, seven minutes of exam-real pressure.</h2>
+    <p>The clock stopping you mid-sentence is uncomfortable on purpose — it's the exact discomfort the real test creates. Every rep against the clock makes that pressure a little more familiar, and a little less able to touch your accuracy.</p>
+  </div>
+
+  <footer class="pagefoot">Precision Under Pressure · C1 Advanced Speaking · Timed practice</footer>
+</div>
+
+<script>
+(function(){
+  const cards = document.querySelectorAll('.card');
+  const total = cards.length;
+  const fill = document.getElementById('meterFill');
+  const count = document.getElementById('meterCount');
+  const watchHand = document.getElementById('watchHand');
+  const liveDot = document.getElementById('liveDot');
+  const finale = document.getElementById('finale');
+  let doneSet = new Set();
+  let anyLive = 0;
+
+  function updateMeter(){
+    const n = doneSet.size;
+    const pct = Math.round((n/total)*100);
+    fill.style.width = pct + '%';
+    count.textContent = n + ' / ' + total;
+    const angle = -90 + (360 * (n/total));
+    watchHand.setAttribute('transform', 'rotate(' + angle + ' 26 30)');
+    if(n === total){
+      finale.classList.add('show');
+      finale.scrollIntoView({behavior:'smooth', block:'center'});
+    } else {
+      finale.classList.remove('show');
+    }
+  }
+
+  function setLive(on){
+    anyLive += on ? 1 : -1;
+    liveDot.classList.toggle('on', anyLive > 0);
+  }
+
+  function fmt(s){
+    const m = Math.floor(s/60);
+    const r = s % 60;
+    return m + ':' + (r < 10 ? '0' : '') + r;
+  }
+
+  cards.forEach(card => {
+    const id = card.dataset.id;
+    const duration = parseInt(card.dataset.duration, 10);
+    const startBtn = card.querySelector('[data-action="toggle"]');
+    const revealBtn = card.querySelector('[data-action="reveal"]');
+    const doneBtn = card.querySelector('[data-action="done"]');
+    const bank = card.querySelector('.bank');
+    const audioEl = card.querySelector('audio');
+    const hint = card.querySelector('.rec-hint');
+    const digits = card.querySelector('[data-role="digits"]');
+    const bar = card.querySelector('[data-role="bar"]');
+
+    let mediaRecorder, chunks = [], stream, running = false, remaining = duration, tickHandle = null;
+
+    function resetTimerDisplay(){
+      remaining = duration;
+      digits.textContent = fmt(remaining);
+      digits.classList.remove('warn');
+      bar.style.width = '100%';
+      bar.classList.remove('warn');
+    }
+
+    async function startCycle(){
+      try{
+        stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      }catch(e){
+        hint.style.display = 'block';
+        hint.textContent = "Couldn't access the microphone — timer will still run so you can practice out loud.";
+        beginTimerOnly();
+        return;
+      }
+      chunks = [];
+      const candidates = ['audio/mp4', 'audio/webm;codecs=opus', 'audio/webm', 'audio/ogg'];
+      const mimeType = candidates.find(t => window.MediaRecorder && MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(t)) || '';
+      mediaRecorder = mimeType ? new MediaRecorder(stream, { mimeType }) : new MediaRecorder(stream);
+      const recordedType = mediaRecorder.mimeType || mimeType || 'audio/webm';
+      mediaRecorder.ondataavailable = e => chunks.push(e.data);
+      mediaRecorder.onstop = () => {
+        if(chunks.length){
+          const blob = new Blob(chunks, { type: recordedType });
+          audioEl.src = URL.createObjectURL(blob);
+          audioEl.setAttribute('playsinline', '');
+          audioEl.style.display = 'block';
+        }
+        stream.getTracks().forEach(t => t.stop());
+      };
+      mediaRecorder.start();
+      beginTimer();
+    }
+
+    function beginTimerOnly(){
+      beginTimer();
+    }
+
+    function beginTimer(){
+      running = true;
+      setLive(1);
+      startBtn.textContent = '⏹ Stop early';
+      startBtn.classList.add('active');
+      revealBtn.disabled = true;
+      hint.style.display = 'block';
+      hint.textContent = 'Recording and timing — stops automatically at 0:00.';
+      tickHandle = setInterval(() => {
+        remaining -= 1;
+        digits.textContent = fmt(Math.max(remaining,0));
+        const pct = Math.max(remaining,0) / duration * 100;
+        bar.style.width = pct + '%';
+        if(remaining <= 5){
+          digits.classList.add('warn');
+          bar.classList.add('warn');
+        }
+        if(remaining <= 0){
+          finishCycle();
+        }
+      }, 1000);
+    }
+
+    function finishCycle(){
+      clearInterval(tickHandle);
+      running = false;
+      setLive(-1);
+      startBtn.textContent = '↻ Try again';
+      startBtn.classList.remove('active');
+      revealBtn.disabled = false;
+      hint.textContent = "Time's up. Check the language bank, then try again if you'd like.";
+      if(mediaRecorder && mediaRecorder.state !== 'inactive'){
+        mediaRecorder.stop();
+      }
+    }
+
+    startBtn.addEventListener('click', () => {
+      if(!running){
+        resetTimerDisplay();
+        startCycle();
+      } else {
+        finishCycle();
+      }
+    });
+
+    revealBtn.addEventListener('click', () => {
+      const showing = bank.classList.toggle('show');
+      revealBtn.textContent = showing ? 'Hide language bank' : 'See language bank';
+    });
+
+    doneBtn.addEventListener('click', () => {
+      if(doneSet.has(id)) return;
+      doneSet.add(id);
+      card.classList.add('done');
+      updateMeter();
+    });
+
+    resetTimerDisplay();
+  });
+
+  updateMeter();
+})();
+</script>
+
+</body>
+</html>
