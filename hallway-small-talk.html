@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hallway Small Talk — Workplace Practice</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy: #16324F;
+    --navy-deep: #0E2038;
+    --teal: #2C7873;
+    --teal-soft: #DCEDEA;
+    --gold: #C9A227;
+    --gold-soft: #F3E9C7;
+    --ink: #1A2B3C;
+    --paper: #F7F5F0;
+    --paper-card: #FFFFFF;
+    --line: #E1E0D9;
+    --ok: #3F8C6F;
+  }
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+  body{ margin:0; background: var(--paper); color: var(--ink); font-family: 'Inter', sans-serif; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+  @media (prefers-reduced-motion: reduce){ *{ animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; } }
+  a{ color: var(--teal); }
+  .wrap{ max-width: 760px; margin: 0 auto; padding: 0 20px 80px; }
+  header.hero{ background: linear-gradient(180deg, var(--navy-deep) 0%, var(--navy) 100%); color: #F2EFE6; padding: 52px 20px 70px; text-align: center; position: relative; }
+  header.hero .eyebrow{ font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold-soft); opacity: 0.85; margin-bottom: 14px; }
+  header.hero h1{ font-family: 'Fraunces', serif; font-weight: 600; font-size: clamp(2.1rem, 5vw, 3rem); margin: 0 0 14px; letter-spacing: -0.01em; }
+  header.hero p.lede{ max-width: 480px; margin: 0 auto; font-size: 1.05rem; color: #D9DEE6; }
+  header.hero .rule{ width: 46px; height: 3px; background: var(--gold); margin: 22px auto 0; border-radius: 2px; }
+  .meter-panel{ max-width: 760px; margin: -40px auto 40px; padding: 0 20px; }
+  .meter-card{ background: var(--paper-card); border: 1px solid var(--line); border-radius: 16px; padding: 22px 24px; display: flex; align-items: center; gap: 20px; box-shadow: 0 12px 30px -18px rgba(14,32,56,0.35); }
+  .cup-wrap{ position: relative; width: 56px; height: 56px; flex-shrink: 0; }
+  .cup-wrap svg{ width: 100%; height: 100%; }
+  .steam{ position:absolute; top:-14px; left:0; right:0; display:flex; justify-content:center; gap:4px; opacity: 0; transition: opacity .4s ease; }
+  .steam.on{ opacity: 1; }
+  .steam span{ display:block; width:3px; height:12px; border-radius:3px; background: var(--teal); animation: rise 1.8s ease-in-out infinite; }
+  .steam span:nth-child(2){ animation-delay: .3s; }
+  .steam span:nth-child(3){ animation-delay: .6s; }
+  @keyframes rise{ 0%{ transform: translateY(0) scaleY(0.7); opacity: .5;} 50%{ transform: translateY(-8px) scaleY(1); opacity: 1;} 100%{ transform: translateY(0) scaleY(0.7); opacity: .5;} }
+  .meter-text{ flex: 1; }
+  .meter-text .label{ font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--teal); margin-bottom: 6px; }
+  .meter-track{ height: 8px; background: var(--teal-soft); border-radius: 6px; overflow: hidden; }
+  .meter-fill{ height: 100%; width: 0%; background: linear-gradient(90deg, var(--teal), var(--ok)); border-radius: 6px; transition: width .5s ease; }
+  .meter-count{ font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--navy); min-width: 42px; text-align: right; }
+  .note{ background: var(--gold-soft); border: 1px solid #E4D28F; border-radius: 14px; padding: 18px 20px; margin: 0 0 40px; font-size: .95rem; }
+  .note strong{ color: var(--navy); }
+  section.scenarios{ display: flex; flex-direction: column; gap: 22px; }
+  .card{ background: var(--paper-card); border: 1px solid var(--line); border-radius: 18px; padding: 26px 26px 24px; position: relative; transition: box-shadow .25s ease, transform .25s ease; }
+  .card.done{ border-color: #BFE0D3; background: linear-gradient(180deg, #FFFFFF 0%, #F6FBF8 100%); }
+  .card-head{ display:flex; align-items: flex-start; justify-content: space-between; gap: 14px; margin-bottom: 14px; }
+  .card-head .tag{ font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--navy); background: var(--teal-soft); padding: 5px 10px; border-radius: 20px; white-space: nowrap; }
+  .card-head h2{ font-family: 'Fraunces', serif; font-weight: 500; font-size: 1.32rem; margin: 0; color: var(--navy-deep); }
+  .done-badge{ font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ok); display: none; align-items: center; gap: 5px; }
+  .card.done .done-badge{ display: inline-flex; }
+  .prompt-bubble{ background: var(--navy); color: #F2EFE6; padding: 16px 18px; border-radius: 14px 14px 14px 4px; font-size: 1.02rem; margin-bottom: 6px; max-width: 92%; }
+  .prompt-context{ font-size: .85rem; color: #6B7686; margin-bottom: 18px; font-style: italic; }
+  .practice-row{ display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 6px; }
+  button{ font-family: 'Inter', sans-serif; font-weight: 600; font-size: .92rem; border: none; border-radius: 10px; padding: 11px 16px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: transform .15s ease, box-shadow .15s ease, background .15s ease; }
+  button:focus-visible{ outline: 3px solid var(--gold); outline-offset: 2px; }
+  button:active{ transform: translateY(1px); }
+  .btn-mic{ background: var(--teal-soft); color: var(--navy-deep); }
+  .btn-mic:hover{ background: #C9E6E1; }
+  .btn-mic.recording{ background: #F4D3D3; color: #8C2F2F; }
+  .btn-reveal{ background: var(--navy); color: #fff; }
+  .btn-reveal:hover{ background: var(--navy-deep); }
+  .btn-done{ background: var(--ok); color: #fff; margin-left: auto; }
+  .btn-done:hover{ filter: brightness(1.05); }
+  .card.done .btn-done{ background: #A9BFB4; cursor: default; }
+  audio{ display:block; margin-top: 10px; width: 100%; max-width: 320px; }
+  .rec-hint{ font-size: .82rem; color: #6B7686; margin-top: 6px; }
+  .models{ margin-top: 16px; display: none; border-top: 1px dashed var(--line); padding-top: 16px; }
+  .models.show{ display: block; }
+  .models .model-line{ background: var(--paper); border-left: 3px solid var(--gold); padding: 10px 14px; border-radius: 0 8px 8px 0; margin-bottom: 8px; font-size: .97rem; }
+  .models .model-line em{ display:block; font-size: .82rem; color: var(--teal); font-style: normal; margin-top: 3px; }
+  .card-footer{ display:flex; align-items:center; margin-top: 18px; }
+  .finale{ text-align: center; background: linear-gradient(180deg, var(--navy) 0%, var(--navy-deep) 100%); color: #F2EFE6; border-radius: 18px; padding: 46px 30px; margin-top: 30px; display: none; }
+  .finale.show{ display: block; }
+  .finale h2{ font-family: 'Fraunces', serif; font-size: 1.8rem; margin: 0 0 12px; font-weight: 500; }
+  .finale p{ color: #D9DEE6; max-width: 460px; margin: 0 auto; }
+  footer.pagefoot{ text-align: center; font-size: .82rem; color: #93949c; margin-top: 50px; }
+  @media (max-width: 480px){ header.hero{ padding: 42px 16px 56px; } .meter-panel{ margin-top: -32px; } .meter-card{ flex-wrap: wrap; } .card{ padding: 20px 18px 18px; } .prompt-bubble{ max-width: 100%; } }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="eyebrow">Speaking Practice · B1/B2 Level</div>
+  <h1>Hallway Small Talk</h1>
+  <p class="lede">Six small talk moments that happen every week at the office. There are no wrong answers here — just practice.</p>
+  <div class="rule"></div>
+</header>
+
+<div class="meter-panel">
+  <div class="meter-card">
+    <div class="cup-wrap">
+      <div class="steam" id="steam"><span></span><span></span><span></span></div>
+      <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M14 24H46V42C46 49.1797 40.1797 55 33 55H27C19.8203 55 14 49.1797 14 42V24Z" stroke="#16324F" stroke-width="2.5"/>
+        <path d="M46 28H50C53.3137 28 56 30.6863 56 34C56 37.3137 53.3137 40 50 40H46" stroke="#16324F" stroke-width="2.5"/>
+        <rect id="cupfill" x="16" y="42" width="28" height="0" fill="#2C7873"/>
+        <path d="M10 24H50" stroke="#16324F" stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="meter-text">
+      <div class="label">Today's progress</div>
+      <div class="meter-track"><div class="meter-fill" id="meterFill"></div></div>
+    </div>
+    <div class="meter-count" id="meterCount">0 / 6</div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <div class="note">
+    <strong>How to use this:</strong> read what your colleague says, answer out loud (record yourself if you'd like to hear how it sounds), then tap "See model answers." This isn't a test — it's just getting your mouth used to speaking without overthinking it.
+  </div>
+
+  <section class="scenarios" id="scenarios">
+
+    <article class="card" data-id="1">
+      <div class="card-head"><div><div class="tag">Monday morning</div></div><div class="done-badge">✓ practiced</div></div>
+      <h2>Walking into the office</h2>
+      <div class="prompt-bubble">"Morning! Good weekend?"</div>
+      <div class="prompt-context">A colleague says this while hanging up their coat, barely pausing for a reply.</div>
+      <div class="practice-row">
+        <button class="btn-mic" data-action="record">🎙️ Record my answer</button>
+        <button class="btn-reveal" data-action="reveal">See model answers</button>
+      </div>
+      <div class="rec-hint" style="display:none;">Recording… tap again to stop.</div>
+      <audio controls style="display:none;"></audio>
+      <div class="models">
+        <div class="model-line">Yeah, pretty good thanks — just relaxed at home. You?<em>Short answer, then you bounce the question back — that way you don't have to carry the whole conversation.</em></div>
+        <div class="model-line">Not bad! Went for a walk on Saturday. How about yours?<em>One small detail (no need to tell the whole story) plus a question back.</em></div>
+      </div>
+      <div class="card-footer"><button class="btn-done" data-action="done">Mark as practiced</button></div>
+    </article>
+
+    <article class="card" data-id="2">
+      <div class="card-head"><div><div class="tag">Coffee break</div></div><div class="done-badge">✓ practiced</div></div>
+      <h2>At the coffee machine</h2>
+      <div class="prompt-bubble">"Busy week so far?"</div>
+      <div class="prompt-context">Someone's waiting for their coffee next to you and throws this out to pass the time.</div>
+      <div class="practice-row">
+        <button class="btn-mic" data-action="record">🎙️ Record my answer</button>
+        <button class="btn-reveal" data-action="reveal">See model answers</button>
+      </div>
+      <div class="rec-hint" style="display:none;">Recording… tap again to stop.</div>
+      <audio controls style="display:none;"></audio>
+      <div class="models">
+        <div class="model-line">Yeah, non-stop! What about you, is it crazy on your side too?<em>"Non-stop" is a very natural way to say "a lot of work." Reuse it whenever you want.</em></div>
+        <div class="model-line">A bit, yeah. Trying to get through my emails, honestly.<em>"Honestly" at the end softens it and sounds very natural in spoken English.</em></div>
+      </div>
+      <div class="card-footer"><button class="btn-done" data-action="done">Mark as practiced</button></div>
+    </article>
+
+    <article class="card" data-id="3">
+      <div class="card-head"><div><div class="tag">Weather chat</div></div><div class="done-badge">✓ practiced</div></div>
+      <h2>Commenting on the weather</h2>
+      <div class="prompt-bubble">"Can you believe this weather? It won't stop raining."</div>
+      <div class="prompt-context">Typical elevator comment, or something you hear right after arriving soaked.</div>
+      <div class="practice-row">
+        <button class="btn-mic" data-action="record">🎙️ Record my answer</button>
+        <button class="btn-reveal" data-action="reveal">See model answers</button>
+      </div>
+      <div class="rec-hint" style="display:none;">Recording… tap again to stop.</div>
+      <audio controls style="display:none;"></audio>
+      <div class="models">
+        <div class="model-line">I know, it's been like this all week! I forgot my umbrella too.<em>"I know" is the automatic reaction in English when you agree — better than "yes, it's true."</em></div>
+        <div class="model-line">Tell me about it. At least it's Friday tomorrow!<em>"Tell me about it" means "you're telling me" — a very handy fixed phrase for sounding natural with zero effort.</em></div>
+      </div>
+      <div class="card-footer"><button class="btn-done" data-action="done">Mark as practiced</button></div>
+    </article>
+
+    <article class="card" data-id="4">
+      <div class="card-head"><div><div class="tag">In the hallway</div></div><div class="done-badge">✓ practiced</div></div>
+      <h2>Running into someone</h2>
+      <div class="prompt-bubble">"Oh hey — haven't seen you in a while! How's things?"</div>
+      <div class="prompt-context">You bump into someone from another department you don't see very often.</div>
+      <div class="practice-row">
+        <button class="btn-mic" data-action="record">🎙️ Record my answer</button>
+        <button class="btn-reveal" data-action="reveal">See model answers</button>
+      </div>
+      <div class="rec-hint" style="display:none;">Recording… tap again to stop.</div>
+      <audio controls style="display:none;"></audio>
+      <div class="models">
+        <div class="model-line">Hey! Yeah, it's been busy. Good to see you though!<em>You don't need to explain why it's been a while — "it's been busy" is enough on its own.</em></div>
+        <div class="model-line">I know, right? Things are good, just the usual. You?<em>"The usual" covers any situation without needing to give details.</em></div>
+      </div>
+      <div class="card-footer"><button class="btn-done" data-action="done">Mark as practiced</button></div>
+    </article>
+
+    <article class="card" data-id="5">
+      <div class="card-head"><div><div class="tag">Before a meeting</div></div><div class="done-badge">✓ practiced</div></div>
+      <h2>Waiting for the meeting to start</h2>
+      <div class="prompt-bubble">"Are we still waiting on anyone, or should we just get started?"</div>
+      <div class="prompt-context">Those awkward first minutes before the meeting actually gets going.</div>
+      <div class="practice-row">
+        <button class="btn-mic" data-action="record">🎙️ Record my answer</button>
+        <button class="btn-reveal" data-action="reveal">See model answers</button>
+      </div>
+      <div class="rec-hint" style="display:none;">Recording… tap again to stop.</div>
+      <audio controls style="display:none;"></audio>
+      <div class="models">
+        <div class="model-line">I think that's everyone — let's just get going.<em>Short and direct — perfect for meetings where you don't want to drag things out.</em></div>
+        <div class="model-line">I believe Marta said she'd be a couple of minutes late.<em>Handy if you need to explain someone else's delay, without making it about you.</em></div>
+      </div>
+      <div class="card-footer"><button class="btn-done" data-action="done">Mark as practiced</button></div>
+    </article>
+
+    <article class="card" data-id="6">
+      <div class="card-head"><div><div class="tag">Saying goodbye</div></div><div class="done-badge">✓ practiced</div></div>
+      <h2>Wrapping up the chat</h2>
+      <div class="prompt-bubble">"Anyway, I should get back to it — catch up soon?"</div>
+      <div class="prompt-context">The other person is already closing the conversation politely.</div>
+      <div class="practice-row">
+        <button class="btn-mic" data-action="record">🎙️ Record my answer</button>
+        <button class="btn-reveal" data-action="reveal">See model answers</button>
+      </div>
+      <div class="rec-hint" style="display:none;">Recording… tap again to stop.</div>
+      <audio controls style="display:none;"></audio>
+      <div class="models">
+        <div class="model-line">Sounds good — see you around!<em>Short, light closing — no need for anything more.</em></div>
+        <div class="model-line">Definitely, take care! Good luck with everything.<em>"Take care" is the most common casual goodbye at work in English.</em></div>
+      </div>
+      <div class="card-footer"><button class="btn-done" data-action="done">Mark as practiced</button></div>
+    </article>
+
+  </section>
+
+  <div class="finale" id="finale">
+    <h2>Six chats, six wins.</h2>
+    <p>It didn't have to be perfect — you just had to do it. Come back to this session a couple of times this week before your next real conversation. Every time, it gets a little easier.</p>
+  </div>
+
+  <footer class="pagefoot">Hallway Small Talk · Speaking Practice · B1/B2</footer>
+</div>
+
+<script>
+(function(){
+  const cards = document.querySelectorAll('.card');
+  const total = cards.length;
+  const fill = document.getElementById('meterFill');
+  const count = document.getElementById('meterCount');
+  const cupfill = document.getElementById('cupfill');
+  const steam = document.getElementById('steam');
+  const finale = document.getElementById('finale');
+  let doneSet = new Set();
+
+  function updateMeter(){
+    const n = doneSet.size;
+    const pct = Math.round((n/total)*100);
+    fill.style.width = pct + '%';
+    count.textContent = n + ' / ' + total;
+    const maxH = 13;
+    cupfill.setAttribute('height', (maxH * (n/total)).toFixed(1));
+    cupfill.setAttribute('y', (55 - maxH * (n/total)).toFixed(1));
+    steam.classList.toggle('on', n > 0 && n < total);
+    if(n === total){
+      finale.classList.add('show');
+      finale.scrollIntoView({behavior:'smooth', block:'center'});
+    } else {
+      finale.classList.remove('show');
+    }
+  }
+
+  cards.forEach(card => {
+    const id = card.dataset.id;
+    const micBtn = card.querySelector('[data-action="record"]');
+    const revealBtn = card.querySelector('[data-action="reveal"]');
+    const doneBtn = card.querySelector('[data-action="done"]');
+    const models = card.querySelector('.models');
+    const audioEl = card.querySelector('audio');
+    const hint = card.querySelector('.rec-hint');
+
+    let mediaRecorder, chunks = [], stream, recording = false;
+
+    micBtn.addEventListener('click', async () => {
+      if(!recording){
+        try{
+          stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        }catch(e){
+          hint.style.display = 'block';
+          hint.textContent = "Couldn't access the microphone. You can still practice out loud without recording.";
+          return;
+        }
+        chunks = [];
+        mediaRecorder = new MediaRecorder(stream);
+        mediaRecorder.ondataavailable = e => chunks.push(e.data);
+        mediaRecorder.onstop = () => {
+          const blob = new Blob(chunks, { type: 'audio/webm' });
+          audioEl.src = URL.createObjectURL(blob);
+          audioEl.style.display = 'block';
+          stream.getTracks().forEach(t => t.stop());
+        };
+        mediaRecorder.start();
+        recording = true;
+        micBtn.classList.add('recording');
+        micBtn.textContent = '⏺️ Recording… tap to stop';
+        hint.style.display = 'block';
+        hint.textContent = 'Recording… tap again to stop.';
+      } else {
+        mediaRecorder.stop();
+        recording = false;
+        micBtn.classList.remove('recording');
+        micBtn.textContent = '🎙️ Record my answer';
+        hint.textContent = 'Saved only on this page — no one else hears it.';
+      }
+    });
+
+    revealBtn.addEventListener('click', () => {
+      const showing = models.classList.toggle('show');
+      revealBtn.textContent = showing ? 'Hide answers' : 'See model answers';
+    });
+
+    doneBtn.addEventListener('click', () => {
+      if(doneSet.has(id)) return;
+      doneSet.add(id);
+      card.classList.add('done');
+      updateMeter();
+    });
+  });
+
+  updateMeter();
+})();
+</script>
+
+</body>
+</html>
