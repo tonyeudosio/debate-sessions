@@ -122,6 +122,7 @@
       <label for="rateRange">Speed:</label>
       <input type="range" id="rateRange" min="0.7" max="1.1" step="0.05" value="0.92">
       <span id="rateLabel" style="color:#C7CEDC;">0.92×</span>
+      <span id="voiceStatus" style="color:var(--gold);font-family:'IBM Plex Mono',monospace;font-size:12px;">Loading voices…</span>
     </div>
   </div>
 </header>
@@ -163,7 +164,7 @@
     <div class="rec-card">
       <div class="rec-title">Building a Community Observatory — a talk by Grace, an amateur astronomer</div>
       <div class="play-row">
-        <button class="play-btn" id="p2play">▶ Play recording</button>
+        <button class="play-btn" id="p2play" disabled>▶ Play recording</button>
         <span class="play-count" id="p2count">2 plays remaining</span>
       </div>
       <details class="transcript"><summary>Show transcript (teacher use)</summary><div class="ttext" id="p2transcript"></div></details>
@@ -188,7 +189,7 @@
     <div class="rec-card">
       <div class="rec-title">Interview: rethinking the 15-minute city</div>
       <div class="play-row">
-        <button class="play-btn" id="p3play">▶ Play recording</button>
+        <button class="play-btn" id="p3play" disabled>▶ Play recording</button>
         <span class="play-count" id="p3count">2 plays remaining</span>
       </div>
       <details class="transcript"><summary>Show transcript (teacher use)</summary><div class="ttext" id="p3transcript"></div></details>
@@ -246,23 +247,56 @@
 <script>
 // ---------------- VOICE SETUP ----------------
 let voices = [];
+let voicesReady = false;
 const voiceSelect = document.getElementById('voiceSelect');
 const rateRange = document.getElementById('rateRange');
 const rateLabel = document.getElementById('rateLabel');
+const voiceStatus = document.getElementById('voiceStatus');
 let currentRate = parseFloat(rateRange.value);
 
+// Heuristic: known higher-quality voice names get sorted first.
+const QUALITY_HINTS = ['natural','online','neural','enhanced','premium','google'];
+function qualityScore(v){
+  const n = v.name.toLowerCase();
+  for(let i=0;i<QUALITY_HINTS.length;i++){ if(n.includes(QUALITY_HINTS[i])) return i; }
+  return QUALITY_HINTS.length;
+}
+
 function loadVoices(){
-  voices = speechSynthesis.getVoices().filter(v => v.lang.startsWith('en'));
-  if(voices.length === 0) voices = speechSynthesis.getVoices();
+  let list = speechSynthesis.getVoices().filter(v => v.lang.startsWith('en'));
+  if(list.length === 0) list = speechSynthesis.getVoices();
+  if(list.length === 0) return false; // not ready yet
+  list.sort((a,b)=> qualityScore(a) - qualityScore(b));
+  voices = list;
   voiceSelect.innerHTML = '';
   voices.forEach((v,i)=>{
     const opt = document.createElement('option');
     opt.value = i; opt.textContent = `${v.name} (${v.lang})`;
     voiceSelect.appendChild(opt);
   });
+  voicesReady = true;
+  setPlayButtonsEnabled(true);
+  if(voiceStatus) voiceStatus.textContent = `${voices.length} voice(s) found — best available selected.`;
+  return true;
 }
+
+function setPlayButtonsEnabled(enabled){
+  document.querySelectorAll('.play-btn').forEach(b=>{ b.disabled = !enabled; });
+}
+
+// Voices may not be ready on first load (Chrome loads them async).
+// Disable playback until ready, and poll as a fallback in case
+// onvoiceschanged never fires (happens in some browsers).
+setPlayButtonsEnabled(false);
+if(voiceStatus) voiceStatus.textContent = 'Loading voices…';
 speechSynthesis.onvoiceschanged = loadVoices;
-loadVoices();
+if(!loadVoices()){
+  let attempts = 0;
+  const poll = setInterval(()=>{
+    attempts++;
+    if(loadVoices() || attempts > 40){ clearInterval(poll); }
+  }, 250);
+}
 
 rateRange.addEventListener('input', ()=>{
   currentRate = parseFloat(rateRange.value);
@@ -415,7 +449,7 @@ p1recs.forEach((rec, idx)=>{
   card.innerHTML = `
     <div class="rec-title">${rec.title}</div>
     <div class="play-row">
-      <button class="play-btn" id="p1play${idx}">▶ Play extract</button>
+      <button class="play-btn" id="p1play${idx}" disabled>▶ Play extract</button>
       <span class="play-count" id="p1count${idx}">2 plays remaining</span>
     </div>
     <details class="transcript"><summary>Show transcript (teacher use)</summary><div class="ttext">${rec.text}</div></details>
@@ -508,7 +542,7 @@ p4speakers.forEach((sp, idx)=>{
   card.innerHTML = `
     <div class="rec-title">${sp.name}</div>
     <div class="play-row">
-      <button class="play-btn" id="p4play${idx}">▶ Play</button>
+      <button class="play-btn" id="p4play${idx}" disabled>▶ Play</button>
       <span class="play-count" id="p4count${idx}">2 plays remaining</span>
     </div>
     <details class="transcript"><summary>Show transcript (teacher use)</summary><div class="ttext">${sp.text}</div></details>
@@ -595,6 +629,9 @@ function buildMatchingTask(bankId, taskId, options, answersMap, speakers){
 
 buildMatchingTask('p4bank1','p4task1', p4task1options, p4task1answers, p4speakers);
 buildMatchingTask('p4bank2','p4task2', p4task2options, p4task2answers, p4speakers);
+
+// Reflect voice-readiness now that all play buttons exist
+setPlayButtonsEnabled(voicesReady);
 
 // ---------------- TABS ----------------
 document.querySelectorAll('nav.tabs button').forEach(btn=>{
