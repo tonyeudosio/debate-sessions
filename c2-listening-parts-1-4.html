@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>C2 Proficiency · Listening</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0B1F3A; --navy-deep:#071527;
+    --teal:#0F766E; --teal-light:#14A89A;
+    --gold:#C9A227;
+    --paper:#F7F5F0; --paper-dim:#EFEBE1;
+    --ink:#1B2430; --ink-soft:#4A5568;
+    --correct:#1E7A4C; --incorrect:#B3423A;
+    --border:#D8D2C2; --radius:10px;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:'Inter',sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased;}
+
+  header.top{background:linear-gradient(160deg,var(--navy) 0%,var(--navy-deep) 100%);color:var(--paper);padding:32px 24px 24px;border-bottom:4px solid var(--gold);}
+  header.top .inner{max-width:900px;margin:0 auto;}
+  .eyebrow{font-family:'IBM Plex Mono',monospace;letter-spacing:.14em;text-transform:uppercase;font-size:12px;color:var(--teal-light);margin-bottom:8px;}
+  h1{font-family:'Fraunces',serif;font-weight:700;font-size:clamp(26px,4vw,36px);margin:0 0 6px;letter-spacing:-.01em;}
+  header.top p.sub{color:#C7CEDC;font-size:14.5px;margin:0 0 16px;max-width:65ch;}
+  .meta-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:16px;}
+  .badge{font-family:'IBM Plex Mono',monospace;font-size:11.5px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);color:#E6E9F0;padding:5px 11px;border-radius:999px;}
+
+  .voice-box{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);border-radius:var(--radius);padding:10px 14px;flex-wrap:wrap;font-size:13px;}
+  .voice-box label{color:#C7CEDC;}
+  .voice-box select, .voice-box input[type=range]{font-family:'Inter',sans-serif;font-size:13px;}
+  .voice-box select{background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:6px;padding:5px 8px;max-width:220px;}
+
+  nav.tabs{display:flex;gap:6px;max-width:900px;margin:0 auto;padding:14px 24px 0;flex-wrap:wrap;position:sticky;top:0;background:var(--paper);z-index:20;}
+  nav.tabs button{font-family:'IBM Plex Mono',monospace;font-size:13px;padding:10px 18px;border-radius:8px 8px 0 0;border:1px solid var(--border);border-bottom:none;background:var(--paper-dim);color:var(--ink-soft);cursor:pointer;}
+  nav.tabs button.active{background:#fff;color:var(--navy);font-weight:600;border-color:var(--teal);}
+
+  .wrap{max-width:900px;margin:0 auto;padding:0 24px 80px;}
+  main{background:#fff;border:1px solid var(--border);border-top:none;border-radius:0 0 var(--radius) var(--radius);}
+  section.part{padding:28px 28px 12px;display:none;}
+  section.part.active{display:block;}
+
+  .part-head{border-bottom:2px solid var(--paper-dim);padding-bottom:14px;margin-bottom:22px;}
+  .part-head .num{font-family:'IBM Plex Mono',monospace;color:var(--teal);font-size:12.5px;letter-spacing:.08em;}
+  .part-head h2{font-family:'Fraunces',serif;font-size:22px;margin:4px 0 8px;color:var(--navy);}
+  .part-head .instructions{font-size:14px;color:var(--ink-soft);background:var(--paper-dim);border-left:3px solid var(--gold);padding:10px 14px;border-radius:6px;}
+
+  .rec-card{border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px;margin-bottom:18px;background:var(--paper);}
+  .rec-card .rec-title{font-family:'Fraunces',serif;font-size:16px;color:var(--navy);margin-bottom:10px;}
+  .play-row{display:flex;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap;}
+  .play-btn{font-family:'Inter',sans-serif;font-weight:600;font-size:13.5px;background:var(--teal);color:#fff;border:none;border-radius:999px;padding:9px 18px;cursor:pointer;display:flex;align-items:center;gap:6px;}
+  .play-btn:hover{background:var(--teal-light);}
+  .play-btn:disabled{background:#B9C0CC;cursor:not-allowed;}
+  .play-count{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--ink-soft);}
+  details.transcript{margin-top:6px;}
+  details.transcript summary{cursor:pointer;font-size:12.5px;color:var(--ink-soft);font-family:'IBM Plex Mono',monospace;}
+  details.transcript .ttext{font-family:'Fraunces',serif;font-size:14px;color:var(--ink-soft);margin-top:8px;white-space:pre-line;line-height:1.7;}
+
+  .qcard{border:1px solid var(--border);border-radius:var(--radius);padding:13px 15px;background:#fff;margin-bottom:12px;}
+  .qcard .qnum{font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--navy);font-size:12.5px;margin-bottom:6px;display:block;}
+  .qcard .qtext{font-size:14.5px;margin-bottom:10px;}
+  .options{display:grid;gap:7px;}
+  .opt{display:flex;align-items:flex-start;gap:8px;border:1px solid var(--border);border-radius:7px;padding:7px 9px;font-size:13.8px;cursor:pointer;background:var(--paper);}
+  .opt:hover{border-color:var(--teal);}
+  .opt input{accent-color:var(--teal);margin-top:3px;}
+  .opt.correct{border-color:var(--correct);background:#EAF6EE;}
+  .opt.incorrect{border-color:var(--incorrect);background:#FBEBEA;}
+
+  input.text-answer{font-family:'Inter',sans-serif;font-size:14.5px;border:1px solid var(--border);border-radius:7px;padding:7px 10px;min-width:140px;}
+  input.text-answer.correct{border-color:var(--correct);background:#EAF6EE;}
+  input.text-answer.incorrect{border-color:var(--incorrect);background:#FBEBEA;}
+
+  /* Part 4 drag and drop */
+  .bank{display:flex;flex-wrap:wrap;gap:8px;background:var(--paper-dim);border-radius:var(--radius);padding:14px;margin-bottom:16px;}
+  .chip{font-family:'Inter',sans-serif;font-size:13px;background:#fff;border:1px solid var(--border);border-radius:8px;padding:8px 12px;cursor:grab;user-select:none;max-width:280px;}
+  .chip.selected{border-color:var(--navy);background:var(--navy);color:#fff;}
+  .chip.used{opacity:.35;cursor:not-allowed;}
+  .drop-row{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
+  .drop-row .speaker-label{font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--navy);min-width:90px;}
+  .drop-zone{flex:1;min-height:44px;border:2px dashed var(--border);border-radius:8px;padding:8px 12px;font-size:13.8px;color:var(--ink-soft);display:flex;align-items:center;background:#fff;}
+  .drop-zone.filled{border-style:solid;border-color:var(--teal);color:var(--ink);background:var(--paper);}
+  .drop-zone.correct{border-color:var(--correct);background:#EAF6EE;color:var(--ink);}
+  .drop-zone.incorrect{border-color:var(--incorrect);background:#FBEBEA;color:var(--ink);}
+  .drop-zone.dragover{border-color:var(--gold);background:#FBF6E6;}
+
+  .part-footer{display:flex;justify-content:space-between;align-items:center;padding:20px 0 28px;flex-wrap:wrap;gap:12px;}
+  .btn{font-family:'Inter',sans-serif;font-weight:600;font-size:14px;border:none;border-radius:8px;padding:11px 22px;cursor:pointer;}
+  .btn.primary{background:var(--navy);color:#fff;}
+  .btn.primary:hover{background:var(--teal);}
+  .btn.ghost{background:transparent;border:1px solid var(--border);color:var(--ink-soft);}
+  .btn.ghost:hover{border-color:var(--navy);color:var(--navy);}
+
+  .score-banner{margin:0 28px 24px;padding:16px 20px;border-radius:var(--radius);background:var(--navy);color:#fff;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;}
+  .score-banner .big{font-family:'Fraunces',serif;font-size:24px;color:var(--gold);}
+
+  .note{font-size:12.5px;color:var(--ink-soft);background:var(--paper-dim);border-radius:8px;padding:10px 14px;margin-bottom:16px;}
+
+  footer.sitefoot{text-align:center;padding:26px 24px 40px;color:var(--ink-soft);font-size:13px;}
+
+  @media(max-width:600px){
+    section.part{padding:20px 16px 12px;}
+    .drop-row{flex-direction:column;align-items:stretch;}
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="inner">
+    <div class="eyebrow">C2 Proficiency (CPE) &middot; Practice Material</div>
+    <h1>Listening</h1>
+    <p class="sub">Original practice tasks in the CPE Listening format — Parts 1–4, 30 questions. Audio is generated in your browser using text-to-speech, so there is no file to download. Part 4 uses the drag-and-drop matching format introduced for the digital exam in November 2025.</p>
+    <div class="meta-row">
+      <span class="badge">Parts 1–4</span>
+      <span class="badge">30 questions</span>
+      <span class="badge">≈ 40 min</span>
+    </div>
+    <div class="voice-box">
+      <label for="voiceSelect">Voice:</label>
+      <select id="voiceSelect"></select>
+      <label for="rateRange">Speed:</label>
+      <input type="range" id="rateRange" min="0.7" max="1.1" step="0.05" value="0.92">
+      <span id="rateLabel" style="color:#C7CEDC;">0.92×</span>
+    </div>
+  </div>
+</header>
+
+<nav class="tabs" id="tabs">
+  <button data-part="1" class="active">Part 1</button>
+  <button data-part="2">Part 2</button>
+  <button data-part="3">Part 3</button>
+  <button data-part="4">Part 4</button>
+</nav>
+
+<div class="wrap" style="padding:0;">
+<main>
+
+  <!-- PART 1 -->
+  <section class="part active" id="part1">
+    <div class="part-head">
+      <div class="num">PART 1 &middot; QUESTIONS 1–6</div>
+      <h2>Multiple choice — short extracts</h2>
+      <div class="instructions">You will hear three short, unrelated extracts. For each extract there are two questions. Choose the answer (A, B or C) which fits best. You will hear each extract twice.</div>
+    </div>
+    <div class="note">Voice-generated audio: click Play on each extract below. You have two plays per extract, as in the real exam.</div>
+
+    <div id="p1recs"></div>
+
+    <div class="part-footer">
+      <button class="btn ghost" onclick="goPart(2)">Next: Part 2 →</button>
+    </div>
+  </section>
+
+  <!-- PART 2 -->
+  <section class="part" id="part2">
+    <div class="part-head">
+      <div class="num">PART 2 &middot; QUESTIONS 7–15</div>
+      <h2>Sentence completion</h2>
+      <div class="instructions">You will hear a talk. Complete the sentences with a word or short phrase. You will hear the talk twice.</div>
+    </div>
+
+    <div class="rec-card">
+      <div class="rec-title">Building a Community Observatory — a talk by Grace, an amateur astronomer</div>
+      <div class="play-row">
+        <button class="play-btn" id="p2play">▶ Play recording</button>
+        <span class="play-count" id="p2count">2 plays remaining</span>
+      </div>
+      <details class="transcript"><summary>Show transcript (teacher use)</summary><div class="ttext" id="p2transcript"></div></details>
+    </div>
+
+    <div id="p2grid"></div>
+
+    <div class="part-footer">
+      <button class="btn ghost" onclick="goPart(1)">← Part 1</button>
+      <button class="btn ghost" onclick="goPart(3)">Next: Part 3 →</button>
+    </div>
+  </section>
+
+  <!-- PART 3 -->
+  <section class="part" id="part3">
+    <div class="part-head">
+      <div class="num">PART 3 &middot; QUESTIONS 16–20</div>
+      <h2>Multiple choice — interview</h2>
+      <div class="instructions">You will hear an interview with Dr. Okafor, an urban planner, about the '15-minute city' concept. For each question choose the answer (A, B, C or D) which fits best. You will hear the interview twice.</div>
+    </div>
+
+    <div class="rec-card">
+      <div class="rec-title">Interview: rethinking the 15-minute city</div>
+      <div class="play-row">
+        <button class="play-btn" id="p3play">▶ Play recording</button>
+        <span class="play-count" id="p3count">2 plays remaining</span>
+      </div>
+      <details class="transcript"><summary>Show transcript (teacher use)</summary><div class="ttext" id="p3transcript"></div></details>
+    </div>
+
+    <div id="p3grid"></div>
+
+    <div class="part-footer">
+      <button class="btn ghost" onclick="goPart(2)">← Part 2</button>
+      <button class="btn ghost" onclick="goPart(4)">Next: Part 4 →</button>
+    </div>
+  </section>
+
+  <!-- PART 4 -->
+  <section class="part" id="part4">
+    <div class="part-head">
+      <div class="num">PART 4 &middot; QUESTIONS 21–30</div>
+      <h2>Multiple matching — five short monologues</h2>
+      <div class="instructions">You will hear five people talking about changing career. Drag each option into the box for the matching speaker — or tap an option, then tap the box. There are two tasks; each option is used once, and three options in each task are not needed. You will hear each speaker's turn twice.</div>
+    </div>
+
+    <div id="p4recs"></div>
+
+    <h3 style="font-family:'Fraunces',serif;color:var(--navy);margin-top:26px;">Task 1 — Questions 21–25</h3>
+    <p style="font-size:14px;color:var(--ink-soft);">For each speaker, choose the reason they give for changing career.</p>
+    <div class="bank" id="p4bank1"></div>
+    <div id="p4task1"></div>
+
+    <h3 style="font-family:'Fraunces',serif;color:var(--navy);margin-top:26px;">Task 2 — Questions 26–30</h3>
+    <p style="font-size:14px;color:var(--ink-soft);">For each speaker, choose what they say now about their decision.</p>
+    <div class="bank" id="p4bank2"></div>
+    <div id="p4task2"></div>
+
+    <div class="part-footer">
+      <button class="btn ghost" onclick="goPart(3)">← Part 3</button>
+      <button class="btn primary" onclick="checkAll()">Check my answers</button>
+    </div>
+  </section>
+
+  <div class="score-banner" id="scoreBanner" style="display:none;">
+    <div>Score: <span class="big" id="scoreText">0 / 30</span></div>
+    <div style="display:flex;gap:10px;">
+      <button class="btn ghost" onclick="revealKey()">Show full answer key</button>
+      <button class="btn ghost" onclick="resetExam()">Reset exam</button>
+    </div>
+  </div>
+
+</main>
+</div>
+
+<footer class="sitefoot">
+  Original practice material in the Cambridge C2 Proficiency format · audio generated locally via your browser's speech engine · not reproduced from any copyrighted source
+</footer>
+
+<script>
+// ---------------- VOICE SETUP ----------------
+let voices = [];
+const voiceSelect = document.getElementById('voiceSelect');
+const rateRange = document.getElementById('rateRange');
+const rateLabel = document.getElementById('rateLabel');
+let currentRate = parseFloat(rateRange.value);
+
+function loadVoices(){
+  voices = speechSynthesis.getVoices().filter(v => v.lang.startsWith('en'));
+  if(voices.length === 0) voices = speechSynthesis.getVoices();
+  voiceSelect.innerHTML = '';
+  voices.forEach((v,i)=>{
+    const opt = document.createElement('option');
+    opt.value = i; opt.textContent = `${v.name} (${v.lang})`;
+    voiceSelect.appendChild(opt);
+  });
+}
+speechSynthesis.onvoiceschanged = loadVoices;
+loadVoices();
+
+rateRange.addEventListener('input', ()=>{
+  currentRate = parseFloat(rateRange.value);
+  rateLabel.textContent = currentRate.toFixed(2) + '×';
+});
+
+function getVoice(idx){
+  const i = parseInt(voiceSelect.value || 0);
+  const list = voices.length ? voices : speechSynthesis.getVoices();
+  if(!list.length) return null;
+  return list[(i + idx) % list.length];
+}
+
+function speakLines(lines, onEnd){
+  speechSynthesis.cancel();
+  lines.forEach((line, idx)=>{
+    const u = new SpeechSynthesisUtterance(line.text);
+    u.voice = getVoice(line.voiceOffset || 0);
+    u.rate = currentRate;
+    u.pitch = line.pitch || 1;
+    if(idx === lines.length - 1 && onEnd) u.onend = onEnd;
+    speechSynthesis.speak(u);
+  });
+}
+
+// ---------------- CONTENT ----------------
+const p1recs = [
+  {title:"Extract One — a restaurant critic",
+   text:"I'll be honest, I went into that meal expecting to be underwhelmed – the restaurant's publicity had been so relentless that I assumed the food itself would struggle to live up to it. And for the first two courses, that's more or less what happened: perfectly competent, forgettable food, the kind you praise politely and then never think about again. It was the dessert that changed my mind entirely – a burnt honey tart that I'm still thinking about a week later. I've since found myself recommending the place to friends, with the slightly embarrassing caveat that they should skip straight to pudding if they're in a hurry. Whether that's a review or a warning, I genuinely couldn't tell you.",
+   questions:[
+     {n:1, q:"What is the speaker's overall impression of the meal?",
+      options:["It was disappointing until a memorable final course.","It confirmed his low expectations throughout.","It was consistently excellent from start to finish."], correct:0},
+     {n:2, q:"How does the speaker feel about recommending the restaurant?",
+      options:["Reluctant to recommend it at all.","Slightly conflicted about how to frame his recommendation.","Confident that every course is worth trying."], correct:1}
+   ]},
+  {title:"Extract Two — a scientist",
+   text:"What surprised us wasn't that the material conducted electricity – we'd suspected it might – but how little energy it took to switch that conductivity on and off. In practical terms, that means a chip built from this material could, in theory, run on a fraction of the power current devices need. I want to be careful here, because there's a considerable gap between a promising result in a lab and something you'd find in a phone in five years' time. But I'd be lying if I said we weren't excited. It's the kind of result that makes you want to clear your diary for the next six months.",
+   questions:[
+     {n:3, q:"Why is the speaker cautious in his explanation?",
+      options:["He doubts the material actually works as described.","He is not convinced the research will be published.","He wants to avoid overstating how close the discovery is to practical use."], correct:2},
+     {n:4, q:"How does the speaker feel about the discovery?",
+      options:["Genuinely enthusiastic despite his caution.","Mildly interested but not especially excited.","Concerned about its implications."], correct:0}
+   ]},
+  {title:"Extract Three — a musician",
+   text:"People assume that after enough years on stage, the nerves disappear, but honestly, if anything, mine have got worse – I think because I understand now exactly how much can go wrong. What's changed is that I've stopped treating that fear as a problem to solve. In the studio, you chase perfection, take after take, until something loses its pulse entirely. On stage, you don't have that luxury, and I've come to think the recording suffers for it more than the live show does. Give me a slightly imperfect performance with the audience breathing along, over a flawless one nobody was in the room for, any day.",
+   questions:[
+     {n:5, q:"What does the speaker say about his nerves over time?",
+      options:["They have gradually disappeared.","They have stayed exactly the same.","They have become more intense."], correct:2},
+     {n:6, q:"What is the speaker's opinion of studio recording compared with live performance?",
+      options:["He believes it captures something live performance cannot.","He believes the pursuit of perfection can drain a recording of life.","He believes both are equally satisfying."], correct:1}
+   ]}
+];
+
+const p2text = `Thanks for having me. So, when we started this project three years ago, we had precisely one telescope, a shed with a leaking roof, and absolutely no idea what we were doing. What we did have was a waiting list — over sixty families wanting somewhere to bring their children on a clear night, which told us the demand was real even if our facilities weren't.
+
+The first real breakthrough came when the local council agreed to lease us a disused water tower. It wasn't glamorous — pigeons had more or less taken ownership of the upper floor — but the height and the flat roof made it almost perfect for what we needed. We spent the better part of a year clearing it out before we could even think about installing equipment.
+
+Funding, unsurprisingly, was the hardest part. We applied to four separate trusts before one, a regional arts and heritage fund, agreed to cover the cost of the dome. Even then, the grant only stretched to a secondhand dome, which we bought from a decommissioned observatory in the north of the country and had shipped down in pieces.
+
+Once the dome was up, the next challenge was the telescope itself. Our original instrument was, frankly, a toy compared to what serious observation requires. A retired engineer in the group, who'd spent thirty years designing optical instruments professionally, offered to build us a mirror from scratch rather than buy one, which saved us a considerable sum and, I'll admit, took considerably longer than any of us expected — the best part of eighteen months, in fact.
+
+We opened to the public last spring, and the response genuinely surprised us. We'd budgeted for perhaps twenty visitors on our busiest nights; we now regularly turn people away once we pass ninety. What's struck me most isn't the numbers, though, it's who's showing up — teenagers who've never really considered science as something for them, standing in a freezing tower at eleven at night, completely transfixed by Saturn's rings.
+
+Looking ahead, our priority for next year is accessibility — specifically, building a ramp so that the observatory is usable by wheelchair users, which the original water tower design never accounted for. We've also started talking to two nearby schools about running a structured programme rather than just open evenings, though that's still very much at the discussion stage.
+
+If there's one thing I'd say to anyone thinking of starting something similar, it's this: don't wait until you have the perfect building or the perfect equipment. Start with the waiting list. Everything else, eventually, follows.`;
+
+const p2questions = [
+  {n:7, stem:"Before starting the project, there was a waiting list of over ___ families.", answer:["sixty"]},
+  {n:8, stem:"The observatory is housed in a disused ___.", answer:["water tower"]},
+  {n:9, stem:"Before installing equipment, the group spent about a ___ clearing the tower out.", answer:["year"]},
+  {n:10, stem:"The dome was funded by a regional ___ fund.", answer:["arts and heritage","arts & heritage"]},
+  {n:11, stem:"The dome was bought secondhand from a decommissioned observatory in the ___ of the country.", answer:["north"]},
+  {n:12, stem:"The new mirror was built by a retired ___.", answer:["engineer"]},
+  {n:13, stem:"Building the mirror took around ___ months.", answer:["eighteen"]},
+  {n:14, stem:"On busiest nights, the observatory now turns visitors away once numbers pass ___.", answer:["ninety"]},
+  {n:15, stem:"Next year's main priority is building a ___ for wheelchair access.", answer:["ramp"]}
+];
+
+const p3lines = [
+  {speaker:'I', text:"So, the term '15-minute city' gets thrown around a lot these days, but I suspect not everyone actually knows what it means. Could you define it for us?"},
+  {speaker:'O', text:"Sure — the basic idea is that most of what you need for daily life, work aside perhaps, should be reachable on foot or by bike within about fifteen minutes of your home. Groceries, a doctor, a park, a school, that sort of thing."},
+  {speaker:'I', text:"It sounds almost too simple to be controversial, and yet it has been controversial."},
+  {speaker:'O', text:"It has, and I think that's partly because the phrase got picked up by people with very different agendas, some of whom weren't actually talking about urban planning at all, but about restricting how far people are allowed to travel. That's not what the concept is about, and frankly it's a fairly serious misreading of the research, but once a misunderstanding like that takes hold online, it's very difficult to correct."},
+  {speaker:'I', text:"How damaging has that been to the actual planning conversation?"},
+  {speaker:'O', text:"More than I'd like. Councils that mention the phrase now brace themselves for a backlash that has nothing to do with the policy they're proposing. Some have quietly dropped the term altogether, even while continuing to pursue more or less the same goals, just described differently. Which is a shame, because the underlying idea is genuinely popular once people understand what it actually involves."},
+  {speaker:'I', text:"Let's talk about implementation, then. What does a city actually have to do to become more like this?"},
+  {speaker:'O', text:"Honestly, less than people assume. It's rarely about knocking things down and starting again. It's usually about permitting mixed use in areas that zoning has kept artificially separated for decades — allowing a shop to open on a street that's currently residential-only, say. Small, almost bureaucratic changes that, cumulatively, transform how a neighbourhood functions."},
+  {speaker:'I', text:"Is there a city you'd point to as having got this right?"},
+  {speaker:'O', text:"I'm always wary of holding up a single city as a finished model, because none of them are finished, and circumstances vary enormously. But Paris has probably done the most sustained, deliberate work on this, precisely because the mayor built her re-election campaign around it, which gave the policy a mandate that's harder to reverse than if it had simply been announced from above."},
+  {speaker:'I', text:"Does that worry you, though — that such a significant shift in how a city works depends so heavily on one person's political survival?"},
+  {speaker:'O', text:"It should worry all of us, yes. The ideal is for these changes to become embedded enough — in zoning law, in infrastructure, in public expectation — that they outlast whoever happened to champion them. Paris isn't fully there yet. Very few cities are."},
+  {speaker:'I', text:"Last question. If a listener wanted to push for something like this in their own town, where would you tell them to start?"},
+  {speaker:'O', text:"Not with the phrase '15-minute city', for a start — I'd leave that at the door, given everything we've just discussed. Start with something concrete and local: a single street that could support a small shop, a park that needs a safer crossing. Win one small, visible thing, and the bigger argument tends to take care of itself."}
+];
+
+const p3questions = [
+  {n:16, q:"What does Dr. Okafor say about the criticism the '15-minute city' concept has received?",
+   options:["It stems mainly from a misunderstanding of what the concept actually proposes.","It is largely justified given how the policy has been implemented.","It has had little real effect on planning decisions.","It comes mainly from within the urban planning profession itself."], correct:0},
+  {n:17, q:"How have some councils responded to the controversy?",
+   options:["By abandoning their planning goals altogether.","By continuing similar policies while avoiding the controversial phrase.","By publicly defending the term at every opportunity.","By seeking legal advice before mentioning the policy."], correct:1},
+  {n:18, q:"According to Dr. Okafor, what does implementing the concept usually involve?",
+   options:["Large-scale demolition and rebuilding of city centres.","Restricting how far residents are permitted to travel.","Relocating entire communities to newly built neighbourhoods.","Making incremental changes to existing zoning rules."], correct:3},
+  {n:19, q:"What concern does Dr. Okafor express about Paris's approach?",
+   options:["That the changes may not survive beyond the current mayor's tenure.","That the policy has failed to gain public support.","That the changes have been too slow to implement.","That neighbouring cities have refused to adopt similar policies."], correct:0},
+  {n:20, q:"What advice does Dr. Okafor give to listeners wanting change in their own town?",
+   options:["To begin by lobbying national government directly.","To wait until a political leader champions the cause.","To focus on one small, visible local improvement first.","To adopt the term '15-minute city' to build public support."], correct:2}
+];
+
+const p4speakers = [
+  {n:1, name:"Speaker 1", text:"I didn't have some big epiphany, if that's what people expect. It was more that I kept extending my lunch breaks to visit a workshop near the office, until eventually I was spending more hours there than actually billing clients, which felt like a fairly obvious sign. My parents took it badly at first — you don't spend that much on law school to end up sanding table legs, as my mother rather memorably put it. Money's tighter now, certainly, and I miss the security, if I'm honest. But I've stopped dreading Monday mornings, which is more than I can say for the previous decade."},
+  {n:2, name:"Speaker 2", text:"People assume I got bored, but it wasn't boredom exactly — I was good at the job, which almost made it worse, because there was no obvious excuse to leave. What actually pushed me was watching a colleague retire after thirty years and realising he couldn't name a single thing about the work he'd miss. That terrified me more than any financial risk did. The first eighteen months in a professional kitchen nearly broke me, physically, and I won't pretend otherwise. But I've never once, on the worst shift, wondered if I made the wrong call."},
+  {n:3, name:"Speaker 3", text:"Honestly, I resent the framing a little — 'career change' makes it sound braver and more deliberate than it was. I got made redundant, taught myself to code out of necessity rather than passion, and only fell in love with it somewhere around month eight, once I'd stopped panicking about money. I still teach, in a sense — I just do it through tutorials now instead of a classroom. If anything, I'm slightly wary of people who romanticise reinvention, because for me it started as something closer to desperation."},
+  {n:4, name:"Speaker 4", text:"I loved nursing, genuinely, right up until I didn't, and that shift happened faster than I expected — a few months, not years. Burnout, I suppose, though I resisted that word for a long time because it felt like giving up. What I didn't expect was how much I'd miss the sense of usefulness; restoring an old chair is satisfying, but it doesn't compare to the feeling of actually helping someone through a bad night. I sometimes wonder whether I left too early, before trying harder to fix what was wrong, rather than leaving the profession altogether."},
+  {n:5, name:"Speaker 5", text:"Colleagues still ask if I regret the pay cut, and the honest answer is that I did the maths so many times beforehand that the number stopped being able to shock me. What surprised me was something nobody warned me about: how physically exhausting the job is, in a way that finance, whatever else you say about it, simply wasn't. I go home most days more tired than I ever was pulling long nights on a trading floor. But I've also never come home from banking excited to tell someone about my day, and now I do, most days."}
+];
+
+const p4task1options = [
+  {letter:'A', text:"A colleague's example made them reconsider their priorities."},
+  {letter:'B', text:"They wanted more financial security."},
+  {letter:'C', text:"A change in personal circumstances forced the decision."},
+  {letter:'D', text:"They had long dreamed of the new profession."},
+  {letter:'E', text:"Exhaustion made it impossible to continue in the previous job."},
+  {letter:'F', text:"A specific comment from a family member changed their mind."},
+  {letter:'G', text:"The change came about gradually, without one deciding moment."},
+  {letter:'H', text:"They carefully planned the financial side of the decision in advance."}
+];
+const p4task1answers = {21:'G', 22:'A', 23:'C', 24:'E', 25:'H'};
+
+const p4task2options = [
+  {letter:'A', text:"Wonders whether they gave up on the previous career too soon."},
+  {letter:'B', text:"Weighs a specific loss against a clear overall improvement in wellbeing."},
+  {letter:'C', text:"Feels uncomfortable being seen as an example to others."},
+  {letter:'D', text:"Is still adjusting to the change and remains unsure."},
+  {letter:'E', text:"Accepts a new, unexpected hardship in exchange for greater job satisfaction."},
+  {letter:'F', text:"Has never doubted the decision despite a difficult transition."},
+  {letter:'G', text:"Rejects the idea that the decision required unusual courage."},
+  {letter:'H', text:"Believes the decision has damaged a key relationship."}
+];
+const p4task2answers = {26:'B', 27:'F', 28:'G', 29:'A', 30:'E'};
+
+const letters3 = ['A','B','C'];
+const letters4 = ['A','B','C','D'];
+
+// ---------------- BUILD PART 1 ----------------
+const p1recsDiv = document.getElementById('p1recs');
+p1recs.forEach((rec, idx)=>{
+  const card = document.createElement('div');
+  card.className = 'rec-card';
+  card.innerHTML = `
+    <div class="rec-title">${rec.title}</div>
+    <div class="play-row">
+      <button class="play-btn" id="p1play${idx}">▶ Play extract</button>
+      <span class="play-count" id="p1count${idx}">2 plays remaining</span>
+    </div>
+    <details class="transcript"><summary>Show transcript (teacher use)</summary><div class="ttext">${rec.text}</div></details>
+    <div class="qgrid" style="margin-top:14px;" id="p1qgrid${idx}"></div>
+  `;
+  p1recsDiv.appendChild(card);
+
+  let plays = 2;
+  const btn = card.querySelector(`#p1play${idx}`);
+  const cnt = card.querySelector(`#p1count${idx}`);
+  btn.addEventListener('click', ()=>{
+    if(plays <= 0) return;
+    btn.disabled = true;
+    speakLines([{text:rec.text}], ()=>{ btn.disabled = (plays<=0); });
+    plays--;
+    cnt.textContent = plays > 0 ? `${plays} play${plays>1?'s':''} remaining` : 'No plays remaining';
+    if(plays <= 0){ setTimeout(()=>{btn.disabled=true;}, 100); }
+  });
+
+  const qgrid = card.querySelector(`#p1qgrid${idx}`);
+  rec.questions.forEach(item=>{
+    const qcard = document.createElement('div');
+    qcard.className = 'qcard';
+    qcard.innerHTML = `<span class="qnum">Question ${item.n}</span><div class="qtext">${item.q}</div><div class="options" id="p1opts${item.n}"></div>`;
+    qgrid.appendChild(qcard);
+    const optsDiv = qcard.querySelector(`#p1opts${item.n}`);
+    item.options.forEach((opt,i)=>{
+      const label = document.createElement('label');
+      label.className = 'opt';
+      label.innerHTML = `<input type="radio" name="q${item.n}" value="${i}"> <span><strong>${letters3[i]}</strong> ${opt}</span>`;
+      optsDiv.appendChild(label);
+    });
+  });
+});
+
+// ---------------- BUILD PART 2 ----------------
+document.getElementById('p2transcript').textContent = p2text;
+let p2plays = 2;
+document.getElementById('p2play').addEventListener('click', function(){
+  if(p2plays <= 0) return;
+  this.disabled = true;
+  const btn = this;
+  speakLines([{text:p2text}], ()=>{ btn.disabled = (p2plays<=0); });
+  p2plays--;
+  document.getElementById('p2count').textContent = p2plays > 0 ? `${p2plays} play${p2plays>1?'s':''} remaining` : 'No plays remaining';
+});
+
+const p2grid = document.getElementById('p2grid');
+p2questions.forEach(item=>{
+  const qcard = document.createElement('div');
+  qcard.className = 'qcard';
+  const parts = item.stem.split('___');
+  qcard.innerHTML = `<span class="qnum">Question ${item.n}</span><div class="qtext">${parts[0]}<input type="text" class="text-answer" data-q="${item.n}" style="width:150px;">${parts[1]}</div>`;
+  p2grid.appendChild(qcard);
+});
+
+// ---------------- BUILD PART 3 ----------------
+document.getElementById('p3transcript').textContent = p3lines.map(l => (l.speaker==='I'?'Interviewer: ':'Dr. Okafor: ')+l.text).join('\n\n');
+let p3plays = 2;
+document.getElementById('p3play').addEventListener('click', function(){
+  if(p3plays <= 0) return;
+  this.disabled = true;
+  const btn = this;
+  const lines = p3lines.map(l => ({text:l.text, voiceOffset: l.speaker==='I'?0:1, pitch: l.speaker==='I'?1:1.15}));
+  speakLines(lines, ()=>{ btn.disabled = (p3plays<=0); });
+  p3plays--;
+  document.getElementById('p3count').textContent = p3plays > 0 ? `${p3plays} play${p3plays>1?'s':''} remaining` : 'No plays remaining';
+});
+
+const p3grid = document.getElementById('p3grid');
+p3questions.forEach(item=>{
+  const qcard = document.createElement('div');
+  qcard.className = 'qcard';
+  qcard.innerHTML = `<span class="qnum">Question ${item.n}</span><div class="qtext">${item.q}</div><div class="options" id="p3opts${item.n}"></div>`;
+  p3grid.appendChild(qcard);
+  const optsDiv = qcard.querySelector(`#p3opts${item.n}`);
+  item.options.forEach((opt,i)=>{
+    const label = document.createElement('label');
+    label.className = 'opt';
+    label.innerHTML = `<input type="radio" name="q${item.n}" value="${i}"> <span><strong>${letters4[i]}</strong> ${opt}</span>`;
+    optsDiv.appendChild(label);
+  });
+});
+
+// ---------------- BUILD PART 4 ----------------
+const p4recsDiv = document.getElementById('p4recs');
+p4speakers.forEach((sp, idx)=>{
+  const card = document.createElement('div');
+  card.className = 'rec-card';
+  card.innerHTML = `
+    <div class="rec-title">${sp.name}</div>
+    <div class="play-row">
+      <button class="play-btn" id="p4play${idx}">▶ Play</button>
+      <span class="play-count" id="p4count${idx}">2 plays remaining</span>
+    </div>
+    <details class="transcript"><summary>Show transcript (teacher use)</summary><div class="ttext">${sp.text}</div></details>
+  `;
+  p4recsDiv.appendChild(card);
+  let plays = 2;
+  const btn = card.querySelector(`#p4play${idx}`);
+  const cnt = card.querySelector(`#p4count${idx}`);
+  btn.addEventListener('click', ()=>{
+    if(plays <= 0) return;
+    btn.disabled = true;
+    speakLines([{text:sp.text}], ()=>{ btn.disabled = (plays<=0); });
+    plays--;
+    cnt.textContent = plays > 0 ? `${plays} play${plays>1?'s':''} remaining` : 'No plays remaining';
+  });
+});
+
+// drag-and-drop / click-to-assign builder
+function buildMatchingTask(bankId, taskId, options, answersMap, speakers){
+  const bank = document.getElementById(bankId);
+  const task = document.getElementById(taskId);
+  let selectedChip = null;
+
+  options.forEach(opt=>{
+    const chip = document.createElement('div');
+    chip.className = 'chip';
+    chip.draggable = true;
+    chip.dataset.letter = opt.letter;
+    chip.textContent = `${opt.letter}  ${opt.text}`;
+    chip.addEventListener('click', ()=>{
+      if(chip.classList.contains('used')) return;
+      bank.querySelectorAll('.chip').forEach(c=>c.classList.remove('selected'));
+      chip.classList.add('selected');
+      selectedChip = chip;
+    });
+    chip.addEventListener('dragstart', (e)=>{
+      e.dataTransfer.setData('text/plain', opt.letter);
+    });
+    bank.appendChild(chip);
+  });
+
+  speakers.forEach((sp, i)=>{
+    const qn = Object.keys(answersMap)[i];
+    const row = document.createElement('div');
+    row.className = 'drop-row';
+    row.innerHTML = `<span class="speaker-label">Q${qn} · ${sp.name}</span><div class="drop-zone" id="${taskId}zone${qn}" data-q="${qn}">Tap or drag an option here</div>`;
+    task.appendChild(row);
+    const zone = row.querySelector(`#${taskId}zone${qn}`);
+
+    zone.addEventListener('click', ()=>{
+      if(!selectedChip) return;
+      assignToZone(zone, selectedChip.dataset.letter, options);
+      bank.querySelectorAll('.chip').forEach(c=>{
+        if(c === selectedChip){ c.classList.add('used'); c.classList.remove('selected'); }
+      });
+      selectedChip = null;
+    });
+    zone.addEventListener('dragover', (e)=>{ e.preventDefault(); zone.classList.add('dragover'); });
+    zone.addEventListener('dragleave', ()=>{ zone.classList.remove('dragover'); });
+    zone.addEventListener('drop', (e)=>{
+      e.preventDefault();
+      zone.classList.remove('dragover');
+      const letter = e.dataTransfer.getData('text/plain');
+      assignToZone(zone, letter, options);
+      bank.querySelectorAll('.chip').forEach(c=>{
+        if(c.dataset.letter === letter){ c.classList.add('used'); c.classList.remove('selected'); }
+      });
+    });
+  });
+
+  function assignToZone(zone, letter, options){
+    // free up any previous letter used in this zone
+    const prevLetter = zone.dataset.value;
+    if(prevLetter){
+      bank.querySelectorAll('.chip').forEach(c=>{ if(c.dataset.letter===prevLetter) c.classList.remove('used'); });
+    }
+    const opt = options.find(o=>o.letter===letter);
+    zone.textContent = `${letter}  ${opt.text}`;
+    zone.dataset.value = letter;
+    zone.classList.add('filled');
+    zone.classList.remove('correct','incorrect');
+  }
+}
+
+buildMatchingTask('p4bank1','p4task1', p4task1options, p4task1answers, p4speakers);
+buildMatchingTask('p4bank2','p4task2', p4task2options, p4task2answers, p4speakers);
+
+// ---------------- TABS ----------------
+document.querySelectorAll('nav.tabs button').forEach(btn=>{
+  btn.addEventListener('click', ()=>goPart(parseInt(btn.dataset.part)));
+});
+function goPart(n){
+  speechSynthesis.cancel();
+  document.querySelectorAll('section.part').forEach(s=>s.classList.remove('active'));
+  document.getElementById('part'+n).classList.add('active');
+  document.querySelectorAll('nav.tabs button').forEach(b=>b.classList.toggle('active', parseInt(b.dataset.part)===n));
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ---------------- CHECKING ----------------
+function norm(s){ return (s||'').trim().toLowerCase().replace(/\s+/g,' '); }
+
+function checkAll(){
+  let score = 0;
+  const total = 30;
+
+  p1recs.forEach(rec=>{
+    rec.questions.forEach(item=>{
+      const chosen = document.querySelector(`input[name="q${item.n}"]:checked`);
+      const optsDiv = document.getElementById('p1opts'+item.n);
+      optsDiv.querySelectorAll('.opt').forEach((label,i)=>{
+        label.classList.remove('correct','incorrect');
+        if(i===item.correct) label.classList.add('correct');
+        else if(chosen && parseInt(chosen.value)===i) label.classList.add('incorrect');
+      });
+      if(chosen && parseInt(chosen.value)===item.correct) score++;
+    });
+  });
+
+  p2questions.forEach(item=>{
+    const input = document.querySelector(`input[data-q="${item.n}"]`);
+    const ok = item.answer.map(norm).includes(norm(input.value));
+    input.classList.remove('correct','incorrect');
+    input.classList.add(ok?'correct':'incorrect');
+    if(ok) score++;
+  });
+
+  p3questions.forEach(item=>{
+    const chosen = document.querySelector(`input[name="q${item.n}"]:checked`);
+    const optsDiv = document.getElementById('p3opts'+item.n);
+    optsDiv.querySelectorAll('.opt').forEach((label,i)=>{
+      label.classList.remove('correct','incorrect');
+      if(i===item.correct) label.classList.add('correct');
+      else if(chosen && parseInt(chosen.value)===i) label.classList.add('incorrect');
+    });
+    if(chosen && parseInt(chosen.value)===item.correct) score++;
+  });
+
+  [ [p4task1answers,'p4task1'], [p4task2answers,'p4task2'] ].forEach(([answers, taskId])=>{
+    Object.keys(answers).forEach(qn=>{
+      const zone = document.getElementById(`${taskId}zone${qn}`);
+      const val = zone.dataset.value;
+      const ok = val === answers[qn];
+      zone.classList.remove('correct','incorrect');
+      zone.classList.add(ok?'correct':'incorrect');
+      if(ok) score++;
+    });
+  });
+
+  document.getElementById('scoreBanner').style.display='flex';
+  document.getElementById('scoreText').textContent = `${score} / ${total}`;
+  document.getElementById('scoreBanner').scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+
+function revealKey(){
+  let lines = [];
+  lines.push('PART 1: ' + p1recs.flatMap(r=>r.questions).map(q=>q.n+letters3[q.correct]).join('  '));
+  lines.push('PART 2: ' + p2questions.map(q=>q.n+' '+q.answer[0]).join('  '));
+  lines.push('PART 3: ' + p3questions.map(q=>q.n+letters4[q.correct]).join('  '));
+  lines.push('PART 4 Task 1: ' + Object.keys(p4task1answers).map(k=>k+' '+p4task1answers[k]).join('  '));
+  lines.push('PART 4 Task 2: ' + Object.keys(p4task2answers).map(k=>k+' '+p4task2answers[k]).join('  '));
+  alert(lines.join('\n\n'));
+}
+
+function resetExam(){
+  document.querySelectorAll('input[type=radio]').forEach(i=>{i.checked=false;});
+  document.querySelectorAll('input[type=text]').forEach(i=>{i.value='';i.classList.remove('correct','incorrect');});
+  document.querySelectorAll('.opt').forEach(o=>o.classList.remove('correct','incorrect'));
+  document.querySelectorAll('.drop-zone').forEach(z=>{
+    z.textContent = 'Tap or drag an option here';
+    delete z.dataset.value;
+    z.classList.remove('filled','correct','incorrect');
+  });
+  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('used','selected'));
+  document.getElementById('scoreBanner').style.display='none';
+  speechSynthesis.cancel();
+  goPart(1);
+}
+</script>
+</body>
+</html>
