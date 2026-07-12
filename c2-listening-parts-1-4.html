@@ -146,6 +146,9 @@
     </div>
     <div class="note">Voice-generated audio: click Play on each extract below. You have two plays per extract, as in the real exam.</div>
 
+    <div class="note" id="voiceHelp" style="display:none;">
+      <strong>⚠ No English voice found on this device.</strong> Windows: Settings → Time &amp; Language → Speech → "Add voices" → search "English" and install one (e.g. English (United States)). Then reload this page. On macOS: System Settings → Accessibility → Spoken Content → System Voice → manage voices.
+    </div>
     <div id="p1recs"></div>
 
     <div class="part-footer">
@@ -263,9 +266,11 @@ function qualityScore(v){
 }
 
 function loadVoices(){
-  let list = speechSynthesis.getVoices().filter(v => v.lang.startsWith('en'));
-  if(list.length === 0) list = speechSynthesis.getVoices();
-  if(list.length === 0) return false; // not ready yet
+  let all = speechSynthesis.getVoices();
+  if(all.length === 0) return false; // not ready yet
+  let list = all.filter(v => v.lang.toLowerCase().startsWith('en'));
+  const englishAvailable = list.length > 0;
+  if(!englishAvailable) list = all; // fallback so the page still works, but we warn clearly below
   list.sort((a,b)=> qualityScore(a) - qualityScore(b));
   voices = list;
   voiceSelect.innerHTML = '';
@@ -276,7 +281,17 @@ function loadVoices(){
   });
   voicesReady = true;
   setPlayButtonsEnabled(true);
-  if(voiceStatus) voiceStatus.textContent = `${voices.length} voice(s) found — best available selected.`;
+  if(voiceStatus){
+    if(englishAvailable){
+      voiceStatus.textContent = `${voices.length} English voice(s) found — best available selected.`;
+      voiceStatus.style.color = 'var(--gold)';
+    } else {
+      voiceStatus.textContent = `⚠ No English voice installed on this device — see instructions below.`;
+      voiceStatus.style.color = '#FF8A80';
+    }
+  }
+  const helpBox = document.getElementById('voiceHelp');
+  if(helpBox) helpBox.style.display = englishAvailable ? 'none' : 'block';
   return true;
 }
 
