@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>C2 Proficiency · Reading (Parts 5–7)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0B1F3A; --navy-deep:#071527;
+    --teal:#0F766E; --teal-light:#14A89A;
+    --gold:#C9A227;
+    --paper:#F7F5F0; --paper-dim:#EFEBE1;
+    --ink:#1B2430; --ink-soft:#4A5568;
+    --correct:#1E7A4C; --incorrect:#B3423A;
+    --border:#D8D2C2; --radius:10px;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:'Inter',sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased;}
+
+  header.top{background:linear-gradient(160deg,var(--navy) 0%,var(--navy-deep) 100%);color:var(--paper);padding:32px 24px 24px;border-bottom:4px solid var(--gold);}
+  header.top .inner{max-width:1180px;margin:0 auto;}
+  .eyebrow{font-family:'IBM Plex Mono',monospace;letter-spacing:.14em;text-transform:uppercase;font-size:12px;color:var(--teal-light);margin-bottom:8px;}
+  h1{font-family:'Fraunces',serif;font-weight:700;font-size:clamp(26px,4vw,36px);margin:0 0 6px;letter-spacing:-.01em;}
+  header.top p.sub{color:#C7CEDC;font-size:14.5px;margin:0 0 16px;max-width:70ch;}
+  .meta-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;}
+  .badge{font-family:'IBM Plex Mono',monospace;font-size:11.5px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);color:#E6E9F0;padding:5px 11px;border-radius:999px;}
+
+  nav.tabs{display:flex;gap:6px;max-width:1180px;margin:0 auto;padding:14px 24px 0;flex-wrap:wrap;position:sticky;top:0;background:var(--paper);z-index:20;}
+  nav.tabs button{font-family:'IBM Plex Mono',monospace;font-size:13px;padding:10px 18px;border-radius:8px 8px 0 0;border:1px solid var(--border);border-bottom:none;background:var(--paper-dim);color:var(--ink-soft);cursor:pointer;}
+  nav.tabs button.active{background:#fff;color:var(--navy);font-weight:600;border-color:var(--teal);}
+
+  .wrap{max-width:1180px;margin:0 auto;padding:0 24px 80px;}
+  main{background:#fff;border:1px solid var(--border);border-top:none;border-radius:0 0 var(--radius) var(--radius);}
+  section.part{padding:26px 26px 12px;display:none;}
+  section.part.active{display:block;}
+
+  .part-head{border-bottom:2px solid var(--paper-dim);padding-bottom:14px;margin-bottom:20px;}
+  .part-head .num{font-family:'IBM Plex Mono',monospace;color:var(--teal);font-size:12.5px;letter-spacing:.08em;}
+  .part-head h2{font-family:'Fraunces',serif;font-size:22px;margin:4px 0 8px;color:var(--navy);}
+  .part-head .instructions{font-size:14px;color:var(--ink-soft);background:var(--paper-dim);border-left:3px solid var(--gold);padding:10px 14px;border-radius:6px;}
+
+  /* split layout */
+  .reading-layout{display:flex;gap:22px;align-items:flex-start;}
+  .text-pane, .q-pane{flex:1;min-width:0;}
+  .text-pane{flex:1.15;}
+  @media(min-width:901px){
+    .text-pane, .q-pane{
+      max-height:calc(100vh - 130px);
+      overflow-y:auto;
+      position:sticky; top:118px;
+      padding-right:6px;
+    }
+    .q-pane{padding-right:0;padding-left:6px;}
+  }
+  @media(max-width:900px){
+    .reading-layout{flex-direction:column;}
+  }
+
+  .passage{font-family:'Fraunces',serif;font-size:16.5px;line-height:1.8;color:var(--ink);}
+  .passage h3{font-family:'Inter',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.05em;font-size:14px;color:var(--navy);margin-bottom:4px;}
+  .passage .byline{font-family:'Inter',sans-serif;font-size:12.5px;color:var(--ink-soft);margin-bottom:14px;}
+  .passage p{margin:0 0 14px;}
+  .section-tag{font-family:'IBM Plex Mono',monospace;font-weight:700;color:#fff;background:var(--teal);border-radius:5px;padding:2px 9px;font-size:13px;margin-right:8px;}
+  .gap-badge{font-family:'IBM Plex Mono',monospace;font-weight:600;color:#fff;background:var(--navy);border-radius:5px;padding:2px 9px;font-size:12.5px;display:inline-block;margin:6px 0;}
+
+  .qcard{border:1px solid var(--border);border-radius:var(--radius);padding:13px 15px;background:var(--paper);margin-bottom:14px;}
+  .qcard .qnum{font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--navy);font-size:12.5px;margin-bottom:6px;display:block;}
+  .qcard .qtext{font-size:14.5px;margin-bottom:10px;}
+  .options{display:grid;gap:7px;}
+  .opt{display:flex;align-items:flex-start;gap:8px;border:1px solid var(--border);border-radius:7px;padding:7px 9px;font-size:13.8px;cursor:pointer;background:#fff;}
+  .opt:hover{border-color:var(--teal);}
+  .opt input{accent-color:var(--teal);margin-top:3px;}
+  .opt.correct{border-color:var(--correct);background:#EAF6EE;}
+  .opt.incorrect{border-color:var(--incorrect);background:#FBEBEA;}
+
+  select.letter-select{font-family:'IBM Plex Mono',monospace;font-size:14px;border:1px solid var(--border);border-radius:6px;padding:5px 8px;background:#fff;}
+  select.letter-select.correct{border-color:var(--correct);background:#EAF6EE;}
+  select.letter-select.incorrect{border-color:var(--incorrect);background:#FBEBEA;}
+
+  .letter-btns{display:flex;gap:6px;flex-wrap:wrap;}
+  .lbtn{font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600;border:1px solid var(--border);background:#fff;border-radius:6px;padding:6px 12px;cursor:pointer;}
+  .lbtn:hover{border-color:var(--teal);}
+  .lbtn.selected{background:var(--navy);color:#fff;border-color:var(--navy);}
+  .lbtn.correct{background:var(--correct);color:#fff;border-color:var(--correct);}
+  .lbtn.incorrect{background:var(--incorrect);color:#fff;border-color:var(--incorrect);}
+
+  .part-footer{display:flex;justify-content:space-between;align-items:center;padding:20px 0 28px;flex-wrap:wrap;gap:12px;}
+  .btn{font-family:'Inter',sans-serif;font-weight:600;font-size:14px;border:none;border-radius:8px;padding:11px 22px;cursor:pointer;}
+  .btn.primary{background:var(--navy);color:#fff;}
+  .btn.primary:hover{background:var(--teal);}
+  .btn.ghost{background:transparent;border:1px solid var(--border);color:var(--ink-soft);}
+  .btn.ghost:hover{border-color:var(--navy);color:var(--navy);}
+
+  .score-banner{margin:0 26px 24px;padding:16px 20px;border-radius:var(--radius);background:var(--navy);color:#fff;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;}
+  .score-banner .big{font-family:'Fraunces',serif;font-size:24px;color:var(--gold);}
+
+  .option-bank{background:var(--paper-dim);border-radius:var(--radius);padding:14px 16px;margin-bottom:16px;}
+  .option-bank .obtitle{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin-bottom:10px;}
+  .option-bank .para{font-family:'Fraunces',serif;font-size:14.8px;margin-bottom:10px;padding-left:8px;border-left:2px solid var(--border);}
+
+  footer.sitefoot{text-align:center;padding:26px 24px 40px;color:var(--ink-soft);font-size:13px;}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="inner">
+    <div class="eyebrow">C2 Proficiency (CPE) &middot; Practice Material &middot; Session II</div>
+    <h1>Reading</h1>
+    <p class="sub">Original practice tasks in the genuine CPE digital-exam layout — text on the left, questions on the right, each scrolling independently. Parts 5–7.</p>
+    <div class="meta-row">
+      <span class="badge">Parts 5–7</span>
+      <span class="badge">23 questions</span>
+      <span class="badge">Suggested time: 50 min</span>
+    </div>
+  </div>
+</header>
+
+<nav class="tabs" id="tabs">
+  <button data-part="5" class="active">Part 5</button>
+  <button data-part="6">Part 6</button>
+  <button data-part="7">Part 7</button>
+</nav>
+
+<div class="wrap" style="padding:0;">
+<main>
+
+  <!-- PART 5 -->
+  <section class="part active" id="part5">
+    <div class="part-head">
+      <div class="num">PART 5 &middot; QUESTIONS 31–36 &middot; 2 MARKS EACH</div>
+      <h2>Multiple choice</h2>
+      <div class="instructions">You are going to read an extract from a novel. For each question, choose the answer (A, B, C or D) which fits best according to the text.</div>
+    </div>
+
+    <div class="reading-layout">
+      <div class="text-pane">
+        <div class="passage">
+          <h3>Elena takes charge of the family bookshop</h3>
+          <p>When her grandmother died, Elena inherited not only the bookshop on Cobbler's Lane but also a stock of unsold optimism that had accumulated for the better part of forty years. The shop smelled of dust and pipe tobacco long since extinguished, and the shelves sagged under editions nobody had asked for in a decade. Her cousins had assumed she would sell the premises within the month; property on that street had become absurdly valuable, and nobody, they reasoned, opened a bookshop in this day and age unless they were sentimental to the point of foolishness.</p>
+          <p>Elena was not, she told herself, being sentimental. She simply could not shake the sense that liquidating the place — handing it over to be gutted and turned into another shop selling scented candles — would be a kind of theft, though she could not have said from whom. Her grandmother had never once suggested that Elena take over; if anything, the old woman had been almost apologetic about the business, referring to it, on the rare occasions she mentioned it at all, as 'the millstone'. And yet she had kept it open, quarter after unprofitable quarter, long past the point where sentiment alone could explain it.</p>
+          <p>It took Elena the better part of a year to understand why. The bookshop, she came to see, was not a business that happened to sell books; it was an argument, conducted daily and without fanfare, that certain things ought to exist regardless of whether they paid for themselves. Her grandmother had never articulated this, because articulating it would have made it sound like a manifesto, and manifestos embarrassed her. She had simply gone on ordering the poetry nobody bought and the local history nobody read, and had trusted that the ledger would sort itself out, which, more often than not, it hadn't.</p>
+          <p>Elena's first instinct, on taking over, was to modernise: a coffee machine, a rearrangement of the window display, a website. She did all these things, and none of them made the slightest difference to the accounts, though the coffee machine did at least mean she no longer had to walk to the café next door. What changed the shop's fortunes, when they eventually changed, was something she had not planned at all. A customer, browsing the poetry section that her grandmother had stubbornly maintained despite years of losses, mentioned in passing that he ran a small reading group that met nowhere in particular because nowhere in particular would have them. Elena, more from politeness than strategy, offered the back room.</p>
+          <p>Within six months there were four such groups, meeting on different evenings, none of them paying rent, all of them buying books they would otherwise have borrowed from the library or not read at all. The accountant, when he saw the figures, was baffled; nothing about the arrangement made obvious commercial sense, and yet the shop was, for the first time in a decade, comfortably solvent. Elena found she could not fully explain this to him, any more than her grandmother could have explained the ledger, and she suspected that the explanation, if there was one, had less to do with commerce than with the fact that people will pay, eventually and indirectly, for a room that takes them seriously.</p>
+          <p>She thought of her grandmother often in those months, and of the word 'millstone', which she now understood rather differently. It had not been self-pity, she realised, nor even complaint, but something closer to a private joke — the old woman's way of acknowledging the absurdity of the enterprise without ever quite admitting how much it mattered to her. Elena, for her part, had stopped bothering to justify the shop to her cousins. It was, she had decided, none of their business why a room full of unfashionable books should be allowed to go on existing; it was enough that it did.</p>
+        </div>
+      </div>
+
+      <div class="q-pane" id="p5grid"></div>
+    </div>
+
+    <div class="part-footer">
+      <button class="btn ghost" onclick="goPart(6)">Next: Part 6 →</button>
+    </div>
+  </section>
+
+  <!-- PART 6 -->
+  <section class="part" id="part6">
+    <div class="part-head">
+      <div class="num">PART 6 &middot; QUESTIONS 37–43 &middot; 2 MARKS EACH</div>
+      <h2>Gapped text</h2>
+      <div class="instructions">Seven paragraphs have been removed from the article and are listed, in jumbled order, in the panel on the right. Read paragraphs A–H and decide which one fits each gap. There is one extra paragraph you do not need.</div>
+    </div>
+
+    <div class="reading-layout">
+      <div class="text-pane">
+        <div class="passage">
+          <h3>The River That Remembered Itself</h3>
+          <p>For the first time in over four hundred years, the unmistakable slap of a beaver's tail against water can be heard along the Afon Einion, a modest river in the hills of central Wales. The animals were reintroduced sixteen months ago as part of a rewilding trial, and the changes since then have startled even the ecologists who proposed the project.</p>
+          <div class="gap-badge">GAP 37</div>
+          <div class="gap-badge">GAP 38</div>
+          <div class="gap-badge">GAP 39</div>
+          <div class="gap-badge">GAP 40</div>
+          <div class="gap-badge">GAP 41</div>
+          <div class="gap-badge">GAP 42</div>
+          <div class="gap-badge">GAP 43</div>
+          <p style="margin-top:14px;">Whether the Einion trial becomes a template for the rest of Britain remains to be seen, but for now, at least, the river appears to be remembering a version of itself that predates any of us.</p>
+        </div>
+      </div>
+
+      <div class="q-pane">
+        <div class="option-bank">
+          <div class="obtitle">Paragraphs A–H</div>
+          <div class="para"><strong>A</strong> — Ecologists monitoring the site have also recorded a marked increase in invertebrate life, with several species of dragonfly appearing for the first time in living memory. Otters, herons and a pair of nesting kingfishers have since been spotted exploiting the newly abundant pools.</div>
+          <div class="para"><strong>B</strong> — A similar reintroduction scheme involving Eurasian lynx has been proposed for a forested estate in Scotland, though the project remains at a much earlier stage, hampered by opposition from sheep farmers concerned about predation.</div>
+          <div class="para"><strong>C</strong> — Not everyone welcomed their return. Local farmers, many of whom depend on the same water courses for irrigation, warned that beaver dams could flood grazing land and block irrigation channels. Several attended early consultation meetings specifically to register their opposition.</div>
+          <div class="para"><strong>D</strong> — Encouraged by these results, the trust behind the project is now lobbying for permission to release beavers along two further stretches of river nearby, arguing that a connected network of wetlands would multiply the benefits observed so far.</div>
+          <div class="para"><strong>E</strong> — Beavers were hunted to extinction in Britain by the sixteenth century, prized for their fur, their meat, and a glandular secretion once used in medicine and perfumery. Their disappearance went largely unmourned at the time; nobody thought to ask what a landscape without beavers might eventually come to lack.</div>
+          <div class="para"><strong>F</strong> — The consequences of this engineering have proved unexpectedly beneficial downstream. During a period of heavy rainfall last winter, the newly created wetland absorbed and slowed a volume of water that would previously have surged directly into the village below, sparing several houses from the flooding they had suffered in previous years.</div>
+          <div class="para"><strong>G</strong> — What nobody quite anticipated was the speed at which the animals would reshape the landscape. Within weeks, a single breeding pair had constructed a dam some eleven metres long, transforming a narrow, fast-flowing stretch of the Einion into a slow, braided wetland dotted with pools.</div>
+          <div class="para"><strong>H</strong> — Perhaps most strikingly, several of the farmers who had initially objected to the project have since changed their view. One, whose land borders the wetland, admits that his early fears proved largely unfounded, and that the new pools have, if anything, improved the reliability of his water supply during dry spells.</div>
+        </div>
+
+        <div class="qgrid" id="p6grid"></div>
+      </div>
+    </div>
+
+    <div class="part-footer">
+      <button class="btn ghost" onclick="goPart(5)">← Part 5</button>
+      <button class="btn ghost" onclick="goPart(7)">Next: Part 7 →</button>
+    </div>
+  </section>
+
+  <!-- PART 7 -->
+  <section class="part" id="part7">
+    <div class="part-head">
+      <div class="num">PART 7 &middot; QUESTIONS 44–53 &middot; 1 MARK EACH</div>
+      <h2>Multiple matching</h2>
+      <div class="instructions">You are going to read an extract about translation. For each question, choose from the sections (A–E). The sections may be chosen more than once.</div>
+    </div>
+
+    <div class="reading-layout">
+      <div class="text-pane">
+        <div class="passage">
+          <h3>Translation: The Art of Faithful Betrayal</h3>
+          <p><span class="section-tag">A</span>Translation is very nearly as old as writing itself. The earliest known translated texts include bilingual inscriptions from the ancient Near East, produced not for literary pleasure but for administrative necessity: treaties, trade agreements and royal decrees needed to be intelligible to more than one people if they were to have any force at all. Religious translation, too, has an ancient pedigree; sacred texts were rendered into new languages partly to spread doctrine and partly, more subtly, to anchor a foreign faith within a local culture, adapting its idiom until it felt, to new readers, as though it had always belonged to them. In this sense, translation has never been merely a technical exercise in substituting one vocabulary for another; from its earliest instances, it has been an act with the power to reshape the culture that receives it, sometimes as profoundly as it reflects the culture from which it came.</p>
+          <p><span class="section-tag">B</span>For centuries, translators and their critics have argued over where a translator's loyalty properly lies: with the exact words of the original, or with the effect those words were intended to produce. Scholars in classical antiquity already distinguished between rendering a text 'word for word' and rendering it 'sense for sense', and the tension between these two approaches has never been fully resolved. A translation that hews closely to the original's grammar and vocabulary risks producing something stilted or, worse, unintelligible in the new language; one that prioritises fluency and naturalness risks drifting so far from the original that it becomes, in effect, a new work bearing only a passing resemblance to its source. Every translator, whether they acknowledge it or not, makes a thousand small decisions that fall somewhere between these two poles.</p>
+          <p><span class="section-tag">C</span>There is a peculiar convention in publishing whereby the best translations are those readers do not notice at all: a good translator, it is often said, should be invisible, their intervention undetectable, so that readers feel they are encountering the author directly rather than through an intermediary. This standard, though widely held, sits uneasily with what translation actually requires, which is an act of literary creation in its own right. A translator must find, in an entirely different language, equivalents for wordplay, rhythm and cultural reference that frequently have no direct counterpart; where no equivalent exists, they must invent one, drawing on their own resources as a writer. It is telling that some of the most celebrated translations in literary history are prized precisely for the distinctive voice their translator brought to the task, even as the convention of invisibility persists in how such work is discussed and, all too often, credited.</p>
+          <p><span class="section-tag">D</span>The last decade has seen automated translation tools improve at a pace that would have seemed implausible only a generation ago, to the point where they now produce serviceable renderings of straightforward text almost instantaneously. Yet for all their fluency, these systems continue to falter precisely where translation is hardest: idiom, irony, ambiguity deliberately left unresolved, and register calibrated to a specific audience. A system trained overwhelmingly on the patterns of existing text has little basis for judging when a departure from those patterns is exactly what a passage requires, and can mistake a writer's studied peculiarity of style for an error to be smoothed away. Professional translators report that the tools are most useful as a rough first draft, one that still demands substantial human revision before it can be trusted with anything of consequence.</p>
+          <p><span class="section-tag">E</span>It seems unlikely, in the near term at least, that literary translation will be surrendered entirely to machines, though the boundary between human and automated work is shifting rapidly in less prestigious corners of the field, such as technical manuals and routine correspondence. What is emerging instead is a division of labour in which software handles volume and speed, while human translators are reserved for texts where nuance, cultural sensitivity or authorial voice genuinely matter. Whether this division proves stable is another question; as machine systems continue to improve, the category of texts considered to require a human touch may simply keep shrinking, paragraph by paragraph, until only the most demanding literary work remains reliably human territory — for now.</p>
+        </div>
+      </div>
+
+      <div class="q-pane" id="p7grid"></div>
+    </div>
+
+    <div class="part-footer">
+      <button class="btn ghost" onclick="goPart(6)">← Part 6</button>
+      <button class="btn primary" onclick="checkAll()">Check my answers</button>
+    </div>
+  </section>
+
+  <div class="score-banner" id="scoreBanner" style="display:none;">
+    <div>Score: <span class="big" id="scoreText">0 / 23</span></div>
+    <div style="display:flex;gap:10px;">
+      <button class="btn ghost" onclick="revealKey()">Show full answer key</button>
+      <button class="btn ghost" onclick="resetExam()">Reset exam</button>
+    </div>
+  </div>
+
+</main>
+</div>
+
+<footer class="sitefoot">
+  Original practice material in the Cambridge C2 Proficiency format · not reproduced from any copyrighted source
+</footer>
+
+<script>
+// ---------- DATA ----------
+const p5 = [
+  {n:31, q:"What does the writer suggest about Elena's cousins' attitude to the bookshop?",
+   options:["They resented Elena for inheriting it.","They admired their grandmother's dedication to the business.","They believed selling it was the obvious, sensible course of action.","They feared the shop would damage the family's reputation."], correct:2},
+  {n:32, q:"What does 'the millstone' reveal about the grandmother's feelings towards the shop?",
+   options:["She deeply regretted ever opening it.","She hoped Elena would eventually sell it.","She saw it purely as a financial burden.","She was reluctant to admit how much it meant to her."], correct:3},
+  {n:33, q:"Why, according to the text, did the grandmother continue running the shop at a loss?",
+   options:["She was unable to find a buyer for the premises.","She believed some things should exist independently of profit.","She had promised a family member she would keep it open.","She hoped it would eventually become profitable."], correct:1},
+  {n:34, q:"What is suggested about Elena's initial attempts to modernise the shop?",
+   options:["They had little effect on its success.","They were resented by loyal customers.","They were more successful than she expected.","They contradicted her grandmother's wishes."], correct:0},
+  {n:35, q:"How does Elena view the reason for the shop's eventual success?",
+   options:["She credits her own business instincts.","She attributes it entirely to luck.","She sees it as a direct result of the coffee machine and website.","She sees it as impossible to fully explain in commercial terms."], correct:3},
+  {n:36, q:"What does the final paragraph suggest about Elena's attitude towards her cousins by the end of the text?",
+   options:["She feels she must continue justifying her decision to them.","She wishes they would visit the shop themselves.","She no longer feels any need to defend her choice.","She regrets not selling the shop as they suggested."], correct:2},
+];
+
+const p6 = {37:'E', 38:'C', 39:'G', 40:'F', 41:'A', 42:'H', 43:'D'};
+const p6letters = ['A','B','C','D','E','F','G','H'];
+
+const p7 = {
+  44:'A', 45:'B', 46:'C', 47:'C', 48:'D', 49:'E', 50:'A', 51:'C', 52:'E', 53:'B'
+};
+const p7questions = {
+  44:"a suggestion that translation can shape the culture that receives it as much as reflect its origin",
+  45:"reference to a long-standing dispute over literal versus interpretive approaches",
+  46:"the view that a translator's best work should go unnoticed by the reader",
+  47:"the claim that translation is itself a form of literary creation",
+  48:"a description of the practical drawbacks of automated translation tools",
+  49:"a suggestion that certain kinds of translation work may increasingly be given to machines",
+  50:"an early motivation for translation that was practical rather than literary",
+  51:"an acknowledgement that some acclaimed translators are valued for their own distinctive style",
+  52:"a prediction about how the balance between human and machine translation may change in future",
+  53:"a description of the compromises a translator must make between two competing loyalties"
+};
+const p7letters = ['A','B','C','D','E'];
+
+const letters4 = ['A','B','C','D'];
+
+// ---------- BUILD PART 5 ----------
+const p5grid = document.getElementById('p5grid');
+p5.forEach(item=>{
+  const card = document.createElement('div');
+  card.className='qcard';
+  card.innerHTML = `<span class="qnum">Question ${item.n}</span><div class="qtext">${item.q}</div><div class="options" id="opts${item.n}"></div>`;
+  p5grid.appendChild(card);
+  const optsDiv = card.querySelector(`#opts${item.n}`);
+  item.options.forEach((opt,i)=>{
+    const label = document.createElement('label');
+    label.className='opt';
+    label.innerHTML = `<input type="radio" name="q${item.n}" value="${i}"> <span><strong>${letters4[i]}</strong> ${opt}</span>`;
+    optsDiv.appendChild(label);
+  });
+});
+
+// ---------- BUILD PART 6 ----------
+const p6grid = document.getElementById('p6grid');
+Object.keys(p6).forEach(k=>{
+  const card = document.createElement('div');
+  card.className='qcard';
+  card.innerHTML = `<span class="qnum">Gap ${k}</span>
+    <div class="letter-btns" id="p6btns${k}" data-q="${k}"></div>`;
+  p6grid.appendChild(card);
+  const btnDiv = card.querySelector(`#p6btns${k}`);
+  p6letters.forEach(letter=>{
+    const b = document.createElement('button');
+    b.type='button'; b.className='lbtn'; b.textContent=letter;
+    b.addEventListener('click', ()=>{
+      btnDiv.querySelectorAll('.lbtn').forEach(x=>x.classList.remove('selected'));
+      b.classList.add('selected');
+      btnDiv.dataset.value = letter;
+    });
+    btnDiv.appendChild(b);
+  });
+});
+
+// ---------- BUILD PART 7 ----------
+const p7grid = document.getElementById('p7grid');
+Object.keys(p7questions).forEach(k=>{
+  const card = document.createElement('div');
+  card.className='qcard';
+  card.innerHTML = `<span class="qnum">Question ${k}</span><div class="qtext">${p7questions[k]}</div>
+    <div class="letter-btns" id="p7btns${k}" data-q="${k}"></div>`;
+  p7grid.appendChild(card);
+  const btnDiv = card.querySelector(`#p7btns${k}`);
+  p7letters.forEach(letter=>{
+    const b = document.createElement('button');
+    b.type='button'; b.className='lbtn'; b.textContent=letter;
+    b.addEventListener('click', ()=>{
+      btnDiv.querySelectorAll('.lbtn').forEach(x=>x.classList.remove('selected'));
+      b.classList.add('selected');
+      btnDiv.dataset.value = letter;
+    });
+    btnDiv.appendChild(b);
+  });
+});
+
+// ---------- TABS ----------
+document.querySelectorAll('nav.tabs button').forEach(btn=>{
+  btn.addEventListener('click', ()=>goPart(parseInt(btn.dataset.part)));
+});
+function goPart(n){
+  document.querySelectorAll('section.part').forEach(s=>s.classList.remove('active'));
+  document.getElementById('part'+n).classList.add('active');
+  document.querySelectorAll('nav.tabs button').forEach(b=>b.classList.toggle('active', parseInt(b.dataset.part)===n));
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ---------- CHECKING ----------
+function checkAll(){
+  let score = 0;
+  const total = 23;
+
+  // Part 5 (2 marks each -> but we display raw question count for simplicity, weight below)
+  let p5correct = 0;
+  p5.forEach(item=>{
+    const chosen = document.querySelector(`input[name="q${item.n}"]:checked`);
+    const optsDiv = document.getElementById('opts'+item.n);
+    optsDiv.querySelectorAll('.opt').forEach((label,i)=>{
+      label.classList.remove('correct','incorrect');
+      if(i===item.correct) label.classList.add('correct');
+      else if(chosen && parseInt(chosen.value)===i) label.classList.add('incorrect');
+    });
+    if(chosen && parseInt(chosen.value)===item.correct) p5correct++;
+  });
+
+  // Part 6
+  let p6correct = 0;
+  Object.keys(p6).forEach(k=>{
+    const btnDiv = document.getElementById('p6btns'+k);
+    const val = btnDiv.dataset.value;
+    const ok = val === p6[k];
+    btnDiv.querySelectorAll('.lbtn').forEach(b=>{
+      b.classList.remove('correct','incorrect');
+      if(b.textContent===p6[k]) b.classList.add('correct');
+      else if(b.classList.contains('selected') && b.textContent!==p6[k]) b.classList.add('incorrect');
+    });
+    if(ok) p6correct++;
+  });
+
+  // Part 7
+  let p7correct = 0;
+  Object.keys(p7).forEach(k=>{
+    const btnDiv = document.getElementById('p7btns'+k);
+    const val = btnDiv.dataset.value;
+    const ok = val === p7[k];
+    btnDiv.querySelectorAll('.lbtn').forEach(b=>{
+      b.classList.remove('correct','incorrect');
+      if(b.textContent===p7[k]) b.classList.add('correct');
+      else if(b.classList.contains('selected') && b.textContent!==p7[k]) b.classList.add('incorrect');
+    });
+    if(ok) p7correct++;
+  });
+
+  score = p5correct + p6correct + p7correct;
+  document.getElementById('scoreBanner').style.display='flex';
+  document.getElementById('scoreText').textContent = `${score} / ${total}  (raw questions correct)`;
+  document.getElementById('scoreBanner').scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+
+function revealKey(){
+  let lines = ['PART 5: ' + p5.map(q=>q.n+letters4[q.correct]).join('  ')];
+  lines.push('PART 6: ' + Object.keys(p6).map(k=>k+' '+p6[k]).join('  '));
+  lines.push('PART 7: ' + Object.keys(p7).map(k=>k+' '+p7[k]).join('  '));
+  alert(lines.join('\n\n'));
+}
+
+function resetExam(){
+  document.querySelectorAll('input[type=radio]').forEach(i=>{i.checked=false;});
+  document.querySelectorAll('.opt').forEach(o=>o.classList.remove('correct','incorrect'));
+  document.querySelectorAll('.lbtn').forEach(b=>b.classList.remove('correct','incorrect','selected'));
+  document.querySelectorAll('.letter-btns').forEach(d=>{delete d.dataset.value;});
+  document.getElementById('scoreBanner').style.display='none';
+  goPart(5);
+}
+</script>
+</body>
+</html>
