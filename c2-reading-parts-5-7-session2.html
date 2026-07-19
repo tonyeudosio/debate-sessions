@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>C2 Proficiency · Reading (Parts 5–7) · Session II</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0B1F3A; --navy-deep:#071527;
+    --teal:#0F766E; --teal-light:#14A89A;
+    --gold:#C9A227;
+    --paper:#F7F5F0; --paper-dim:#EFEBE1;
+    --ink:#1B2430; --ink-soft:#4A5568;
+    --correct:#1E7A4C; --incorrect:#B3423A;
+    --border:#D8D2C2; --radius:10px;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:'Inter',sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased;}
+
+  header.top{background:linear-gradient(160deg,var(--navy) 0%,var(--navy-deep) 100%);color:var(--paper);padding:32px 24px 24px;border-bottom:4px solid var(--gold);}
+  header.top .inner{max-width:1180px;margin:0 auto;}
+  .eyebrow{font-family:'IBM Plex Mono',monospace;letter-spacing:.14em;text-transform:uppercase;font-size:12px;color:var(--teal-light);margin-bottom:8px;}
+  h1{font-family:'Fraunces',serif;font-weight:700;font-size:clamp(26px,4vw,36px);margin:0 0 6px;letter-spacing:-.01em;}
+  header.top p.sub{color:#C7CEDC;font-size:14.5px;margin:0 0 16px;max-width:70ch;}
+  .meta-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;}
+  .badge{font-family:'IBM Plex Mono',monospace;font-size:11.5px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);color:#E6E9F0;padding:5px 11px;border-radius:999px;}
+
+  nav.tabs{display:flex;gap:6px;max-width:1180px;margin:0 auto;padding:14px 24px 0;flex-wrap:wrap;position:sticky;top:0;background:var(--paper);z-index:20;}
+  nav.tabs button{font-family:'IBM Plex Mono',monospace;font-size:13px;padding:10px 18px;border-radius:8px 8px 0 0;border:1px solid var(--border);border-bottom:none;background:var(--paper-dim);color:var(--ink-soft);cursor:pointer;}
+  nav.tabs button.active{background:#fff;color:var(--navy);font-weight:600;border-color:var(--teal);}
+
+  .wrap{max-width:1180px;margin:0 auto;padding:0 24px 80px;}
+  main{background:#fff;border:1px solid var(--border);border-top:none;border-radius:0 0 var(--radius) var(--radius);}
+  section.part{padding:26px 26px 12px;display:none;}
+  section.part.active{display:block;}
+
+  .part-head{border-bottom:2px solid var(--paper-dim);padding-bottom:14px;margin-bottom:20px;}
+  .part-head .num{font-family:'IBM Plex Mono',monospace;color:var(--teal);font-size:12.5px;letter-spacing:.08em;}
+  .part-head h2{font-family:'Fraunces',serif;font-size:22px;margin:4px 0 8px;color:var(--navy);}
+  .part-head .instructions{font-size:14px;color:var(--ink-soft);background:var(--paper-dim);border-left:3px solid var(--gold);padding:10px 14px;border-radius:6px;}
+
+  .reading-layout{display:flex;gap:22px;align-items:flex-start;}
+  .text-pane, .q-pane{flex:1;min-width:0;}
+  .text-pane{flex:1.15;}
+  @media(min-width:901px){
+    .text-pane, .q-pane{
+      max-height:calc(100vh - 130px);
+      overflow-y:auto;
+      position:sticky; top:118px;
+      padding-right:6px;
+    }
+    .q-pane{padding-right:0;padding-left:6px;}
+  }
+  @media(max-width:900px){
+    .reading-layout{flex-direction:column;}
+  }
+
+  .passage{font-family:'Fraunces',serif;font-size:16.5px;line-height:1.8;color:var(--ink);}
+  .passage h3{font-family:'Inter',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.05em;font-size:14px;color:var(--navy);margin-bottom:4px;}
+  .passage .byline{font-family:'Inter',sans-serif;font-size:12.5px;color:var(--ink-soft);margin-bottom:14px;}
+  .passage p{margin:0 0 14px;}
+  .section-tag{font-family:'IBM Plex Mono',monospace;font-weight:700;color:#fff;background:var(--teal);border-radius:5px;padding:2px 9px;font-size:13px;margin-right:8px;}
+  .gap-badge{font-family:'IBM Plex Mono',monospace;font-weight:600;color:#fff;background:var(--navy);border-radius:5px;padding:2px 9px;font-size:12.5px;display:inline-block;margin:6px 0;}
+
+  .qcard{border:1px solid var(--border);border-radius:var(--radius);padding:13px 15px;background:var(--paper);margin-bottom:14px;}
+  .qcard .qnum{font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--navy);font-size:12.5px;margin-bottom:6px;display:block;}
+  .qcard .qtext{font-size:14.5px;margin-bottom:10px;}
+  .options{display:grid;gap:7px;}
+  .opt{display:flex;align-items:flex-start;gap:8px;border:1px solid var(--border);border-radius:7px;padding:7px 9px;font-size:13.8px;cursor:pointer;background:#fff;}
+  .opt:hover{border-color:var(--teal);}
+  .opt input{accent-color:var(--teal);margin-top:3px;}
+  .opt.correct{border-color:var(--correct);background:#EAF6EE;}
+  .opt.incorrect{border-color:var(--incorrect);background:#FBEBEA;}
+
+  select.letter-select{font-family:'IBM Plex Mono',monospace;font-size:14px;border:1px solid var(--border);border-radius:6px;padding:5px 8px;background:#fff;}
+  select.letter-select.correct{border-color:var(--correct);background:#EAF6EE;}
+  select.letter-select.incorrect{border-color:var(--incorrect);background:#FBEBEA;}
+
+  .letter-btns{display:flex;gap:6px;flex-wrap:wrap;}
+  .lbtn{font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600;border:1px solid var(--border);background:#fff;border-radius:6px;padding:6px 12px;cursor:pointer;}
+  .lbtn:hover{border-color:var(--teal);}
+  .lbtn.selected{background:var(--navy);color:#fff;border-color:var(--navy);}
+  .lbtn.correct{background:var(--correct);color:#fff;border-color:var(--correct);}
+  .lbtn.incorrect{background:var(--incorrect);color:#fff;border-color:var(--incorrect);}
+
+  .part-footer{display:flex;justify-content:space-between;align-items:center;padding:20px 0 28px;flex-wrap:wrap;gap:12px;}
+  .btn{font-family:'Inter',sans-serif;font-weight:600;font-size:14px;border:none;border-radius:8px;padding:11px 22px;cursor:pointer;}
+  .btn.primary{background:var(--navy);color:#fff;}
+  .btn.primary:hover{background:var(--teal);}
+  .btn.ghost{background:transparent;border:1px solid var(--border);color:var(--ink-soft);}
+  .btn.ghost:hover{border-color:var(--navy);color:var(--navy);}
+
+  .score-banner{margin:0 26px 24px;padding:16px 20px;border-radius:var(--radius);background:var(--navy);color:#fff;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;}
+  .score-banner .big{font-family:'Fraunces',serif;font-size:24px;color:var(--gold);}
+
+  .option-bank{background:var(--paper-dim);border-radius:var(--radius);padding:14px 16px;margin-bottom:16px;}
+  .option-bank .obtitle{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin-bottom:10px;}
+  .option-bank .para{font-family:'Fraunces',serif;font-size:14.8px;margin-bottom:10px;padding-left:8px;border-left:2px solid var(--border);}
+
+  footer.sitefoot{text-align:center;padding:26px 24px 40px;color:var(--ink-soft);font-size:13px;}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="inner">
+    <div class="eyebrow">C2 Proficiency (CPE) &middot; Practice Material &middot; Session III</div>
+    <h1>Reading</h1>
+    <p class="sub">A second Reading (Parts 5–7) set, upgraded on your feedback: the texts stay accessible, but the questions now lean harder on inference, close paraphrase and near-miss distractors — the kind two examiners might quietly disagree about.</p>
+    <div class="meta-row">
+      <span class="badge">Parts 5–7</span>
+      <span class="badge">23 questions</span>
+      <span class="badge">Suggested time: 50 min</span>
+    </div>
+  </div>
+</header>
+
+<nav class="tabs" id="tabs">
+  <button data-part="5" class="active">Part 5</button>
+  <button data-part="6">Part 6</button>
+  <button data-part="7">Part 7</button>
+</nav>
+
+<div class="wrap" style="padding:0;">
+<main>
+
+  <!-- PART 5 -->
+  <section class="part active" id="part5">
+    <div class="part-head">
+      <div class="num">PART 5 &middot; QUESTIONS 31–36 &middot; 2 MARKS EACH</div>
+      <h2>Multiple choice</h2>
+      <div class="instructions">You are going to read an extract from a novel. For each question, choose the answer (A, B, C or D) which fits best according to the text.</div>
+    </div>
+
+    <div class="reading-layout">
+      <div class="text-pane">
+        <div class="passage">
+          <h3>The Luthier's Correction</h3>
+          <p>Marco had been in Vidal's workshop for three years before he was permitted to touch a scroll unsupervised, and even then the old man watched from across the room with an attentiveness Marco found more unsettling than any direct correction. Vidal rarely raised his voice. He had, instead, a habit of falling silent at the precise moment an apprentice began to suspect he had gone wrong, a silence that communicated more disapproval than a shouted rebuke ever could have. Marco had learned to dread it far more than criticism, because criticism, at least, told you where you stood.</p>
+          <p>It was into one of these silences that Marco carved, on a Tuesday in late October, the scroll of a violin destined for a soloist in Lisbon. He had followed the template Vidal had given him with what he believed to be complete fidelity, and it was only when he set down his gouge and stepped back that he noticed the curve of the volute was, by some fraction of a millimetre he could not account for, asymmetrical. He considered, for a moment that felt considerably longer than it was, saying nothing. The flaw was minute; a soloist playing the instrument would never see it, and few clients, in Marco's experience, examined a scroll with anything like the scrutiny Vidal brought to the task. But he found he could not quite make himself stay silent, and when Vidal finally crossed the room, Marco spoke before the old man could reach for the piece himself.</p>
+          <p>Vidal turned the scroll over twice in his hands, saying nothing for long enough that Marco began to regret his honesty. Then, instead of the correction Marco had braced for, the old man asked him a question: not what had gone wrong, but why Marco had chosen to mention it at all, when he might easily have let it pass unnoticed. Marco, caught off guard, offered the only answer he had, which was that it would have felt like a kind of theft — taking payment for work he knew to be flawed, even in a way nobody else would ever detect. Vidal considered this for a moment and then set the scroll down without comment, which Marco had learned, by now, to interpret as something closer to approval than any word could have conveyed.</p>
+          <p>What Marco did not understand, not yet, was that the asymmetry itself had troubled Vidal far less than his apprentice supposed. Vidal had seen a hundred flawed scrolls in his career, his own included, and had long since made peace with the fact that the hand is never quite as obedient as the eye demands. What he had been testing, in his silence that afternoon, was not Marco's craftsmanship but something closer to his temperament: whether the boy possessed the particular, unglamorous discipline of a maker who corrects his own errors before anyone asks him to, rather than the more common instinct to hope they go unnoticed. It was a quality Vidal valued above raw talent, precisely because it could not be taught by demonstration; a master could show an apprentice how to hold a gouge, but not how to want, unprompted, to get a thing right.</p>
+          <p>The instrument, once finished, was unremarkable in every respect that mattered to a concert hall, and Marco knew this, and had made his peace with knowing it. What he did not fully grasp until years later, when he had apprentices of his own, was that Vidal's silence that Tuesday had not been a test he passed so much as a door, quietly and without ceremony, held open.</p>
+        </div>
+      </div>
+
+      <div class="q-pane" id="p5grid"></div>
+    </div>
+
+    <div class="part-footer">
+      <button class="btn ghost" onclick="goPart(6)">Next: Part 6 →</button>
+    </div>
+  </section>
+
+  <!-- PART 6 -->
+  <section class="part" id="part6">
+    <div class="part-head">
+      <div class="num">PART 6 &middot; QUESTIONS 37–43 &middot; 2 MARKS EACH</div>
+      <h2>Gapped text</h2>
+      <div class="instructions">Seven paragraphs have been removed from the article and are listed, in jumbled order, in the panel on the right. Read paragraphs A–H and decide which one fits each gap. There is one extra paragraph you do not need.</div>
+    </div>
+
+    <div class="reading-layout">
+      <div class="text-pane">
+        <div class="passage">
+          <h3>Sleeper Trains Rediscover Their Passengers</h3>
+          <p>For much of the late twentieth century, the overnight sleeper train seemed destined for extinction, an inconvenient relic in an age of budget flights and high-speed rail. Across Europe, national operators quietly withdrew their sleeper services one by one, citing falling passenger numbers and the difficulty of justifying carriages that spent half their working life stationary in sidings.</p>
+
+          <div class="gap-badge">GAP 37</div>
+
+          <p>Even so, the decision was rarely taken lightly, and within a few years several of the operators who had shelved their sleeper fleets began to reconsider.</p>
+
+          <div class="gap-badge">GAP 38</div>
+
+          <p>The reversal did not happen overnight, nor was it driven by nostalgia alone.</p>
+
+          <div class="gap-badge">GAP 39</div>
+
+          <p>This shift in traveller psychology proved decisive.</p>
+
+          <div class="gap-badge">GAP 40</div>
+
+          <p>Operationally, though, reviving a sleeper service is far from straightforward.</p>
+
+          <div class="gap-badge">GAP 41</div>
+
+          <p>Despite these obstacles, several new routes have launched successfully in the past three years.</p>
+
+          <div class="gap-badge">GAP 42</div>
+
+          <p>The financial case, once dismissed as hopeless, has also begun to look more credible.</p>
+
+          <div class="gap-badge">GAP 43</div>
+
+          <p style="margin-top:14px;">Whether the sleeper train ultimately reclaims the place it once held in European travel remains uncertain, but for the first time in decades, the trend line is pointing in its favour.</p>
+        </div>
+      </div>
+
+      <div class="q-pane">
+        <div class="option-bank">
+          <div class="obtitle">Paragraphs A–H</div>
+          <div class="para"><strong>A</strong> — A comparable revival has been observed in long-distance coach travel, where budget operators have reported steady growth in bookings among travellers unwilling to pay the premium associated with rail, though this growth has done little to dent demand for the newly relaunched sleeper routes.</div>
+          <div class="para"><strong>B</strong> — Much of the necessary rolling stock is decades old, and the handful of manufacturers still producing new sleeper carriages have order books stretching years into the future. Night paths through busy signalling networks must also be negotiated separately with each national infrastructure operator, a process that can take months even for a route only a few hundred kilometres long.</div>
+          <div class="para"><strong>C</strong> — The clearest signal came from Austria, where the state operator ÖBB took over a number of abandoned sleeper routes in 2016 and began investing in new carriages under its Nightjet brand. Ticket sales quickly outstripped expectations, and images of the refurbished cabins, shared widely online, generated a level of public enthusiasm that surprised even ÖBB's own marketing department.</div>
+          <div class="para"><strong>D</strong> — Part of the explanation lies in a broader unease about air travel's environmental cost. The Swedish term 'flygskam', or flight shame, entered common usage after climate activists began publicising the carbon footprint of short-haul flights, and surveys since have shown a growing minority of travellers willing to accept a longer journey in exchange for a clearer conscience.</div>
+          <div class="para"><strong>E</strong> — In France, the once-extensive network of overnight services was reduced to a single surviving route by 2017; in Germany, Deutsche Bahn withdrew its City Night Line brand entirely the year before, handing its remaining carriages to an Austrian operator prepared to take on the financial risk that Deutsche Bahn itself was not.</div>
+          <div class="para"><strong>F</strong> — Within two years, several Nightjet routes were selling out weeks in advance, particularly in the cheaper couchette compartments favoured by younger travellers, and waiting lists became common on routes that had previously struggled to fill a handful of berths.</div>
+          <div class="para"><strong>G</strong> — Since 2021, new or restored sleeper connections have linked Paris and Berlin, Brussels and Prague, and Zurich and Rome, several of them the product of joint ventures between operators who had previously regarded one another chiefly as competitors.</div>
+          <div class="para"><strong>H</strong> — Passengers now routinely pay a premium of thirty to fifty per cent over an equivalent daytime fare for the convenience of arriving rested and without the need for a hotel room, a margin that has quietly transformed sleeper services from a subsidised curiosity into a genuinely profitable niche for several operators.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="part-footer">
+      <button class="btn ghost" onclick="goPart(5)">← Part 5</button>
+      <button class="btn ghost" onclick="goPart(7)">Next: Part 7 →</button>
+    </div>
+  </section>
+
+  <!-- PART 7 -->
+  <section class="part" id="part7">
+    <div class="part-head">
+      <div class="num">PART 7 &middot; QUESTIONS 44–53 &middot; 1 MARK EACH</div>
+      <h2>Multiple matching</h2>
+      <div class="instructions">You are going to read an article about default options in policy and technology. For questions 44–53, choose from the sections (A–E). The sections may be chosen more than once.</div>
+    </div>
+
+    <div class="reading-layout">
+      <div class="text-pane">
+        <div class="passage">
+          <h3>Defaults: The Choices We Never Actually Make</h3>
+          <p><span class="section-tag">A</span>Default options — the choice that is made automatically for us unless we actively opt out — have quietly become one of the most consequential tools in modern policy and technology alike. The now-famous contrast between countries with 'opt-in' organ donation, where citizens must actively register as donors, and those with 'opt-out' systems, where citizens are presumed to consent unless they explicitly withdraw, remains the textbook illustration: donation rates in opt-out countries are often dramatically higher, despite no difference in the underlying willingness of citizens to donate when asked directly. The idea entered mainstream policy discussion largely through the work of behavioural economists Richard Thaler and Cass Sunstein, whose 2008 book popularised the notion of the 'nudge' — a gentle architectural adjustment to the choices people face, one that steers behaviour without ever forbidding an alternative.</p>
+          <p><span class="section-tag">B</span>What makes defaults so powerful is not, as is sometimes assumed, simple laziness on the part of the chooser. Changing a default requires a person to notice that a choice exists at all, to judge that the alternative is worth the effort of switching, and then to act on that judgement — three separate hurdles, any one of which is enough to keep the default in place. This is compounded by a further psychological tendency, well documented long before defaults became fashionable in policy circles: people tend to interpret the default option as an implicit recommendation, reasoning that whoever designed the system probably had good reason to set things up that way. The effect persists even among people who, if asked directly, insist that the default carries no such endorsement.</p>
+          <p><span class="section-tag">C</span>It is this apparent endorsement effect that has made defaults ethically contentious. Critics argue that exploiting a person's inertia to achieve an outcome — even a beneficial one, such as higher organ donation rates or greater retirement savings — sits uneasily with the ideal of autonomous choice; if people are not genuinely weighing the alternatives, can their resulting decision really be called their own? Defenders counter that neutrality is an illusion in any case: some default must be set, since a system cannot present a choice without a starting position, and if a default is unavoidable, choosing the one that produces better outcomes for the average person seems preferable to leaving the matter to chance or to whichever option was easiest to programme.</p>
+          <p><span class="section-tag">D</span>The debate has taken on sharper edges as defaults have migrated from public policy into commercial software design, where the incentives of the party setting the default are considerably less aligned with the interests of the person choosing. Subscription services routinely default to automatic renewal, buried several menus deep from the cancellation option; social media platforms default to the most permissive privacy settings, on the reasonable assumption that most users will never go looking for the stricter alternative. Designers within the industry have coined the term 'dark pattern' for defaults and interface choices deliberately engineered to produce outcomes that benefit the company at the user's expense, a practice that regulators have been notably slower to address than its ubiquity would seem to warrant.</p>
+          <p><span class="section-tag">E</span>Several jurisdictions have begun legislating against the more egregious of these practices, typically by requiring that cancellation be no more difficult than the original sign-up, or that certain defaults — particularly around data collection — favour the more privacy-protective option unless the user actively chooses otherwise. Such rules implicitly accept the core insight of default research: that where the starting point is set will determine, for a great many people, where they end up, regardless of what they might have chosen under different circumstances. What remains unresolved is a harder question, one that policy has so far avoided answering directly: whether a tool this effective at shaping behaviour should ever be left to organisations whose interests point away from the public's own.</p>
+        </div>
+      </div>
+
+      <div class="q-pane" id="p7grid"></div>
+    </div>
+
+    <div class="part-footer">
+      <button class="btn ghost" onclick="goPart(6)">← Part 6</button>
+      <button class="btn primary" onclick="checkAll()">Check my answers</button>
+    </div>
+  </section>
+
+  <div class="score-banner" id="scoreBanner" style="display:none;">
+    <div>Score: <span class="big" id="scoreText">0 / 23</span></div>
+    <div style="display:flex;gap:10px;">
+      <button class="btn ghost" onclick="revealKey()">Show full answer key</button>
+      <button class="btn ghost" onclick="resetExam()">Reset exam</button>
+    </div>
+  </div>
+
+</main>
+</div>
+
+<footer class="sitefoot">
+  Original practice material in the Cambridge C2 Proficiency format · not reproduced from any copyrighted source
+</footer>
+
+<script>
+// ---------- DATA ----------
+const p5 = [
+  {n:31, q:"What does the writer suggest about Vidal's use of silence, as described in the first paragraph?",
+   options:["It was more effective at conveying disapproval than open criticism would have been.","It was a deliberate technique for making apprentices work more quickly.","It reflected Vidal's own uncertainty about how to phrase corrections.","It was intended, from the outset, to give apprentices time to spot their own mistakes."], correct:0},
+  {n:32, q:"Why, according to the second paragraph, did Marco initially consider not mentioning the flaw?",
+   options:["He assumed Vidal would not notice such a minor imperfection.","He judged that no one else would ever notice or be troubled by it.","He feared that admitting the mistake would damage his standing with Vidal.","He assumed correcting it himself would take too much additional time."], correct:1},
+  {n:33, q:"What does Marco's explanation to Vidal in the third paragraph reveal about his motivation for mentioning the flaw?",
+   options:["He assumed Vidal would eventually discover it regardless.","He wanted to demonstrate that he could recognise his own mistakes.","He felt that concealing a known imperfection would amount to a kind of dishonesty.","He hoped that honesty would earn him greater independence in future."], correct:2},
+  {n:34, q:"What does the fourth paragraph reveal about what Vidal was actually testing?",
+   options:["Whether Marco had the technical skill to correct the asymmetry himself.","Whether Marco would take full responsibility regardless of the consequences.","Whether Marco understood the difference between minor and serious flaws.","Whether Marco possessed the instinct to correct his own errors unprompted."], correct:3},
+  {n:35, q:"What is implied by the statement that this quality 'could not be taught by demonstration'?",
+   options:["Vidal had never successfully passed the quality on to a previous apprentice.","The quality depended on an apprentice's own disposition rather than on instruction.","Vidal preferred not to discuss his teaching methods openly.","Marco had already possessed the quality before his apprenticeship began."], correct:1},
+  {n:36, q:"How does the final paragraph characterise Marco's understanding of the episode?",
+   options:["He remained puzzled by Vidal's reaction for the rest of his career.","He came to regret having drawn attention to such a trivial mistake.","He realised immediately that he had been given an important opportunity.","He recognised its significance only in retrospect, once he had apprentices of his own."], correct:3},
+];
+
+const p6 = {37:'E', 38:'C', 39:'D', 40:'F', 41:'B', 42:'G', 43:'H'};
+const p6letters = ['A','B','C','D','E','F','G','H'];
+
+const p7 = {
+  44:'A', 45:'B', 46:'C', 47:'D', 48:'B', 49:'E', 50:'A', 51:'C', 52:'D', 53:'E'
+};
+const p7questions = {
+  44:"a comparison intended to show how powerful a default can be, regardless of what people would otherwise choose",
+  45:"a suggestion that people mistake a default for a considered recommendation",
+  46:"an argument that a system offering no default at all is not actually achievable",
+  47:"a term used within an industry to describe ethically questionable interface design",
+  48:"a description of the separate steps a person must complete before moving away from a default",
+  49:"a description of new rules intended to prevent companies from exploiting defaults unfairly",
+  50:"reference to a publication that brought a particular idea to wider public attention",
+  51:"a question about whether a decision reached mainly through inertia can be called genuinely one's own",
+  52:"an example of a default that serves the interests of whoever designed it rather than the person using it",
+  53:"an indication that current measures leave a more fundamental question unaddressed"
+};
+const p7letters = ['A','B','C','D','E'];
+
+const letters4 = ['A','B','C','D'];
+
+// ---------- BUILD PART 5 ----------
+const p5grid = document.getElementById('p5grid');
+p5.forEach(item=>{
+  const card = document.createElement('div');
+  card.className='qcard';
+  card.innerHTML = `<span class="qnum">Question ${item.n}</span><div class="qtext">${item.q}</div><div class="options" id="opts${item.n}"></div>`;
+  p5grid.appendChild(card);
+  const optsDiv = card.querySelector(`#opts${item.n}`);
+  item.options.forEach((opt,i)=>{
+    const label = document.createElement('label');
+    label.className='opt';
+    label.innerHTML = `<input type="radio" name="q${item.n}" value="${i}"> <span><strong>${letters4[i]}</strong> ${opt}</span>`;
+    optsDiv.appendChild(label);
+  });
+});
+
+// ---------- BUILD PART 6 ----------
+const p6answerHost = document.createElement('div');
+p6answerHost.className = 'option-bank';
+p6answerHost.innerHTML = '<div class="obtitle">Your answers — Gaps 37–43</div>';
+Object.keys(p6).forEach(k=>{
+  const row = document.createElement('div');
+  row.className = 'qcard';
+  row.innerHTML = `<span class="qnum">Gap ${k}</span><div class="letter-btns" id="p6btns${k}" data-q="${k}"></div>`;
+  p6answerHost.appendChild(row);
+  const btnDiv = row.querySelector(`#p6btns${k}`);
+  p6letters.forEach(letter=>{
+    const b = document.createElement('button');
+    b.type='button'; b.className='lbtn'; b.textContent=letter;
+    b.addEventListener('click', ()=>{
+      btnDiv.querySelectorAll('.lbtn').forEach(x=>x.classList.remove('selected'));
+      b.classList.add('selected');
+      btnDiv.dataset.value = letter;
+    });
+    btnDiv.appendChild(b);
+  });
+});
+document.querySelector('#part6 .q-pane').appendChild(p6answerHost);
+
+// ---------- BUILD PART 7 ----------
+const p7grid = document.getElementById('p7grid');
+Object.keys(p7questions).forEach(k=>{
+  const card = document.createElement('div');
+  card.className='qcard';
+  card.innerHTML = `<span class="qnum">Question ${k}</span><div class="qtext">${p7questions[k]}</div>
+    <div class="letter-btns" id="p7btns${k}" data-q="${k}"></div>`;
+  p7grid.appendChild(card);
+  const btnDiv = card.querySelector(`#p7btns${k}`);
+  p7letters.forEach(letter=>{
+    const b = document.createElement('button');
+    b.type='button'; b.className='lbtn'; b.textContent=letter;
+    b.addEventListener('click', ()=>{
+      btnDiv.querySelectorAll('.lbtn').forEach(x=>x.classList.remove('selected'));
+      b.classList.add('selected');
+      btnDiv.dataset.value = letter;
+    });
+    btnDiv.appendChild(b);
+  });
+});
+
+// ---------- TABS ----------
+document.querySelectorAll('nav.tabs button').forEach(btn=>{
+  btn.addEventListener('click', ()=>goPart(parseInt(btn.dataset.part)));
+});
+function goPart(n){
+  document.querySelectorAll('section.part').forEach(s=>s.classList.remove('active'));
+  document.getElementById('part'+n).classList.add('active');
+  document.querySelectorAll('nav.tabs button').forEach(b=>b.classList.toggle('active', parseInt(b.dataset.part)===n));
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ---------- CHECKING ----------
+function checkAll(){
+  let score = 0;
+  const total = 23;
+
+  let p5correct = 0;
+  p5.forEach(item=>{
+    const chosen = document.querySelector(`input[name="q${item.n}"]:checked`);
+    const optsDiv = document.getElementById('opts'+item.n);
+    optsDiv.querySelectorAll('.opt').forEach((label,i)=>{
+      label.classList.remove('correct','incorrect');
+      if(i===item.correct) label.classList.add('correct');
+      else if(chosen && parseInt(chosen.value)===i) label.classList.add('incorrect');
+    });
+    if(chosen && parseInt(chosen.value)===item.correct) p5correct++;
+  });
+
+  let p6correct = 0;
+  Object.keys(p6).forEach(k=>{
+    const btnDiv = document.getElementById('p6btns'+k);
+    const val = btnDiv.dataset.value;
+    const ok = val === p6[k];
+    btnDiv.querySelectorAll('.lbtn').forEach(b=>{
+      b.classList.remove('correct','incorrect');
+      if(b.textContent===p6[k]) b.classList.add('correct');
+      else if(b.classList.contains('selected') && b.textContent!==p6[k]) b.classList.add('incorrect');
+    });
+    if(ok) p6correct++;
+  });
+
+  let p7correct = 0;
+  Object.keys(p7).forEach(k=>{
+    const btnDiv = document.getElementById('p7btns'+k);
+    const val = btnDiv.dataset.value;
+    const ok = val === p7[k];
+    btnDiv.querySelectorAll('.lbtn').forEach(b=>{
+      b.classList.remove('correct','incorrect');
+      if(b.textContent===p7[k]) b.classList.add('correct');
+      else if(b.classList.contains('selected') && b.textContent!==p7[k]) b.classList.add('incorrect');
+    });
+    if(ok) p7correct++;
+  });
+
+  score = p5correct + p6correct + p7correct;
+  document.getElementById('scoreBanner').style.display='flex';
+  document.getElementById('scoreText').textContent = `${score} / ${total}  (raw questions correct)`;
+  document.getElementById('scoreBanner').scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+
+function revealKey(){
+  let lines = ['PART 5: ' + p5.map(q=>q.n+letters4[q.correct]).join('  ')];
+  lines.push('PART 6: ' + Object.keys(p6).map(k=>k+' '+p6[k]).join('  '));
+  lines.push('PART 7: ' + Object.keys(p7).map(k=>k+' '+p7[k]).join('  '));
+  alert(lines.join('\n\n'));
+}
+
+function resetExam(){
+  document.querySelectorAll('input[type=radio]').forEach(i=>{i.checked=false;});
+  document.querySelectorAll('.opt').forEach(o=>o.classList.remove('correct','incorrect'));
+  document.querySelectorAll('.lbtn').forEach(b=>b.classList.remove('correct','incorrect','selected'));
+  document.querySelectorAll('.letter-btns').forEach(d=>{delete d.dataset.value;});
+  document.getElementById('scoreBanner').style.display='none';
+  goPart(5);
+}
+</script>
+</body>
+</html>
