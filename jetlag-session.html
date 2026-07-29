@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Summer Travel · Why Do We Get Jet Lag?</title>
+<style>
+  :root{
+    --navy:#1b2a4a;
+    --teal:#1f7a72;
+    --teal-light:#e6f3f1;
+    --paper:#fdfcfa;
+    --ink:#22282f;
+    --muted:#6b7280;
+    --line:#e3e1dc;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Georgia', 'Iowan Old Style', serif;
+    line-height:1.6;
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:40px 24px 80px;}
+  header{margin-bottom:36px;}
+  .tag{
+    display:inline-block;
+    font-family:Helvetica, Arial, sans-serif;
+    font-size:12px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--teal);
+    border:1px solid var(--teal);
+    border-radius:20px;
+    padding:4px 12px;
+    margin-bottom:14px;
+  }
+  h1{
+    font-size:28px;
+    color:var(--navy);
+    margin:0 0 6px;
+  }
+  .subtitle{color:var(--muted);font-size:16px;margin:0;}
+  section{
+    margin-bottom:40px;
+    padding-bottom:32px;
+    border-bottom:1px solid var(--line);
+  }
+  section:last-child{border-bottom:none;}
+  h2{
+    font-family:Helvetica, Arial, sans-serif;
+    font-size:13px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:var(--navy);
+    margin-bottom:16px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  h2::before{
+    content:"";
+    width:22px;height:2px;background:var(--teal);display:inline-block;
+  }
+  .video-frame{
+    position:relative;
+    width:100%;
+    padding-top:56.25%;
+    border-radius:10px;
+    overflow:hidden;
+    box-shadow:0 4px 18px rgba(0,0,0,.12);
+    margin-bottom:18px;
+  }
+  .video-frame iframe{
+    position:absolute;top:0;left:0;width:100%;height:100%;border:0;
+  }
+  .note{
+    font-family:Helvetica, Arial, sans-serif;
+    font-size:14px;
+    color:var(--muted);
+    background:var(--teal-light);
+    border-left:3px solid var(--teal);
+    padding:12px 16px;
+    border-radius:4px;
+    margin:16px 0;
+  }
+  .task{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:18px 20px;
+    margin-bottom:16px;
+  }
+  .task p.q{
+    font-weight:bold;
+    margin:0 0 10px;
+  }
+  .task .meta{
+    font-family:Helvetica, Arial, sans-serif;
+    font-size:12px;
+    color:var(--teal);
+    text-transform:uppercase;
+    letter-spacing:.04em;
+    margin-bottom:6px;
+  }
+  label.opt{
+    display:block;
+    padding:8px 12px;
+    margin:6px 0;
+    border:1px solid var(--line);
+    border-radius:6px;
+    cursor:pointer;
+    font-family:Helvetica, Arial, sans-serif;
+    font-size:15px;
+    transition:.15s;
+  }
+  label.opt:hover{background:var(--teal-light);}
+  input[type=radio]{margin-right:8px;}
+  .answer-box{
+    width:100%;
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:10px 12px;
+    font-family:Helvetica, Arial, sans-serif;
+    font-size:15px;
+    resize:vertical;
+    min-height:38px;
+  }
+  button.check{
+    font-family:Helvetica, Arial, sans-serif;
+    font-size:13px;
+    text-transform:uppercase;
+    letter-spacing:.05em;
+    background:var(--navy);
+    color:#fff;
+    border:none;
+    padding:9px 18px;
+    border-radius:20px;
+    cursor:pointer;
+    margin-top:8px;
+  }
+  button.check:hover{background:var(--teal);}
+  .feedback{
+    margin-top:10px;
+    font-family:Helvetica, Arial, sans-serif;
+    font-size:14px;
+    padding:8px 12px;
+    border-radius:6px;
+    display:none;
+  }
+  .feedback.correct{display:block;background:#e6f3ec;color:#1f6e44;}
+  .feedback.incorrect{display:block;background:#fbe9e7;color:#a13a2a;}
+  .speak-card{
+    background:var(--navy);
+    color:#fff;
+    border-radius:10px;
+    padding:22px 24px;
+    margin-bottom:16px;
+  }
+  .speak-card .meta{color:#9fd4cb;font-family:Helvetica,Arial,sans-serif;font-size:12px;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;}
+  .speak-card p{margin:0 0 10px;}
+  .speak-card .helper{
+    font-family:Helvetica, Arial, sans-serif;
+    font-size:13.5px;
+    color:#cfe3e0;
+    font-style:italic;
+  }
+  .vocab-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px 24px;
+    font-family:Helvetica, Arial, sans-serif;
+    font-size:14.5px;
+  }
+  .vocab-grid div{padding:6px 0;border-bottom:1px dashed var(--line);}
+  .vocab-grid b{color:var(--navy);}
+  footer{
+    text-align:center;
+    font-family:Helvetica, Arial, sans-serif;
+    font-size:12px;
+    color:var(--muted);
+    margin-top:20px;
+  }
+  @media(max-width:600px){
+    .vocab-grid{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <span class="tag">Summer Travel · B2</span>
+    <h1>Why Do We Get Jet Lag?</h1>
+    <p class="subtitle">Listening for detail + guided speaking · TED-Ed, ~4.5 minutes</p>
+  </header>
+
+  <section>
+    <h2>Before You Watch</h2>
+    <div class="vocab-grid">
+      <div><b>body clock</b> — the internal system that tells your body when to sleep and wake</div>
+      <div><b>jet lag</b> — tiredness and confusion after flying across time zones</div>
+      <div><b>time zone</b> — a region of the world that shares the same clock time</div>
+      <div><b>to adjust</b> — to change gradually to fit a new situation</div>
+      <div><b>drowsiness</b> — the feeling of being sleepy</div>
+      <div><b>isolation</b> — being completely alone, cut off from others</div>
+    </div>
+    <div class="note">Read these six words once before watching. You don't need to memorise them — just recognise them when you hear them. This is the only "preparation"; everything else comes from listening.</div>
+  </section>
+
+  <section>
+    <h2>First Watch — Just the Gist</h2>
+    <div class="video-frame">
+      <iframe src="https://www.youtube.com/embed/Y8ZXOfWUbms" title="How does your body know what time it is? - Marco A. Sotomayor | TED-Ed" allowfullscreen></iframe>
+    </div>
+    <p style="font-family:Helvetica, Arial, sans-serif; font-size:13.5px; text-align:center; margin-top:-6px;">
+      <a href="https://www.youtube.com/watch?v=Y8ZXOfWUbms" target="_blank" style="color:#1f7a72;">If the video doesn't load above, watch it directly on YouTube →</a>
+    </p>
+    <div class="task">
+      <p class="meta">Quick check</p>
+      <p class="q">In one sentence, in your own words: what is this video about?</p>
+      <textarea class="answer-box" rows="2" placeholder="Write your sentence here..."></textarea>
+    </div>
+    <div class="note">No pressure here — this first answer is just to confirm you have the general idea. You already know you're good at this part.</div>
+  </section>
+
+  <section>
+    <h2>Second Watch — Hunting for Details</h2>
+    <div class="note">Now watch again (or in short chunks, pausing where you need to). This time the goal is specific facts. It's completely fine to replay a section two or three times — that's not cheating, that's exactly how this skill is built.</div>
+
+    <div class="task" data-correct="b">
+      <p class="meta">Detail · Cause and effect</p>
+      <p class="q">1. What actually causes jet lag, according to the video?</p>
+      <label class="opt"><input type="radio" name="q1" value="a"> Sitting still for too many hours on the plane</label>
+      <label class="opt"><input type="radio" name="q1" value="b"> Your internal body clock still running on the time of the place you left</label>
+      <label class="opt"><input type="radio" name="q1" value="c"> The low air pressure inside the aircraft cabin</label>
+      <button class="check" onclick="checkAnswer(this)">Check</button>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="task" data-correct="a">
+      <p class="meta">Detail · Names and places</p>
+      <p class="q">2. Where in the human body is the main "master clock" located?</p>
+      <label class="opt"><input type="radio" name="q2" value="a"> In a small region of the brain (the hypothalamus)</label>
+      <label class="opt"><input type="radio" name="q2" value="b"> In the heart</label>
+      <label class="opt"><input type="radio" name="q2" value="c"> In the stomach</label>
+      <button class="check" onclick="checkAnswer(this)">Check</button>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="task">
+      <p class="meta">Detail · Open answer</p>
+      <p class="q">3. The video mentions a scientist named Michel Siffre and a strange experiment he did. In your own words: what did he do, and why?</p>
+      <textarea class="answer-box" rows="2" placeholder="Write what you understood..."></textarea>
+      <div class="note" style="margin-top:10px;">Don't worry about perfect grammar here — focus on getting the fact right. We'll go over it together live.</div>
+    </div>
+
+    <div class="task">
+      <p class="meta">Detail · Numbers</p>
+      <p class="q">4. Try to catch ONE number from the video (a year, a percentage, a number of hours — anything). Write the number and what it refers to.</p>
+      <textarea class="answer-box" rows="2" placeholder="E.g. '1962 — the year of Siffre's experiment'"></textarea>
+    </div>
+  </section>
+
+  <section>
+    <h2>Speaking — Using What You Heard</h2>
+    <div class="note">These tasks reuse the vocabulary and facts from the video, so you're not inventing language from nothing — you're recycling what you just heard. Speak for 1–2 minutes on each; I'll listen and we'll talk, not "correct" in real time.</div>
+
+    <div class="speak-card">
+      <p class="meta">Task A · Retelling (easiest)</p>
+      <p>Retell the main idea of the video in your own words, as if explaining it to a friend who has never heard of jet lag. Use at least three words from the vocabulary list.</p>
+      <p class="helper">Tip: start with "Apparently, our bodies have an internal clock that..." — you don't need to remember every detail, just the shape of the explanation.</p>
+    </div>
+
+    <div class="speak-card">
+      <p class="meta">Task B · Personal connection</p>
+      <p>Have you ever travelled somewhere far away and felt strange or tired for a few days afterwards? Describe it briefly — where you went, how you felt, and how long it took to feel normal again.</p>
+      <p class="helper">This is the kind of question that often appears in real B2 speaking exams — describing a personal travel experience.</p>
+    </div>
+
+    <div class="speak-card">
+      <p class="meta">Task C · Your opinion</p>
+      <p>Some frequent travellers say the best way to beat jet lag is to immediately follow the new local time (sleep, meals, daylight) rather than fight it. Do you agree with this strategy? Why or why not?</p>
+      <p class="helper">There's no wrong answer here — this is about giving reasons and defending an opinion, a key B2 speaking skill.</p>
+    </div>
+  </section>
+
+  <footer>Prepared for our session · Tony's Corner — Tailor-Made English</footer>
+</div>
+
+<script>
+function checkAnswer(btn){
+  const task = btn.closest('.task');
+  const correct = task.getAttribute('data-correct');
+  const selected = task.querySelector('input[type=radio]:checked');
+  const fb = task.querySelector('.feedback');
+  if(!selected){
+    fb.textContent = "Choose an option first.";
+    fb.className = "feedback incorrect";
+    return;
+  }
+  if(selected.value === correct){
+    fb.textContent = "Correct — well caught.";
+    fb.className = "feedback correct";
+  } else {
+    fb.textContent = "Not quite — try listening to that section again.";
+    fb.className = "feedback incorrect";
+  }
+}
+</script>
+
+</body>
+</html>
