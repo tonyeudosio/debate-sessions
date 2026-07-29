@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B2 — Grammar Review III</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:    #1b2a4a;
+    --blue:    #1f7a72;
+    --sky:     #dceceb;
+    --accent:  #b2543a;
+    --green:   #2f8f7f;
+    --green-bg:#e3f3f1;
+    --plum:    #6a4a8f;
+    --plum-bg: #efe9f6;
+    --yellow:  #fff8ec;
+    --yellow-b:#f0dfb8;
+    --cream:   #faf9f5;
+    --paper:   #f1f1ec;
+    --ink:     #1c1c1c;
+    --mid:     #555;
+    --light:   #e2e2db;
+    --shadow:  rgba(27,42,74,.10);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body { font-family: 'Source Serif 4', Georgia, serif; background: var(--paper); color: var(--ink); }
+
+  nav {
+    background: var(--navy);
+    position: sticky; top: 0; z-index: 100;
+    display: flex; flex-wrap: wrap; gap: .3rem;
+    padding: .5rem .8rem;
+    border-bottom: 3px solid var(--accent);
+  }
+  nav a {
+    color: rgba(255,255,255,.75); font-size: .75rem;
+    text-decoration: none; padding: .25rem .55rem;
+    border-radius: 4px; transition: background .2s, color .2s;
+    font-family: 'Source Serif 4', serif;
+    white-space: nowrap;
+  }
+  nav a:hover { background: var(--accent); color: #fff; }
+
+  header {
+    background: var(--navy); padding: 2.2rem 2rem 1.6rem;
+    text-align: center; position: relative; overflow: hidden;
+  }
+  header::before {
+    content: ''; position: absolute; inset: 0;
+    background: repeating-linear-gradient(45deg,transparent,transparent 28px,rgba(255,255,255,.025) 28px,rgba(255,255,255,.025) 29px);
+  }
+  header h1 { font-family:'Playfair Display',serif; font-size:clamp(1.4rem,4vw,2.4rem); color:#fff; position:relative; }
+  header p  { font-size:.9rem; color:rgba(255,255,255,.6); font-style:italic; margin-top:.4rem; position:relative; }
+  .accent-bar { width:60px;height:3px;background:var(--accent);margin:.9rem auto 0;border-radius:2px;position:relative; }
+
+  .container { max-width:900px; margin:0 auto; padding:1.8rem 1.2rem 4rem; }
+
+  .controls { display:flex; justify-content:flex-end; gap:.7rem; margin-bottom:1.4rem; flex-wrap:wrap; }
+  .ctrl-btn {
+    font-family:'Source Serif 4',serif; font-size:.85rem; padding:.4rem .9rem;
+    border-radius:5px; border:1.5px solid var(--navy);
+    background:var(--navy); color:#fff; cursor:pointer; transition:opacity .2s;
+  }
+  .ctrl-btn:hover { opacity:.82; }
+  .ctrl-btn.outline { background:transparent; color:var(--navy); }
+
+  .section { background:var(--cream); border-radius:10px; box-shadow:0 2px 16px var(--shadow); margin-bottom:2.2rem; overflow:hidden; }
+  .section-header {
+    background:var(--navy); color:#fff; padding:.8rem 1.4rem;
+    font-family:'Playfair Display',serif; font-size:1.1rem; letter-spacing:.03em;
+    display:flex; align-items:center; gap:.7rem;
+  }
+  .section-header .tag {
+    background:var(--accent); color:#fff;
+    font-family:'Source Serif 4',serif; font-size:.68rem; font-weight:600;
+    letter-spacing:.08em; text-transform:uppercase;
+    padding:.12rem .5rem; border-radius:3px;
+  }
+  .section-body { padding:1.3rem 1.5rem; }
+
+  .ref-table { width:100%; border-collapse:collapse; font-size:.88rem; margin:.8rem 0; }
+  .ref-table th { background:var(--navy); color:#fff; padding:.5rem .75rem; text-align:left; font-family:'Playfair Display',serif; }
+  .ref-table td { padding:.45rem .75rem; border-bottom:1px solid var(--light); vertical-align:top; }
+  .ref-table tr:last-child td { border-bottom:none; }
+  .ref-table tr:nth-child(odd)  td { background:var(--sky); }
+  .ref-table tr:nth-child(even) td { background:var(--cream); }
+  .ref-table .c1 { font-weight:600; color:var(--navy); width:24%; }
+  .ref-table .c2 { width:76%; }
+  .ref-table .c3 { font-style:italic; color:var(--blue); font-weight:600; }
+
+  .ip-box { border-radius:8px; padding:.9rem 1.1rem; margin:.7rem 0; border-left:4px solid var(--blue); }
+  .ip-box.imp { background:var(--sky); border-color:var(--green); }
+  .ip-box.per { background:var(--plum-bg); border-color:var(--plum); }
+  .ip-box .lbl { font-family:'Playfair Display',serif; font-size:.82rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; margin-bottom:.35rem; }
+  .ip-box.imp .lbl { color:var(--green); }
+  .ip-box.per .lbl { color:var(--plum); }
+  .ip-box .formula { font-weight:600; color:var(--navy); font-size:.88rem; margin-bottom:.3rem; }
+  .ip-box .eg { font-style:italic; font-size:.88rem; }
+  .ip-box .note { font-size:.8rem; color:var(--mid); margin-top:.28rem; }
+
+  .warn { background:var(--yellow); border:1.5px solid var(--yellow-b); border-radius:7px; padding:.75rem 1rem; margin:.8rem 0; font-size:.88rem; }
+  .warn strong { color:var(--accent); }
+
+  .pv-box { background:var(--sky); border-radius:7px; padding:.7rem 1rem; margin-bottom:1.1rem; font-style:italic; font-size:.88rem; color:var(--navy); text-align:center; font-weight:600; }
+
+  ul.blist { list-style:none; padding:0; margin:.4rem 0; }
+  ul.blist li { padding:.28rem 0 .28rem 1.2rem; position:relative; font-size:.9rem; }
+  ul.blist li::before { content:'▸'; position:absolute; left:0; color:var(--blue); font-size:.82rem; }
+  ul.blist em { font-style:italic; color:var(--blue); font-weight:600; }
+
+  h3 { font-family:'Playfair Display',serif; color:var(--blue); font-size:1rem; margin:1.1rem 0 .4rem; }
+  p.desc { font-size:.9rem; color:var(--mid); margin-bottom:.65rem; line-height:1.6; }
+
+  .ex-list { list-style:none; padding:0; }
+  .ex-item { margin-bottom:1rem; }
+  .ex-prompt { font-size:.92rem; line-height:1.65; margin-bottom:.35rem; display:flex; gap:.55rem; }
+  .ex-num { font-family:'Playfair Display',serif; color:var(--accent); font-size:.98rem; font-weight:700; min-width:1.35rem; padding-top:.05rem; }
+
+  .answer-row { display:flex; align-items:stretch; gap:0; border-radius:7px; overflow:hidden; border:1.5px solid var(--light); margin-left:1.9rem; }
+  .check-cell { background:var(--yellow); padding:.38rem .65rem; display:flex; align-items:center; justify-content:center; border-right:1.5px solid var(--light); min-width:40px; }
+  .check-cell input[type="checkbox"] { width:17px; height:17px; accent-color:var(--green); cursor:pointer; }
+  .answer-cell { background:#fff; flex:1; padding:.38rem .75rem; display:flex; align-items:center; gap:.45rem; font-size:.88rem; flex-wrap:wrap; }
+  .alabel { color:#bbb; font-weight:600; font-size:.76rem; white-space:nowrap; }
+  .answer-text { color:var(--blue); font-weight:700; font-style:italic; filter:blur(5px); user-select:none; transition:filter .35s ease; cursor:pointer; }
+  .answer-text.revealed { filter:none; cursor:default; }
+  .anote { color:#aaa; font-size:.76rem; font-style:italic; }
+  .reveal-btn { background:none; border:1.5px solid var(--blue); color:var(--blue); font-family:'Source Serif 4',serif; font-size:.76rem; padding:.12rem .5rem; border-radius:4px; cursor:pointer; white-space:nowrap; transition:background .2s,color .2s; margin-left:auto; }
+  .reveal-btn:hover { background:var(--blue); color:#fff; }
+  .reveal-btn.hidden { display:none; }
+
+  .kw-item { margin-bottom:1rem; }
+  .kw-prompt { font-size:.9rem; margin-bottom:.2rem; line-height:1.6; }
+  .kw-key { display:inline-block; background:var(--navy); color:#fff; font-size:.72rem; font-weight:700; letter-spacing:.07em; padding:.1rem .38rem; border-radius:3px; margin:0 .25rem; font-family:'Source Serif 4',serif; }
+
+  footer { text-align:center; padding:1.1rem; font-size:.8rem; color:#aaa; font-style:italic; border-top:1px solid var(--light); margin-top:1rem; }
+
+  @media(max-width:600px){
+    .section-body { padding:1rem .8rem; }
+    .ref-table { font-size:.78rem; }
+    .ref-table th,.ref-table td { padding:.38rem .45rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>B2 — Grammar Review III</h1>
+  <p>Articles &amp; Quantifiers · Confusable Verbs · Question Tags &amp; Indirect Questions · Participle Clauses · Inversion &amp; Emphasis · Linkers of Purpose &amp; Result</p>
+  <div class="accent-bar"></div>
+</header>
+
+<nav>
+  <a href="#ref">📖 Reference</a>
+  <a href="#ex1">Ex 1 Articles &amp; Quantifiers</a>
+  <a href="#ex2">Ex 2 Confusable Verbs</a>
+  <a href="#ex3">Ex 3 Tags &amp; Indirect Qs</a>
+  <a href="#ex4">Ex 4 Participle Clauses</a>
+  <a href="#ex5">Ex 5 Inversion &amp; Emphasis</a>
+  <a href="#ex6">Ex 6 Purpose &amp; Result</a>
+  <a href="#ex7">Ex 7 Key Word Transformation</a>
+</nav>
+
+<div class="container">
+
+  <div class="controls">
+    <button class="ctrl-btn outline" onclick="revealAll(false)">🙈 Hide all answers</button>
+    <button class="ctrl-btn" onclick="revealAll(true)">👁 Reveal all answers</button>
+  </div>
+
+  <!-- ══════════════════════════════════
+       PART A — REFERENCE
+  ══════════════════════════════════ -->
+
+  <div class="section" id="ref">
+    <div class="section-header"><span class="tag">Part A</span>Grammar Reference</div>
+    <div class="section-body">
+
+      <h3>1. Articles</h3>
+      <table class="ref-table">
+        <thead><tr><th class="c1">Use</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td class="c1">a / an</td><td>First mention; one of many → <em>I saw a dog in the park.</em></td></tr>
+          <tr><td class="c1">the</td><td>Something specific / already known → <em>The dog we saw yesterday was huge.</em></td></tr>
+          <tr><td class="c1">zero article</td><td>General plurals/uncountables, meals, most countries → <em>Dogs are loyal. / We had breakfast early.</em></td></tr>
+          <tr><td class="c1">the + superlatives/ordinals</td><td><em>the first time / the best day of my life</em></td></tr>
+          <tr><td class="c1">the + nationalities as a group</td><td><em>the French, the elderly, the unemployed</em></td></tr>
+          <tr><td class="c1">the + mountain ranges/rivers/seas</td><td>but zero article with single peaks → <em>the Himalayas, the Nile</em> but <em>Everest</em></td></tr>
+        </tbody>
+      </table>
+
+      <h3>2. Quantifiers</h3>
+      <table class="ref-table">
+        <thead><tr><th class="c1">Quantifier</th><th>Use + Example</th></tr></thead>
+        <tbody>
+          <tr><td class="c1">much / many</td><td>Questions &amp; negatives, more formal → <em>How much time do we have? Not many people came.</em></td></tr>
+          <tr><td class="c1">a lot of / lots of / plenty of</td><td>Informal, affirmative sentences → <em>We have a lot of time.</em></td></tr>
+          <tr><td class="c1">a few / few</td><td>Countable nouns → <em>a few</em> = some (positive); <em>few</em> = almost none (negative)</td></tr>
+          <tr><td class="c1">a little / little</td><td>Uncountable nouns → <em>a little</em> = some; <em>little</em> = almost none</td></tr>
+          <tr><td class="c1">several</td><td>More than a few, fewer than many → <em>several attempts</em></td></tr>
+          <tr><td class="c1">both / either / neither</td><td>Referring to two items → <em>Both books are good. / Either day suits me. / Neither answer is correct.</em></td></tr>
+        </tbody>
+      </table>
+
+      <h3>3. Confusable Verbs &amp; Word Pairs</h3>
+      <table class="ref-table">
+        <thead><tr><th class="c1">Pair</th><th>Difference + Example</th></tr></thead>
+        <tbody>
+          <tr><td class="c1">say / tell</td><td><em>say</em> + (that)/nothing; <em>tell</em> + object → <em>She said she was tired. / She told me she was tired.</em></td></tr>
+          <tr><td class="c1">borrow / lend</td><td><em>borrow</em> = take (from); <em>lend</em> = give (to) → <em>I borrowed her car. / She lent me her car.</em></td></tr>
+          <tr><td class="c1">make / do</td><td><em>make</em> = create/produce; <em>do</em> = perform a general activity → <em>make a cake / do the housework</em></td></tr>
+          <tr><td class="c1">bring / take</td><td><em>bring</em> = towards the speaker; <em>take</em> = away from the speaker → <em>Bring me the salt. / Take this letter to the post office.</em></td></tr>
+          <tr><td class="c1">remember / remind</td><td><em>remember</em> = recall yourself; <em>remind</em> = make someone else recall → <em>Remind me to call her.</em></td></tr>
+          <tr><td class="c1">look / watch / see</td><td><em>look at</em> = deliberate, still; <em>watch</em> = moving/changing over time; <em>see</em> = perceive, often involuntary</td></tr>
+          <tr><td class="c1">rise / raise</td><td><em>rise</em> = intransitive (no object); <em>raise</em> = transitive (needs object) → <em>Prices rise. / They raised prices.</em></td></tr>
+          <tr><td class="c1">lie / lay</td><td><em>lie</em> = intransitive, to rest (lie–lay–lain); <em>lay</em> = transitive, to put down (lay–laid–laid)</td></tr>
+        </tbody>
+      </table>
+
+      <h3>4. Question Tags &amp; Indirect Questions</h3>
+      <table class="ref-table">
+        <thead><tr><th class="c1">Pattern</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td class="c1">Positive statement → negative tag</td><td><em>She's a doctor, isn't she?</em></td></tr>
+          <tr><td class="c1">Negative statement → positive tag</td><td><em>You don't smoke, do you?</em></td></tr>
+          <tr><td class="c1">Imperative → will you?</td><td><em>Close the door, will you?</em></td></tr>
+          <tr><td class="c1">Let's → shall we?</td><td><em>Let's go for a walk, shall we?</em></td></tr>
+          <tr><td class="c1">I am → aren't I?</td><td><em>I'm invited too, aren't I?</em></td></tr>
+          <tr><td class="c1">Indirect Wh- question</td><td>No inversion, no <em>do</em> → <em>Could you tell me where the station is?</em></td></tr>
+          <tr><td class="c1">Indirect Yes/No question</td><td>+ if / whether → <em>I wonder if you speak French.</em></td></tr>
+        </tbody>
+      </table>
+
+      <h3>5. Participle Clauses</h3>
+      <table class="ref-table">
+        <thead><tr><th class="c1">Form</th><th>Use + Example</th></tr></thead>
+        <tbody>
+          <tr><td class="c1">-ing (active, replacing a relative clause)</td><td><em>The man sitting by the window is my uncle.</em> (= who is sitting)</td></tr>
+          <tr><td class="c1">-ing (reason, replacing because)</td><td><em>Feeling exhausted, she went to bed early.</em> (= because she felt exhausted)</td></tr>
+          <tr><td class="c1">-ed / past participle (passive)</td><td><em>The books written by Orwell are famous.</em> (= which were written)</td></tr>
+          <tr><td class="c1">Having + past participle</td><td>An earlier completed action → <em>Having finished his exams, he went travelling.</em></td></tr>
+          <tr><td class="c1">Having been + past participle</td><td>Earlier passive action → <em>Having been warned twice, he was finally fired.</em></td></tr>
+        </tbody>
+      </table>
+
+      <h3>6. Inversion &amp; Emphasis</h3>
+      <div class="ip-box imp">
+        <div class="lbl">Inversion after negative adverbials</div>
+        <div class="formula">Adverbial + auxiliary + subject + verb</div>
+        <div class="eg">Never have I seen such a mess. / No sooner had she arrived than it started to rain. / Not only did he apologise, but he also brought flowers.</div>
+        <div class="note">👉 Used mainly in formal or literary style, for dramatic emphasis.</div>
+      </div>
+      <div class="ip-box per">
+        <div class="lbl">Cleft sentences</div>
+        <div class="formula">It + be + [emphasised element] + who/that... &nbsp;|&nbsp; What + clause + is/was...</div>
+        <div class="eg">It was John who broke the window. / What I need is a good rest.</div>
+        <div class="note">👉 Used to highlight one specific part of the sentence.</div>
+      </div>
+      <table class="ref-table" style="margin-top:.7rem">
+        <thead><tr><th style="width:34%">Neutral</th><th>Emphatic</th></tr></thead>
+        <tbody>
+          <tr><td>I have never seen such a mess.</td><td class="c3">Never have I seen such a mess.</td></tr>
+          <tr><td>We rarely see such dedication.</td><td class="c3">Rarely do we see such dedication.</td></tr>
+          <tr><td>You should not open that door under any circumstances.</td><td class="c3">Under no circumstances should you open that door.</td></tr>
+        </tbody>
+      </table>
+
+      <h3>7. Linkers of Purpose &amp; Result</h3>
+      <table class="ref-table">
+        <thead><tr><th class="c1">Linker</th><th>Use + Example</th></tr></thead>
+        <tbody>
+          <tr><td class="c1">so that / in order that + can/could</td><td><em>We left early so that we could catch the train.</em></td></tr>
+          <tr><td class="c1">to / in order to / so as to</td><td><em>She whispered so as not to wake the baby.</em></td></tr>
+          <tr><td class="c1">so + adj/adv + that</td><td><em>It was so cold that we stayed indoors.</em></td></tr>
+          <tr><td class="c1">such + (a/an) + adj + noun + that</td><td><em>It was such a cold day that we stayed indoors.</em></td></tr>
+          <tr><td class="c1">as a result / consequently / therefore</td><td>Begins a new sentence → <em>It rained heavily. As a result, the match was cancelled.</em></td></tr>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       PART B — EXERCISES
+  ══════════════════════════════════ -->
+
+  <div class="section" style="background:transparent;box-shadow:none;border-radius:0">
+    <div style="padding:.4rem 0 1rem">
+      <p class="desc" style="font-size:.95rem;"><strong>Instructions:</strong> Complete each sentence, then click <strong>Show</strong> (or tap the blurred text) to reveal the answer. Tick ☑ if your answer is correct.</p>
+    </div>
+  </div>
+
+  <!-- EX 1 — ARTICLES & QUANTIFIERS -->
+  <div class="section" id="ex1">
+    <div class="section-header"><span class="tag">Exercise 1</span>Articles &amp; Quantifiers</div>
+    <div class="section-body">
+      <p class="desc">Fill in the gap with the correct article or quantifier.</p>
+      <ul class="ex-list" id="list-ex1"></ul>
+    </div>
+  </div>
+
+  <!-- EX 2 — CONFUSABLE VERBS -->
+  <div class="section" id="ex2">
+    <div class="section-header"><span class="tag">Exercise 2</span>Confusable Verbs &amp; Word Pairs</div>
+    <div class="section-body">
+      <p class="desc">Choose the correct verb from the pair and put it in the right form.</p>
+      <ul class="ex-list" id="list-ex2"></ul>
+    </div>
+  </div>
+
+  <!-- EX 3 — TAGS & INDIRECT QUESTIONS -->
+  <div class="section" id="ex3">
+    <div class="section-header"><span class="tag">Exercise 3</span>Question Tags &amp; Indirect Questions</div>
+    <div class="section-body">
+      <p class="desc">Add the correct question tag, or rewrite the direct question as an indirect one.</p>
+      <ul class="ex-list" id="list-ex3"></ul>
+    </div>
+  </div>
+
+  <!-- EX 4 — PARTICIPLE CLAUSES -->
+  <div class="section" id="ex4">
+    <div class="section-header"><span class="tag">Exercise 4</span>Participle Clauses</div>
+    <div class="section-body">
+      <p class="desc">Rewrite each sentence using a participle clause (-ing, -ed, or having + past participle).</p>
+      <ul class="ex-list" id="list-ex4"></ul>
+    </div>
+  </div>
+
+  <!-- EX 5 — INVERSION & EMPHASIS -->
+  <div class="section" id="ex5">
+    <div class="section-header"><span class="tag">Exercise 5</span>Inversion &amp; Emphasis</div>
+    <div class="section-body">
+      <p class="desc">Rewrite each sentence for emphasis, using inversion or a cleft structure.</p>
+      <ul class="ex-list" id="list-ex5"></ul>
+    </div>
+  </div>
+
+  <!-- EX 6 — PURPOSE & RESULT -->
+  <div class="section" id="ex6">
+    <div class="section-header"><span class="tag">Exercise 6</span>Linkers of Purpose &amp; Result</div>
+    <div class="section-body">
+      <p class="desc">Combine the two sentences using the linker given in brackets.</p>
+      <ul class="ex-list" id="list-ex6"></ul>
+    </div>
+  </div>
+
+  <!-- EX 7 — KEY WORD TRANSFORMATION -->
+  <div class="section" id="ex7">
+    <div class="section-header"><span class="tag">Exercise 7</span>Key Word Transformation (FCE Part 4)</div>
+    <div class="section-body">
+      <p class="desc">Complete the second sentence so that it means the same as the first, using the key word given. Do not change the key word.</p>
+      <ul class="ex-list" id="list-ex7"></ul>
+    </div>
+  </div>
+
+  <footer>Prepared for our sessions · Tony's Corner — Tailor-Made English</footer>
+</div>
+
+<script>
+// ── DATA ─────────────────────────────────────────────────────────────────
+
+const ex1 = [
+  { q:"________ Netherlands is famous for its tulips and windmills.", a:"The" },
+  { q:"I don't have ________ money left this month — can you lend me some?", a:"much" },
+  { q:"There were only ________ people at the meeting, so we cancelled it.", a:"few" },
+  { q:"Could I borrow ________ pen? Mine has run out of ink.", a:"a" },
+  { q:"________ Himalayas stretch across five different countries.", a:"The" },
+  { q:"We have ________ time before the train leaves, so let's hurry.", a:"little" },
+  { q:"________ of the two answers is correct — you can choose whichever you like.", a:"Either" },
+  { q:"She's studying hard to become ________ architect.", a:"an" },
+  { q:"I have ________ friends in Rome who could show us around the city.", a:"a few" },
+  { q:"________ answer was correct — they were both completely wrong.", a:"Neither" },
+];
+
+const ex2 = [
+  { q:"Could you ________ me your dictionary for a moment? (lend/borrow)", a:"lend" },
+  { q:"Don't forget to ________ your umbrella with you — it's going to rain. (bring/take)", a:"take" },
+  { q:"Can you ________ your homework before dinner? (do/make)", a:"do" },
+  { q:"She promised to ________ me about the meeting tomorrow. (remember/remind)", a:"remind" },
+  { q:"The sun ________ in the east every morning. (rise/raise)", a:"rises" },
+  { q:"Please ________ the boxes on the table carefully. (lie/lay)", a:"lay" },
+  { q:"He ________ me that he would be late for dinner. (say/tell)", a:"told" },
+  { q:"We sat on the beach and ________ the sunset for almost an hour. (watch/look)", a:"watched" },
+  { q:"________ at this photo — isn't it beautiful? (look/see)", a:"Look" },
+  { q:"He ________ a mistake in the report and had to correct it. (make/do)", a:"made" },
+];
+
+const ex3 = [
+  { q:"She's a doctor, ________?", a:"isn't she" },
+  { q:"You don't like spicy food, ________?", a:"do you" },
+  { q:"Let's go for a walk, ________?", a:"shall we" },
+  { q:"Close the door, ________?", a:"will you" },
+  { q:"I'm invited too, ________?", a:"aren't I" },
+  { q:"They've never been to Japan, ________?", a:"have they" },
+  { q:"He'd never lie to us, ________?", a:"would he" },
+  { q:"Direct: 'Where is the nearest bank?' → Indirect: 'Could you tell me ________?'", a:"where the nearest bank is" },
+  { q:"Direct: 'Do you speak French?' → Indirect: 'I wonder ________.'", a:"if you speak French" },
+  { q:"Direct: 'What time does the film start?' → Indirect: 'Do you know ________?'", a:"what time the film starts" },
+];
+
+const ex4 = [
+  { q:"The woman who is sitting by the window is my aunt.", a:"The woman sitting by the window is my aunt." },
+  { q:"Because she felt exhausted, she decided to cancel the trip.", a:"Feeling exhausted, she decided to cancel the trip." },
+  { q:"The letters which were sent last week haven't arrived yet.", a:"The letters sent last week haven't arrived yet." },
+  { q:"After he had finished his exams, he went travelling for a month.", a:"Having finished his exams, he went travelling for a month." },
+  { q:"The man who was arrested yesterday has already been released.", a:"The man arrested yesterday has already been released." },
+  { q:"Because he had been warned several times, he was finally fired.", a:"Having been warned several times, he was finally fired." },
+  { q:"People who live in big cities often complain about the noise.", a:"People living in big cities often complain about the noise." },
+  { q:"As she didn't know what to say, she stayed silent.", a:"Not knowing what to say, she stayed silent." },
+  { q:"The bridge which was built in 1930 is still in use today.", a:"The bridge built in 1930 is still in use today." },
+  { q:"Because he realised he was late, he ran all the way to the station.", a:"Realising he was late, he ran all the way to the station." },
+];
+
+const ex5 = [
+  { q:"I have never seen such a beautiful sunset.", a:"Never have I seen such a beautiful sunset." },
+  { q:"She had hardly sat down when the phone rang.", a:"Hardly had she sat down when the phone rang." },
+  { q:"He not only forgot her birthday but also lost her present.", a:"Not only did he forget her birthday, but he also lost her present." },
+  { q:"We rarely see such dedication in young players.", a:"Rarely do we see such dedication in young players." },
+  { q:"You should not open that door under any circumstances.", a:"Under no circumstances should you open that door." },
+  { q:"John broke the window, not Peter.", a:"It was John, not Peter, who broke the window." },
+  { q:"I really need a good rest.", a:"What I really need is a good rest." },
+  { q:"She only began to understand after the third explanation.", a:"Only after the third explanation did she begin to understand." },
+  { q:"As soon as she arrived, it started to rain.", a:"No sooner had she arrived than it started to rain." },
+  { q:"The lack of time worries me the most.", a:"It is the lack of time that worries me the most." },
+];
+
+const ex6 = [
+  { q:"We left early. We wanted to catch the train. (so that)", a:"We left early so that we could catch the train." },
+  { q:"She whispered. She didn't want to wake the baby. (so as not to)", a:"She whispered so as not to wake the baby." },
+  { q:"It was very cold. We stayed indoors. (so...that)", a:"It was so cold that we stayed indoors." },
+  { q:"It was a difficult exam. Nobody finished on time. (such...that)", a:"It was such a difficult exam that nobody finished on time." },
+  { q:"He studies every day. He wants to pass the exam. (in order to)", a:"He studies every day in order to pass the exam." },
+  { q:"It rained heavily all night. The match was cancelled. (as a result)", a:"It rained heavily all night. As a result, the match was cancelled." },
+  { q:"She saved money for years. She wanted to buy a house. (so that)", a:"She saved money for years so that she could buy a house." },
+  { q:"The traffic was terrible. We missed the flight. (consequently)", a:"The traffic was terrible. Consequently, we missed the flight." },
+  { q:"He wore a disguise. He didn't want to be recognised. (so as not to)", a:"He wore a disguise so as not to be recognised." },
+  { q:"The instructions were very clear. Everyone understood them easily. (so...that)", a:"The instructions were so clear that everyone understood them easily." },
+];
+
+const ex7 = [
+  { q:"The waiter who was serving us was very polite.", key:"SERVING", a:"The waiter serving us was very polite." },
+  { q:"Because she didn't have any money, she couldn't buy the ticket.", key:"HAVING", a:"Not having any money, she couldn't buy the ticket." },
+  { q:"I have never been so embarrassed in my life.", key:"NEVER", a:"Never have I been so embarrassed in my life." },
+  { q:"It rained so hard that the streets flooded.", key:"SUCH", a:"It was such heavy rain that the streets flooded." },
+  { q:"We hurried so that we wouldn't miss the beginning of the film.", key:"ORDER", a:"We hurried in order not to miss the beginning of the film." },
+  { q:"What time does the museum open?", key:"WONDER", a:"I wonder what time the museum opens." },
+  { q:"Maria's brother didn't solve the problem — Maria did.", key:"WHO", a:"It was Maria who solved the problem, not her brother." },
+  { q:"There isn't much sugar left in the jar.", key:"LITTLE", a:"There is little sugar left in the jar." },
+  { q:"As soon as the alarm went off, everyone left the building.", key:"HAD", a:"No sooner had the alarm gone off than everyone left the building." },
+  { q:"Could you lend me your car this weekend?", key:"BORROW", a:"Could I borrow your car from you this weekend?" },
+];
+
+// ── RENDER HELPERS ────────────────────────────────────────────────────────
+
+let uid = 0;
+const newId = () => 'a' + (++uid);
+
+function makeSimpleItem(num, prompt, answer, note) {
+  const id = newId();
+  const li = document.createElement('li');
+  li.className = 'ex-item';
+  li.innerHTML = `
+    <div class="ex-prompt"><span class="ex-num">${num}.</span><span>${prompt}</span></div>
+    <div class="answer-row">
+      <div class="check-cell"><input type="checkbox" title="Tick if correct"></div>
+      <div class="answer-cell">
+        <span class="alabel">Answer:</span>
+        <span class="answer-text" id="${id}" onclick="revealOne('${id}')">${answer}</span>
+        ${note ? `<span class="anote">(${note})</span>` : ''}
+        <button class="reveal-btn" id="btn-${id}" onclick="revealOne('${id}')">Show</button>
+      </div>
+    </div>`;
+  return li;
+}
+
+function makeKWItem(num, sentence, keyword, answer) {
+  const id = newId();
+  const li = document.createElement('li');
+  li.className = 'ex-item';
+  li.innerHTML = `
+    <div class="ex-prompt">
+      <span class="ex-num">${num}.</span>
+      <span>${sentence} <span class="kw-key">${keyword}</span></span>
+    </div>
+    <div class="answer-row">
+      <div class="check-cell"><input type="checkbox" title="Tick if correct"></div>
+      <div class="answer-cell">
+        <span class="alabel">Answer:</span>
+        <span class="answer-text" id="${id}" onclick="revealOne('${id}')">${answer}</span>
+        <button class="reveal-btn" id="btn-${id}" onclick="revealOne('${id}')">Show</button>
+      </div>
+    </div>`;
+  return li;
+}
+
+function populate(listId, data, type) {
+  const ul = document.getElementById(listId);
+  data.forEach((item, i) => {
+    let li;
+    if (type === 'kw') {
+      li = makeKWItem(i+1, item.q, item.key, item.a);
+    } else {
+      li = makeSimpleItem(i+1, item.q, item.a, item.note||'');
+    }
+    ul.appendChild(li);
+  });
+}
+
+populate('list-ex1', ex1, 'simple');
+populate('list-ex2', ex2, 'simple');
+populate('list-ex3', ex3, 'simple');
+populate('list-ex4', ex4, 'simple');
+populate('list-ex5', ex5, 'simple');
+populate('list-ex6', ex6, 'simple');
+populate('list-ex7', ex7, 'kw');
+
+// ── REVEAL ────────────────────────────────────────────────────────────────
+
+function revealOne(id) {
+  const span = document.getElementById(id);
+  const btn  = document.getElementById('btn-' + id);
+  if (span) span.classList.add('revealed');
+  if (btn)  btn.classList.add('hidden');
+}
+
+function revealAll(show) {
+  document.querySelectorAll('.answer-text').forEach(el =>
+    el.classList.toggle('revealed', show));
+  document.querySelectorAll('.reveal-btn').forEach(btn =>
+    btn.classList.toggle('hidden', show));
+}
+</script>
+</body>
+</html>
