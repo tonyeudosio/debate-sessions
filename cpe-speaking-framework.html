@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>C2 Speaking — The Frame</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy-950:#0a1628;
+    --navy-900:#0f1f38;
+    --navy-800:#152a4a;
+    --navy-700:#1f3a63;
+    --gold-500:#c9a227;
+    --gold-400:#dfc064;
+    --gold-100:#f4e9c8;
+    --paper:#f7f3ea;
+    --paper-dim:#e9e2d0;
+    --ink:#e8e6df;
+    --ink-dim:#a9b3c4;
+    --line: rgba(201,162,39,0.22);
+    --good:#6fae8c;
+    --warn:#c97a4a;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(1200px 500px at 15% -10%, rgba(201,162,39,0.10), transparent 60%),
+      var(--navy-950);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:920px;margin:0 auto;padding:48px 24px 100px;}
+
+  /* ---------- Header ---------- */
+  header{margin-bottom:36px;}
+  .kicker{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--gold-400);margin:0 0 14px;
+    display:flex;align-items:center;gap:10px;
+  }
+  .kicker::before{content:"";width:22px;height:1px;background:var(--gold-400);display:inline-block;}
+  h1{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:clamp(34px,5vw,54px);
+    line-height:1.05;
+    margin:0 0 16px;
+    color:var(--paper);
+    letter-spacing:-0.01em;
+  }
+  h1 em{font-style:italic;font-weight:400;color:var(--gold-400);}
+  .lede{
+    max-width:640px;color:var(--ink-dim);font-size:16.5px;
+  }
+  .lede strong{color:var(--ink);font-weight:600;}
+
+  .exam-strip{
+    margin-top:28px;
+    display:flex;gap:0;
+    border:1px solid var(--line);
+    border-radius:2px;
+    overflow:hidden;
+  }
+  .exam-strip .cell{
+    flex:1;padding:14px 16px;
+    border-right:1px solid var(--line);
+  }
+  .exam-strip .cell:last-child{border-right:none;}
+  .exam-strip .cell .n{
+    font-family:'IBM Plex Mono',monospace;color:var(--gold-500);font-size:11px;
+    text-transform:uppercase;letter-spacing:.1em;
+  }
+  .exam-strip .cell .t{font-size:14px;margin-top:4px;color:var(--ink);}
+  .exam-strip .cell .d{font-size:12.5px;color:var(--ink-dim);margin-top:2px;}
+
+  /* ---------- Nav ---------- */
+  nav{
+    position:sticky;top:0;z-index:20;
+    display:flex;gap:2px;
+    background:rgba(10,22,40,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+    margin:0 -24px 40px;
+    padding:0 24px;
+    overflow-x:auto;
+  }
+  nav button{
+    appearance:none;border:none;background:none;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12.5px;letter-spacing:.04em;
+    color:var(--ink-dim);
+    padding:16px 14px 13px;
+    cursor:pointer;
+    white-space:nowrap;
+    border-bottom:2px solid transparent;
+    transition:color .15s, border-color .15s;
+  }
+  nav button:hover{color:var(--ink);}
+  nav button.active{color:var(--gold-400);border-bottom-color:var(--gold-500);}
+
+  section.panel{display:none;}
+  section.panel.active{display:block; animation:fade .25s ease;}
+  @keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
+
+  .section-head{margin-bottom:24px;}
+  .section-head .tag{
+    font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--gold-500);
+  }
+  .section-head h2{
+    font-family:'Fraunces',serif;font-weight:600;font-size:28px;color:var(--paper);
+    margin:6px 0 8px;
+  }
+  .section-head p{color:var(--ink-dim);font-size:15px;max-width:640px;}
+
+  /* ---------- Move cards (the "trick" framework) ---------- */
+  .moves{
+    display:grid;grid-template-columns:auto 1fr;gap:0;
+    border:1px solid var(--line);border-radius:3px;overflow:hidden;
+    margin-bottom:28px;
+  }
+  .move{
+    display:contents;
+  }
+  .move .letter{
+    background:var(--navy-900);
+    border-bottom:1px solid var(--line);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Fraunces',serif;font-size:26px;font-weight:600;color:var(--gold-500);
+    padding:18px 22px;min-width:64px;
+  }
+  .move:last-child .letter{border-bottom:none;}
+  .move .body{
+    background:var(--navy-800);
+    border-bottom:1px solid var(--line);
+    padding:16px 20px;
+  }
+  .move:last-child .body{border-bottom:none;}
+  .move .body h3{
+    font-family:'Inter',sans-serif;font-weight:700;font-size:15px;color:var(--paper);
+    margin:0 0 4px;letter-spacing:.01em;
+  }
+  .move .body p{margin:0 0 8px;font-size:14px;color:var(--ink-dim);}
+  .move .body .say{
+    font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:var(--gold-100);
+    background:rgba(201,162,39,0.08);
+    border-left:2px solid var(--gold-500);
+    padding:8px 10px;
+    margin-top:6px;
+  }
+
+  .frame-name{
+    display:inline-flex;align-items:baseline;gap:10px;
+    font-family:'Fraunces',serif;font-size:22px;color:var(--gold-400);
+    margin-bottom:4px;
+  }
+  .frame-name .word{letter-spacing:.02em;}
+  .frame-sub{color:var(--ink-dim);font-size:13.5px;margin-bottom:20px;}
+
+  /* card grid for supporting info */
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:22px 0;}
+  @media(max-width:640px){.grid2{grid-template-columns:1fr;}}
+  .card{
+    border:1px solid var(--line);background:var(--navy-900);border-radius:3px;padding:16px 18px;
+  }
+  .card h4{
+    font-family:'IBM Plex Mono',monospace;font-size:11.5px;text-transform:uppercase;
+    letter-spacing:.1em;color:var(--gold-500);margin:0 0 10px;
+  }
+  .card ul{margin:0;padding-left:18px;color:var(--ink-dim);font-size:14px;}
+  .card li{margin-bottom:6px;}
+  .card li strong{color:var(--ink);}
+
+  .callout{
+    border:1px solid var(--gold-500);
+    background:linear-gradient(180deg, rgba(201,162,39,0.08), rgba(201,162,39,0.02));
+    border-radius:3px;padding:16px 20px;margin:24px 0;
+  }
+  .callout .tag{
+    font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--gold-400);
+  }
+  .callout p{margin:8px 0 0;font-size:14.5px;color:var(--ink);}
+
+  .timeline{
+    display:flex;border:1px solid var(--line);border-radius:3px;overflow:hidden;margin:22px 0;
+  }
+  .timeline .seg{
+    flex:1;padding:14px 16px;border-right:1px solid var(--line);
+  }
+  .timeline .seg:last-child{border-right:none;}
+  .timeline .seg .time{
+    font-family:'IBM Plex Mono',monospace;color:var(--gold-500);font-size:12px;
+  }
+  .timeline .seg .label{font-size:13.5px;color:var(--ink);margin-top:4px;}
+
+  /* ---------- Language bank ---------- */
+  .bank{margin-bottom:30px;}
+  .bank h3{
+    font-family:'Fraunces',serif;font-weight:600;font-size:18px;color:var(--paper);
+    margin:0 0 12px;border-bottom:1px solid var(--line);padding-bottom:8px;
+  }
+  .chips{display:flex;flex-wrap:wrap;gap:8px;}
+  .chip{
+    font-family:'IBM Plex Mono',monospace;font-size:13px;
+    background:var(--navy-900);border:1px solid var(--line);color:var(--ink);
+    padding:7px 12px;border-radius:2px;
+  }
+  .chip b{color:var(--gold-400);font-weight:600;}
+
+  /* ---------- Criteria ---------- */
+  .criteria-row{
+    display:grid;grid-template-columns:160px 1fr;gap:14px;
+    padding:16px 0;border-bottom:1px solid var(--line);
+  }
+  .criteria-row:last-child{border-bottom:none;}
+  .criteria-row .name{
+    font-family:'Inter',sans-serif;font-weight:700;font-size:14px;color:var(--gold-400);
+  }
+  .criteria-row .desc{font-size:14px;color:var(--ink-dim);}
+  .criteria-row .desc strong{color:var(--ink);}
+
+  .footer-note{
+    margin-top:52px;padding-top:20px;border-top:1px solid var(--line);
+    font-size:13px;color:var(--ink-dim);
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;
+  }
+  .footer-note .mono{font-family:'IBM Plex Mono',monospace;color:var(--gold-500);}
+
+  ::selection{background:var(--gold-500);color:var(--navy-950);}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="kicker">Cambridge C2 Proficiency — Speaking</div>
+    <h1>Don't wing it.<br><em>Run the frame.</em></h1>
+    <p class="lede">You already have the vocabulary and the grammar — that was never the problem. What's missing under pressure is a <strong>shape to fall back on</strong>: a fixed sequence of moves for each part, so that when your mind goes blank you have somewhere to put your feet. This page gives you one repeatable structure per part, the exact connecting language to glue it together, and the criteria the examiner is actually ticking off while you talk.</p>
+
+    <div class="exam-strip">
+      <div class="cell"><div class="n">Part 1</div><div class="t">Interview</div><div class="d">2 min · individual</div></div>
+      <div class="cell"><div class="n">Part 2</div><div class="t">Collaborative task</div><div class="d">1 + 3 min · pair</div></div>
+      <div class="cell"><div class="n">Part 3</div><div class="t">Long turn + discussion</div><div class="d">2+1 min each, then 4 min</div></div>
+    </div>
+  </header>
+
+  <nav id="tabs">
+    <button data-t="p1" class="active">Part 1</button>
+    <button data-t="p2">Part 2</button>
+    <button data-t="p3">Part 3</button>
+    <button data-t="bank">Language bank</button>
+    <button data-t="criteria">What's graded</button>
+  </nav>
+
+  <!-- PART 1 -->
+  <section class="panel active" id="p1">
+    <div class="section-head">
+      <div class="tag">Part 1 · 2 minutes</div>
+      <h2>The interview</h2>
+      <p>Two or three background questions each, examiner-led. The trap at C2 is answering like a B2 candidate: correct, but flat and short. The examiner isn't testing information — they're testing whether you can <em>develop</em> an answer unprompted.</p>
+    </div>
+
+    <div class="frame-name"><span class="word">EDGE</span></div>
+    <div class="frame-sub">Engage → Develop → Give an example → Extend. Four moves, roughly 4 sentences, every time you're asked anything.</div>
+
+    <div class="moves">
+      <div class="move">
+        <div class="letter">E</div>
+        <div class="body">
+          <h3>Engage — answer immediately, no padding</h3>
+          <p>Direct answer in your first sentence. Don't circle the question before landing on it.</p>
+          <div class="say">"I'd say I'm reasonably good at it, actually — though it depends on the week."</div>
+        </div>
+      </div>
+      <div class="move">
+        <div class="letter">D</div>
+        <div class="body">
+          <h3>Develop — add the reason</h3>
+          <p>One sentence of justification. This is where a linking word does the C2 signalling for you.</p>
+          <div class="say">"Mainly because my work forces a routine on me whether I like it or not."</div>
+        </div>
+      </div>
+      <div class="move">
+        <div class="letter">G</div>
+        <div class="body">
+          <h3>Give a concrete example</h3>
+          <p>A specific instance beats a general claim. This is the sentence that stops the answer sounding rehearsed.</p>
+          <div class="say">"Last month, for instance, I had to fit three deadlines into one week and somehow it worked."</div>
+        </div>
+      </div>
+      <div class="move">
+        <div class="letter">X</div>
+        <div class="body">
+          <h3>Extend — widen it or qualify it</h3>
+          <p>A short pivot outward: a contrast, a concession, or a link to the next likely question. This is the sentence that sounds like a real opinion rather than an exam answer.</p>
+          <div class="say">"Having said that, I don't think I'd cope half as well without deadlines forcing my hand."</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="tag">Under time pressure</div>
+      <p>If a question catches him off guard, the fix isn't a better answer — it's a stalling phrase that still counts as fluent speech. See the <strong>Buying time</strong> section of the Language bank. Silence costs marks; a well-placed "That's an interesting one, actually…" does not.</p>
+    </div>
+  </section>
+
+  <!-- PART 2 -->
+  <section class="panel" id="p2">
+    <div class="section-head">
+      <div class="tag">Part 2 · 1 min + 3 min</div>
+      <h2>The collaborative task</h2>
+      <p>Two candidates, one picture booklet, no examiner input while you talk. This part is graded most heavily on <strong>Interactive Communication</strong> — initiating, responding, and negotiating with your partner — not on who describes the pictures best.</p>
+    </div>
+
+    <div class="timeline">
+      <div class="seg"><div class="time">≈ 1 min</div><div class="label">Two selected pictures — how common is this in your country?</div></div>
+      <div class="seg"><div class="time">≈ 3 min</div><div class="label">All pictures — discuss the issues, agree which is most interesting</div></div>
+    </div>
+
+    <div class="frame-name"><span class="word">SCAN</span></div>
+    <div class="frame-sub">Survey → Compare → Assess → Nominate. Same shape for both halves of the task — the second half just runs it across more pictures and ends in a joint decision.</div>
+
+    <div class="moves">
+      <div class="move">
+        <div class="letter">S</div>
+        <div class="body">
+          <h3>Survey — name what's happening, fast</h3>
+          <p>One sentence per picture, no more. This is scene-setting, not the task itself — don't let him linger here.</p>
+          <div class="say">"So in this one we've got someone running a drinks stall, and here it looks like beekeepers at work."</div>
+        </div>
+      </div>
+      <div class="move">
+        <div class="letter">C</div>
+        <div class="body">
+          <h3>Compare — pull the pictures against each other</h3>
+          <p>The actual task word is "compare" or "how common" — so a comparative structure should appear early, and often.</p>
+          <div class="say">"I'd say the market stall is far more typical where I'm from than beekeeping, which feels quite niche in comparison."</div>
+        </div>
+      </div>
+      <div class="move">
+        <div class="letter">A</div>
+        <div class="body">
+          <h3>Assess — bring in the underlying issue</h3>
+          <p>For the second half specifically: don't just describe the picture, name the issue behind it (working conditions, job security, seasonal work, hygiene, exploitation…).</p>
+          <div class="say">"What strikes me about this one is the question of how regulated that kind of work actually is."</div>
+        </div>
+      </div>
+      <div class="move">
+        <div class="letter">N</div>
+        <div class="body">
+          <h3>Nominate — reach the decision together, out loud</h3>
+          <p>The task always ends in a joint choice. Say the negotiation, don't just arrive at an answer — that's what's being marked.</p>
+          <div class="say">"Between the two of us I think we're leaning towards the food safety angle — would you agree, or do you feel more strongly about the other one?"</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="tag">The one habit worth drilling</div>
+      <p>Every SCAN cycle should end with a question or an invitation back to the partner — "What do you make of this one?", "Do you see it the same way?". That single habit is what separates a C2 <em>Interactive Communication</em> score from a C1 one: he's not answering the task, he's running a conversation about it.</p>
+    </div>
+  </section>
+
+  <!-- PART 3 -->
+  <section class="panel" id="p3">
+    <div class="section-head">
+      <div class="tag">Part 3 · long turn (2 min) → comment (1 min) → discussion (4 min)</div>
+      <h2>The long turn, and what follows it</h2>
+      <p>He gets a card with a question and three bullet prompts. This is the part that rewards a teacher's instinct — the card is already an essay outline. Treat it exactly like one, spoken.</p>
+    </div>
+
+    <div class="frame-name"><span class="word">FRAME</span></div>
+    <div class="frame-sub">Frame the question → Run each bullet → Answer directly. The three bullets on the card are not decoration — they are the three body paragraphs.</div>
+
+    <div class="moves">
+      <div class="move">
+        <div class="letter">1</div>
+        <div class="body">
+          <h3>Frame the question — 10 seconds, no more</h3>
+          <p>Restate the question in his own words before answering it. This buys thinking time legitimately and shows control of the topic from sentence one.</p>
+          <div class="say">"So the question is really whether it's better to trust your own judgement or lean on other people's — and I think it depends heavily on the context."</div>
+        </div>
+      </div>
+      <div class="move">
+        <div class="letter">2</div>
+        <div class="body">
+          <h3>Run each bullet as its own mini-paragraph</h3>
+          <p>Signal the move to a new bullet explicitly — this is what makes the two minutes sound organised rather than a stream of thought. Three bullets, three clearly marked sections, roughly 30–35 seconds each.</p>
+          <div class="say">"If we start with education… / Turning to the workplace, though… / And then there's the question of age…"</div>
+        </div>
+      </div>
+      <div class="move">
+        <div class="letter">3</div>
+        <div class="body">
+          <h3>Answer the question directly at the end</h3>
+          <p>Don't let the long turn trail off after the last bullet. One closing sentence that actually answers the original question — examiners consistently mark this down when it's missing.</p>
+          <div class="say">"So on balance, I'd say the older you get, the more your own judgement should be trusted — but that trust has to be earned early on by listening to others."</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <h4>Then — commenting on your partner (1 min)</h4>
+        <ul>
+          <li><strong>Agree and extend</strong> rather than just agreeing: add a new angle, don't repeat theirs.</li>
+          <li>If you disagree, disagree <strong>on one specific point</strong>, not the whole answer.</li>
+          <li>Always end back on the examiner's follow-up question — don't drift.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h4>Then — general discussion (up to 4 min)</h4>
+        <ul>
+          <li>This is the most abstract stretch of the whole test — questions move from personal to societal.</li>
+          <li>Push answers up a level of abstraction: not "I think X" but "It seems to me that, generally speaking, X" — hedged, general claims score higher here than anecdotes.</li>
+          <li>This is pure <strong>Interactive Communication</strong> territory again — bring the partner in, don't monologue.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- LANGUAGE BANK -->
+  <section class="panel" id="bank">
+    <div class="section-head">
+      <div class="tag">Reusable across all three parts</div>
+      <h2>The language bank</h2>
+      <p>These are the joints that connect the moves above. Practise them until they're automatic — at C2 the examiner is listening for range and naturalness in exactly this kind of connective tissue.</p>
+    </div>
+
+    <div class="bank">
+      <h3>Buying time (without going silent)</h3>
+      <div class="chips">
+        <div class="chip"><b>"That's a good question, actually…"</b></div>
+        <div class="chip"><b>"Let me think about that for a second…"</b></div>
+        <div class="chip"><b>"I haven't really considered that before, but…"</b></div>
+        <div class="chip"><b>"There are a couple of ways to look at this…"</b></div>
+      </div>
+    </div>
+
+    <div class="bank">
+      <h3>Hedging an opinion (sounds native, protects you when unsure)</h3>
+      <div class="chips">
+        <div class="chip"><b>"I'd tend to say…"</b></div>
+        <div class="chip"><b>"On the whole, I'd argue…"</b></div>
+        <div class="chip"><b>"It strikes me that…"</b></div>
+        <div class="chip"><b>"I could well be wrong, but…"</b></div>
+        <div class="chip"><b>"There's probably an argument that…"</b></div>
+      </div>
+    </div>
+
+    <div class="bank">
+      <h3>Bringing your partner in (Part 2 &amp; Part 3 discussion)</h3>
+      <div class="chips">
+        <div class="chip"><b>"What's your take on this?"</b></div>
+        <div class="chip"><b>"Would you go along with that?"</b></div>
+        <div class="chip"><b>"Do you see it the same way, or…?"</b></div>
+        <div class="chip"><b>"I take your point, but I'd push back slightly on…"</b></div>
+        <div class="chip"><b>"Building on what you said…"</b></div>
+      </div>
+    </div>
+
+    <div class="bank">
+      <h3>Signposting a structured answer (Part 3 long turn)</h3>
+      <div class="chips">
+        <div class="chip"><b>"If we start with…"</b></div>
+        <div class="chip"><b>"Moving on to…"</b></div>
+        <div class="chip"><b>"That said…"</b></div>
+        <div class="chip"><b>"Which brings me to…"</b></div>
+        <div class="chip"><b>"On balance, then…"</b></div>
+      </div>
+    </div>
+
+    <div class="bank">
+      <h3>Self-correcting cleanly (fluent recovery, not restart)</h3>
+      <div class="chips">
+        <div class="chip"><b>"Or rather…"</b></div>
+        <div class="chip"><b>"What I mean is…"</b></div>
+        <div class="chip"><b>"Sorry — let me rephrase that…"</b></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CRITERIA -->
+  <section class="panel" id="criteria">
+    <div class="section-head">
+      <div class="tag">What the examiner is actually scoring</div>
+      <h2>The five marks behind every answer</h2>
+      <p>Every one of the moves above exists to serve one of these. Worth reading through once so the frameworks stop feeling arbitrary.</p>
+    </div>
+
+    <div class="criteria-row">
+      <div class="name">Grammatical Resource</div>
+      <div class="desc">Range and accuracy of structures. <strong>EDGE</strong>'s "Extend" step and hedging language are what surface a wider range of structures than a plain answer would.</div>
+    </div>
+    <div class="criteria-row">
+      <div class="name">Lexical Resource</div>
+      <div class="desc">Already his strength — the frameworks exist to give that vocabulary somewhere organised to land, so it reads as control rather than a list.</div>
+    </div>
+    <div class="criteria-row">
+      <div class="name">Discourse Management</div>
+      <div class="desc">Coherence, length, and organisation of turns. This is exactly what <strong>FRAME</strong> and the signposting bank are built for — a two-minute turn that sounds planned, not rambled.</div>
+    </div>
+    <div class="criteria-row">
+      <div class="name">Pronunciation</div>
+      <div class="desc">Stress, intonation, individual sounds — clear enough that no effort is needed to understand him. Not addressed by structure; needs separate, targeted practice.</div>
+    </div>
+    <div class="criteria-row">
+      <div class="name">Interactive Communication</div>
+      <div class="desc">Initiating, responding, turn-taking, negotiating meaning. This is the whole point of <strong>SCAN</strong>'s "Nominate" step and the "bringing your partner in" language — Part 2 and the Part 3 discussion are scored almost entirely on this.</div>
+    </div>
+  </section>
+
+  <div class="footer-note">
+    <div>Based on the UCLES C2 Proficiency sample paper 1 speaking format.</div>
+    <div class="mono">EDGE · SCAN · FRAME</div>
+  </div>
+
+</div>
+
+<script>
+  const buttons = document.querySelectorAll('#tabs button');
+  const panels = document.querySelectorAll('section.panel');
+  buttons.forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      buttons.forEach(b=>b.classList.remove('active'));
+      panels.forEach(p=>p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById(btn.dataset.t).classList.add('active');
+      window.scrollTo({top:0, behavior:'smooth'});
+    });
+  });
+</script>
+</body>
+</html>
