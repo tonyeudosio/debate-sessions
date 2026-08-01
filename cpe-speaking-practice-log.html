@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>C2 Speaking — Practice Log</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy-950:#0a1628; --navy-900:#0f1f38; --navy-800:#152a4a; --navy-700:#1f3a63;
+    --gold-500:#c9a227; --gold-400:#dfc064; --gold-100:#f4e9c8;
+    --paper:#f7f3ea; --ink:#e8e6df; --ink-dim:#a9b3c4;
+    --line: rgba(201,162,39,0.22);
+    --good:#6fae8c; --warn:#c97a4a; --bad:#c25b5b;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:radial-gradient(1200px 500px at 15% -10%, rgba(201,162,39,0.10), transparent 60%),var(--navy-950);
+    color:var(--ink);font-family:'Inter',sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:880px;margin:0 auto;padding:48px 24px 100px;}
+  .kicker{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--gold-400);margin:0 0 14px;display:flex;align-items:center;gap:10px;}
+  .kicker::before{content:"";width:22px;height:1px;background:var(--gold-400);display:inline-block;}
+  h1{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(30px,4.5vw,44px);line-height:1.08;
+    margin:0 0 14px;color:var(--paper);letter-spacing:-0.01em;}
+  h1 em{font-style:italic;font-weight:400;color:var(--gold-400);}
+  .lede{max-width:600px;color:var(--ink-dim);font-size:15.5px;margin-bottom:32px;}
+
+  .stats{display:flex;gap:0;border:1px solid var(--line);border-radius:3px;overflow:hidden;margin-bottom:36px;}
+  .stats .cell{flex:1;padding:16px 18px;border-right:1px solid var(--line);}
+  .stats .cell:last-child{border-right:none;}
+  .stats .n{font-family:'Fraunces',serif;font-size:28px;color:var(--gold-400);}
+  .stats .l{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-dim);margin-top:2px;}
+
+  .form{border:1px solid var(--line);background:var(--navy-900);border-radius:3px;padding:22px 24px;margin-bottom:36px;}
+  .form h2{font-family:'Fraunces',serif;font-weight:600;font-size:18px;color:var(--paper);margin:0 0 18px;}
+  .row{margin-bottom:16px;}
+  label{display:block;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.08em;
+    text-transform:uppercase;color:var(--gold-500);margin-bottom:7px;}
+  input[type=date], textarea{
+    width:100%;background:var(--navy-800);border:1px solid var(--line);color:var(--ink);
+    padding:9px 11px;border-radius:2px;font-family:'Inter',sans-serif;font-size:14px;
+  }
+  textarea{min-height:64px;resize:vertical;}
+  input[type=date]:focus, textarea:focus{outline:none;border-color:var(--gold-500);}
+
+  .pillrow{display:flex;flex-wrap:wrap;gap:8px;}
+  .pill{
+    font-family:'IBM Plex Mono',monospace;font-size:13px;cursor:pointer;user-select:none;
+    background:var(--navy-800);border:1px solid var(--line);color:var(--ink-dim);
+    padding:7px 13px;border-radius:20px;transition:all .15s;
+  }
+  .pill.on{background:var(--gold-500);border-color:var(--gold-500);color:var(--navy-950);font-weight:600;}
+
+  .scale{display:flex;gap:6px;}
+  .scale .s{
+    flex:1;text-align:center;padding:9px 0;border:1px solid var(--line);border-radius:2px;
+    font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--ink-dim);cursor:pointer;
+  }
+  .scale .s.on{background:var(--gold-500);border-color:var(--gold-500);color:var(--navy-950);font-weight:700;}
+
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+  @media(max-width:600px){.grid2{grid-template-columns:1fr;}}
+
+  button.save{
+    margin-top:18px;appearance:none;border:none;background:var(--gold-500);color:var(--navy-950);
+    font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.04em;
+    padding:11px 22px;border-radius:2px;cursor:pointer;text-transform:uppercase;
+  }
+  button.save:hover{background:var(--gold-400);}
+
+  .log h2{font-family:'Fraunces',serif;font-weight:600;font-size:18px;color:var(--paper);
+    margin:0 0 4px;border-bottom:1px solid var(--line);padding-bottom:10px;}
+  .log .sub{font-size:13px;color:var(--ink-dim);margin-bottom:18px;}
+
+  .entry{border:1px solid var(--line);background:var(--navy-900);border-radius:3px;
+    padding:16px 18px;margin-bottom:12px;position:relative;}
+  .entry .top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;flex-wrap:wrap;gap:8px;}
+  .entry .date{font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:var(--gold-400);}
+  .entry .tags{display:flex;gap:6px;flex-wrap:wrap;}
+  .entry .tags span{font-family:'IBM Plex Mono',monospace;font-size:11px;background:var(--navy-800);
+    border:1px solid var(--line);color:var(--ink-dim);padding:3px 9px;border-radius:12px;}
+  .entry .ratings{display:flex;gap:14px;font-size:12.5px;color:var(--ink-dim);margin-bottom:8px;}
+  .entry .ratings b{color:var(--ink);}
+  .entry .notes{font-size:14px;color:var(--ink);white-space:pre-wrap;}
+  .entry .del{
+    position:absolute;top:14px;right:16px;background:none;border:none;color:var(--ink-dim);
+    font-family:'IBM Plex Mono',monospace;font-size:11px;cursor:pointer;letter-spacing:.06em;
+  }
+  .entry .del:hover{color:var(--bad);}
+
+  .empty{border:1px dashed var(--line);border-radius:3px;padding:34px 20px;text-align:center;
+    color:var(--ink-dim);font-size:14px;}
+
+  ::selection{background:var(--gold-500);color:var(--navy-950);}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="kicker">Cambridge C2 Proficiency — Speaking</div>
+  <h1>Log the reps.<br><em>Watch the pattern.</em></h1>
+  <p class="lede">Frameworks (EDGE / SCAN / FRAME) stop a candidate from freezing. Only practice makes them automatic. Log a couple of lines after every session — the point isn't the score, it's spotting which part still breaks down under pressure before September arrives.</p>
+
+  <div class="stats" id="stats"></div>
+
+  <div class="form">
+    <h2>New session</h2>
+    <div class="grid2">
+      <div class="row">
+        <label>Date</label>
+        <input type="date" id="f-date">
+      </div>
+      <div class="row">
+        <label>Part(s) practised</label>
+        <div class="pillrow" id="f-parts">
+          <div class="pill" data-v="Part 1">Part 1</div>
+          <div class="pill" data-v="Part 2">Part 2</div>
+          <div class="pill" data-v="Part 3">Part 3</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <label>Framework used without prompting</label>
+      <div class="pillrow" id="f-frames">
+        <div class="pill" data-v="EDGE">EDGE</div>
+        <div class="pill" data-v="SCAN">SCAN</div>
+        <div class="pill" data-v="FRAME">FRAME</div>
+        <div class="pill" data-v="Forgot it">Forgot it</div>
+      </div>
+    </div>
+
+    <div class="grid2">
+      <div class="row">
+        <label>Fluency / calm under pressure (1 panicked — 5 natural)</label>
+        <div class="scale" id="f-fluency">
+          <div class="s" data-v="1">1</div><div class="s" data-v="2">2</div><div class="s" data-v="3">3</div><div class="s" data-v="4">4</div><div class="s" data-v="5">5</div>
+        </div>
+      </div>
+      <div class="row">
+        <label>Involved the partner (1 monologued — 5 negotiated)</label>
+        <div class="scale" id="f-partner">
+          <div class="s" data-v="1">1</div><div class="s" data-v="2">2</div><div class="s" data-v="3">3</div><div class="s" data-v="4">4</div><div class="s" data-v="5">5</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <label>Where it broke down / what to fix next time</label>
+      <textarea id="f-notes" placeholder="e.g. Lost the thread after the second bullet in Part 3 — didn't signpost the move."></textarea>
+    </div>
+
+    <button class="save" id="f-save">Save session</button>
+  </div>
+
+  <div class="log">
+    <h2>Session history</h2>
+    <div class="sub" id="log-sub"></div>
+    <div id="entries"></div>
+  </div>
+
+</div>
+
+<script>
+  const STORE_KEY = 'cpe-speaking-log-v1';
+  let selParts = new Set();
+  let selFrame = null;
+  let selFluency = null;
+  let selPartner = null;
+
+  document.getElementById('f-date').valueAsDate = new Date();
+
+  function bindPills(containerId, isMulti, onChange){
+    const c = document.getElementById(containerId);
+    c.querySelectorAll('.pill, .s').forEach(el=>{
+      el.addEventListener('click', ()=>{
+        if(isMulti){
+          el.classList.toggle('on');
+        } else {
+          c.querySelectorAll('.pill, .s').forEach(x=>x.classList.remove('on'));
+          el.classList.add('on');
+        }
+        onChange();
+      });
+    });
+  }
+  bindPills('f-parts', true, ()=>{
+    selParts = new Set([...document.querySelectorAll('#f-parts .pill.on')].map(e=>e.dataset.v));
+  });
+  bindPills('f-frames', false, ()=>{
+    const on = document.querySelector('#f-frames .pill.on');
+    selFrame = on ? on.dataset.v : null;
+  });
+  bindPills('f-fluency', false, ()=>{
+    const on = document.querySelector('#f-fluency .s.on');
+    selFluency = on ? on.dataset.v : null;
+  });
+  bindPills('f-partner', false, ()=>{
+    const on = document.querySelector('#f-partner .s.on');
+    selPartner = on ? on.dataset.v : null;
+  });
+
+  function loadEntries(){
+    try{
+      const raw = localStorage.getItem(STORE_KEY);
+      return raw ? JSON.parse(raw) : [];
+    }catch(e){ return []; }
+  }
+  function saveEntries(list){
+    localStorage.setItem(STORE_KEY, JSON.stringify(list));
+  }
+
+  function render(){
+    const entries = loadEntries().sort((a,b)=> b.date.localeCompare(a.date));
+    const statsEl = document.getElementById('stats');
+    const entriesEl = document.getElementById('entries');
+    const subEl = document.getElementById('log-sub');
+
+    const count = entries.length;
+    const avgF = count ? (entries.reduce((s,e)=>s+Number(e.fluency||0),0)/count).toFixed(1) : '—';
+    const avgP = count ? (entries.reduce((s,e)=>s+Number(e.partner||0),0)/count).toFixed(1) : '—';
+    const forgot = entries.filter(e=>e.frame==='Forgot it').length;
+
+    statsEl.innerHTML = `
+      <div class="cell"><div class="n">${count}</div><div class="l">Sessions logged</div></div>
+      <div class="cell"><div class="n">${avgF}</div><div class="l">Avg. fluency</div></div>
+      <div class="cell"><div class="n">${avgP}</div><div class="l">Avg. partner score</div></div>
+      <div class="cell"><div class="n">${forgot}</div><div class="l">Times framework forgotten</div></div>
+    `;
+
+    subEl.textContent = count ? `${count} session${count===1?'':'s'} logged` : 'No sessions yet — the first one starts the pattern.';
+
+    if(!count){
+      entriesEl.innerHTML = '<div class="empty">Nothing logged yet. Save a session above after his next practice run.</div>';
+      return;
+    }
+
+    entriesEl.innerHTML = entries.map(e => `
+      <div class="entry">
+        <button class="del" data-id="${e.id}">DELETE</button>
+        <div class="top">
+          <div class="date">${e.date}</div>
+          <div class="tags">
+            ${(e.parts||[]).map(p=>`<span>${p}</span>`).join('')}
+            ${e.frame ? `<span>${e.frame}</span>` : ''}
+          </div>
+        </div>
+        <div class="ratings">
+          <span>Fluency: <b>${e.fluency || '—'}/5</b></span>
+          <span>Partner: <b>${e.partner || '—'}/5</b></span>
+        </div>
+        ${e.notes ? `<div class="notes">${e.notes.replace(/</g,'&lt;')}</div>` : ''}
+      </div>
+    `).join('');
+
+    entriesEl.querySelectorAll('.del').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const id = btn.dataset.id;
+        const list = loadEntries().filter(e=>e.id !== id);
+        saveEntries(list);
+        render();
+      });
+    });
+  }
+
+  document.getElementById('f-save').addEventListener('click', ()=>{
+    const date = document.getElementById('f-date').value;
+    if(!date){ alert('Pick a date first.'); return; }
+    const notes = document.getElementById('f-notes').value.trim();
+
+    const entry = {
+      id: Date.now().toString(36),
+      date,
+      parts: [...selParts],
+      frame: selFrame,
+      fluency: selFluency,
+      partner: selPartner,
+      notes
+    };
+    const list = loadEntries();
+    list.push(entry);
+    saveEntries(list);
+
+    // reset form
+    document.querySelectorAll('#f-parts .pill, #f-frames .pill, #f-fluency .s, #f-partner .s').forEach(el=>el.classList.remove('on'));
+    selParts = new Set(); selFrame = null; selFluency = null; selPartner = null;
+    document.getElementById('f-notes').value = '';
+    document.getElementById('f-date').valueAsDate = new Date();
+
+    render();
+  });
+
+  render();
+</script>
+</body>
+</html>
