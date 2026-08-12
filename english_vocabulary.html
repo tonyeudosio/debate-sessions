@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lexicon — English C2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#211d16;
+    --ink-soft:#52493a;
+    --parchment:#ede3cb;
+    --parchment-deep:#e2d5ae;
+    --parchment-line:#cdbd8f;
+    --rubric:#8b2e22;
+    --rubric-dark:#6e2015;
+    --lazuli:#33506c;
+    --verdigris:#4a6b5a;
+    --gold:#9c6f26;
+    --card-bg:#f5eeda;
+    --shadow:0 1px 2px rgba(33,29,22,.08), 0 6px 16px rgba(33,29,22,.06);
+    font-size:16px;
+  }
+  *{box-sizing:border-box;}
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:.001ms !important; transition-duration:.001ms !important;}
+  }
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(ellipse at top left, #f2e9d2 0%, var(--parchment) 45%),
+      var(--parchment);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    min-height:100vh;
+    padding:32px 20px 80px;
+  }
+  .wrap{max-width:920px;margin:0 auto;}
+
+  /* header */
+  header{
+    text-align:center;
+    padding-bottom:22px;
+    margin-bottom:28px;
+    border-bottom:2px solid var(--parchment-line);
+    position:relative;
+  }
+  header::after{
+    content:"";
+    position:absolute;
+    left:50%; bottom:-6px; transform:translateX(-50%);
+    width:64px; height:9px;
+    background:
+      linear-gradient(90deg, var(--lazuli) 0 25%, var(--gold) 25% 50%, var(--verdigris) 50% 75%, var(--rubric) 75% 100%);
+    border-radius:2px;
+    opacity:.85;
+  }
+  h1{
+    font-family:'Fraunces', serif;
+    font-optical-sizing:auto;
+    font-weight:600;
+    font-size:clamp(2.1rem, 5vw, 2.9rem);
+    letter-spacing:.01em;
+    margin:0 0 6px;
+    color:var(--rubric-dark);
+  }
+  header p{
+    margin:0;
+    font-size:.92rem;
+    color:var(--ink-soft);
+    letter-spacing:.02em;
+  }
+  header p em{
+    font-style:italic;
+    color:var(--ink);
+  }
+
+  /* stats */
+  .stats{
+    display:flex; justify-content:center; gap:22px; flex-wrap:wrap;
+    margin-top:16px; font-family:'IBM Plex Mono', monospace; font-size:.78rem;
+  }
+  .stat{color:var(--ink-soft); display:flex; align-items:center; gap:6px;}
+  .stat b{font-size:.95rem; color:var(--ink);}
+  .dot{width:8px;height:8px;border-radius:50%;display:inline-block;}
+
+  /* toolbar */
+  .toolbar{
+    display:flex; flex-wrap:wrap; gap:10px; align-items:center;
+    margin-bottom:20px;
+  }
+  .pills{display:flex; gap:6px; flex-wrap:wrap;}
+  .pill{
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    font-size:.85rem;
+    padding:6px 13px;
+    border-radius:3px;
+    border:1.5px solid var(--parchment-line);
+    background:var(--card-bg);
+    color:var(--ink-soft);
+    cursor:pointer;
+    transition:transform .12s ease, border-color .12s ease, color .12s ease;
+  }
+  .pill:hover{transform:translateY(-1px);}
+  .pill:focus-visible{outline:2px solid var(--lazuli); outline-offset:2px;}
+  .pill[data-active="true"]{color:#fff; border-color:transparent;}
+  .pill[data-cat="todas"][data-active="true"]{background:var(--ink);}
+  .pill[data-cat="nombre"][data-active="true"]{background:var(--lazuli);}
+  .pill[data-cat="adjetivo"][data-active="true"]{background:var(--gold);}
+  .pill[data-cat="verbo"][data-active="true"]{background:var(--verdigris);}
+  .pill[data-cat="adverbio"][data-active="true"]{background:var(--rubric);}
+
+  .toolbar-right{display:flex; gap:8px; margin-left:auto; flex-wrap:wrap;}
+  input[type="text"], select, textarea{
+    font-family:'Inter',sans-serif;
+    border:1.5px solid var(--parchment-line);
+    background:var(--card-bg);
+    color:var(--ink);
+    border-radius:3px;
+    padding:7px 10px;
+    font-size:.88rem;
+  }
+  input[type="text"]:focus, select:focus, textarea:focus{
+    outline:2px solid var(--lazuli); outline-offset:1px;
+  }
+  #search{width:180px;}
+  #capFilter{font-family:'IBM Plex Mono', monospace; width:120px;}
+
+  .btn{
+    font-family:'Inter',sans-serif;
+    font-weight:600;
+    font-size:.85rem;
+    padding:8px 15px;
+    border-radius:3px;
+    border:none;
+    cursor:pointer;
+    background:var(--rubric);
+    color:#fbf3e1;
+    transition:background .12s ease, transform .12s ease;
+  }
+  .btn:hover{background:var(--rubric-dark); transform:translateY(-1px);}
+  .btn:focus-visible{outline:2px solid var(--ink); outline-offset:2px;}
+  .btn.secondary{background:transparent; color:var(--ink-soft); border:1.5px solid var(--parchment-line);}
+  .btn.secondary:hover{background:var(--parchment-deep); color:var(--ink);}
+
+  /* panel */
+  #panel{
+    display:none;
+    background:var(--card-bg);
+    border:1.5px solid var(--parchment-line);
+    border-left:5px solid var(--rubric);
+    border-radius:4px;
+    padding:20px 22px;
+    margin-bottom:26px;
+    box-shadow:var(--shadow);
+    animation:reveal .18s ease;
+  }
+  @keyframes reveal{from{opacity:0; transform:translateY(-6px);} to{opacity:1; transform:translateY(0);}}
+  #panel h2{
+    font-family:'Fraunces', serif; font-weight:600; font-size:1.15rem;
+    margin:0 0 14px; color:var(--rubric-dark);
+  }
+  .form-grid{display:grid; grid-template-columns:1fr 1fr; gap:12px 14px;}
+  .form-grid .full{grid-column:1 / -1;}
+  label{
+    display:block; font-size:.72rem; text-transform:uppercase; letter-spacing:.06em;
+    color:var(--ink-soft); margin-bottom:4px; font-weight:600;
+  }
+  .form-grid input, .form-grid select, .form-grid textarea{width:100%;}
+  textarea{resize:vertical; min-height:44px; font-style:italic;}
+  .panel-actions{display:flex; gap:8px; margin-top:16px; justify-content:flex-end;}
+
+  /* capitulo divider */
+  .cap-divider{
+    display:flex; align-items:center; gap:10px;
+    margin:26px 0 10px; color:var(--rubric-dark);
+    font-family:'IBM Plex Mono', monospace; font-size:.8rem; letter-spacing:.05em;
+  }
+  .cap-divider::after{content:""; flex:1; height:1px; background:var(--parchment-line);}
+  .cap-divider .num{
+    background:var(--rubric); color:#fbf3e1; padding:2px 9px; border-radius:2px; font-weight:500;
+  }
+
+  /* grid of cards */
+  #grid{display:flex; flex-direction:column; gap:10px;}
+  .card{
+    display:flex; gap:14px;
+    background:var(--card-bg);
+    border:1px solid var(--parchment-line);
+    border-radius:4px;
+    padding:14px 16px;
+    box-shadow:var(--shadow);
+    animation:reveal .2s ease;
+    position:relative;
+  }
+  .initial{
+    flex:none;
+    width:46px; height:46px;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Fraunces', serif; font-weight:700; font-size:1.4rem;
+    color:#fbf3e1;
+    border-radius:3px;
+    border:2px solid rgba(0,0,0,.08);
+  }
+  .initial.nombre{background:var(--lazuli);}
+  .initial.adjetivo{background:var(--gold);}
+  .initial.verbo{background:var(--verdigris);}
+  .initial.adverbio{background:var(--rubric);}
+
+  .card-body{flex:1; min-width:0;}
+  .card-top{display:flex; align-items:baseline; gap:10px; flex-wrap:wrap;}
+  .word{font-family:'Fraunces', serif; font-weight:600; font-size:1.2rem; color:var(--ink);}
+  .forms{font-family:'IBM Plex Mono', monospace; font-size:.78rem; color:var(--ink-soft);}
+  .meaning{margin:3px 0 0; font-size:.92rem; color:var(--ink-soft);}
+  .example{margin:6px 0 0; font-size:.85rem; font-style:italic; color:var(--ink); opacity:.85;}
+  .tagrow{margin-top:8px; display:flex; gap:8px; align-items:center; flex-wrap:wrap;}
+  .catlabel{
+    font-family:'IBM Plex Mono', monospace; font-size:.68rem; text-transform:uppercase;
+    letter-spacing:.06em; padding:2px 7px; border-radius:2px; color:#fff;
+  }
+  .catlabel.nombre{background:var(--lazuli);}
+  .catlabel.adjetivo{background:var(--gold);}
+  .catlabel.verbo{background:var(--verdigris);}
+  .catlabel.adverbio{background:var(--rubric);}
+  .caplabel{font-family:'IBM Plex Mono', monospace; font-size:.7rem; color:var(--ink-soft);}
+
+  .card-actions{
+    flex:none; display:flex; flex-direction:column; gap:6px; align-items:flex-end;
+  }
+  .icon-btn{
+    background:none; border:none; cursor:pointer; color:var(--ink-soft);
+    font-size:.95rem; padding:2px 4px; line-height:1; border-radius:2px;
+  }
+  .icon-btn:hover{color:var(--ink);}
+  .icon-btn:focus-visible{outline:2px solid var(--lazuli);}
+  .confirm-row{display:flex; gap:4px; font-size:.78rem;}
+  .confirm-row button{
+    border:none; border-radius:2px; padding:2px 7px; cursor:pointer; font-size:.75rem;
+  }
+  .confirm-yes{background:var(--rubric); color:#fff;}
+  .confirm-no{background:var(--parchment-deep); color:var(--ink);}
+
+  .empty, .loading, .err{
+    text-align:center; padding:50px 20px; color:var(--ink-soft);
+  }
+  .empty h3{font-family:'Fraunces', serif; color:var(--ink); font-weight:600; margin-bottom:6px;}
+  .err button{margin-top:10px;}
+
+  @media (max-width:600px){
+    .form-grid{grid-template-columns:1fr;}
+    .toolbar-right{margin-left:0; width:100%;}
+    #search{width:100%;}
+    .card{flex-direction:column;}
+    .card-actions{flex-direction:row; align-self:flex-end;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>Lexicon</h1>
+    <p>advanced notebook · <em>English C2 Level</em></p>
+    <div class="stats" id="stats"></div>
+  </header>
+
+  <div class="toolbar">
+    <div class="pills" id="catPills">
+      <button class="pill" data-cat="todas" data-active="true">All</button>
+      <button class="pill" data-cat="nombre">Nouns</button>
+      <button class="pill" data-cat="adjetivo">Adjectives</button>
+      <button class="pill" data-cat="verbo">Verbs</button>
+      <button class="pill" data-cat="adverbio">Adverbs</button>
+    </div>
+    <div class="toolbar-right">
+      <input type="text" id="search" placeholder="Search…">
+      <select id="capFilter"><option value="todos">Unit — all</option></select>
+      <button class="btn secondary" id="exportBtn" title="Download all entries as a .json file">⭳ Export</button>
+      <button class="btn secondary" id="importBtn" title="Load a previously exported .json file">⭱ Import</button>
+      <input type="file" id="importFile" accept="application/json,.json" style="display:none">
+      <button class="btn" id="openAdd">+ New Word</button>
+    </div>
+  </div>
+
+ <div id="panel">
+    <h2 id="panelTitle">Add Term</h2>
+    <input type="hidden" id="editId">
+    <div class="form-grid">
+      <div>
+        <label for="fCat">Part of Speech</label>
+        <select id="fCat">
+          <option value="nombre">Noun</option>
+          <option value="adjetivo">Adjective</option>
+          <option value="verbo">Verb</option>
+          <option value="adverbio">Adverb</option>
+        </select>
+      </div>
+      <div>
+        <label for="fCap">Unit / Topic</label>
+        <input type="text" id="fCap" placeholder="e.g. 1">
+      </div>
+      <div>
+        <label for="fWord">Word / Idiom</label>
+        <input type="text" id="fWord" placeholder="e.g. serendipity">
+      </div>
+      <div>
+        <label id="formsLabel" for="fForms">Type / Plural</label>
+        <input type="text" id="fForms" placeholder="[C] / plural: -ies">
+      </div>
+      <div class="full">
+        <label for="fMeaning">Definition / Meaning</label>
+        <input type="text" id="fMeaning" placeholder="Definition or meaning in English/Spanish">
+      </div>
+      <div class="full">
+        <label for="fExample">Example Context (C2)</label>
+        <textarea id="fExample" placeholder="Write an academic or advanced sentence using the term."></textarea>
+      </div>
+    </div>
+    <div class="panel-actions">
+      <button class="btn secondary" id="cancelBtn">Cancel</button>
+      <button class="btn" id="saveBtn">Save</button>
+    </div>
+  </div>
+
+  <div id="grid"></div>
+
+</div>
+
+<script>
+(function(){
+  const CATS = {
+    nombre:   {label:'Noun',      plural:'Nouns',       formsLabel:'Tipo / Plural', formsPh:'e.g. [C], [U], plural: -aes'},
+    adjetivo: {label:'Adjective', plural:'Adjectives',  formsLabel:'Collocations / Synonyms', formsPh:'e.g. highly + adj, striking'},
+    verbo:    {label:'Verb',      plural:'Verbs',       formsLabel:'Patterns / Prepositions', formsPh:'e.g. verb + to-inf, depend on'},
+    adverbio: {label:'Adverb',    plural:'Adverbs',     formsLabel:'Collocations / Synonyms', formsPh:'e.g. utterly, thoroughly'}
+  };
+  // Clave única para evitar conflictos con los datos del cuaderno de latín
+  const STORAGE_KEY = 'english-vocab-entries';
+
+  let entries = [];
+  let filterCat = 'todas';
+  let filterCap = 'todos';
+  let confirmingId = null;
+  let loaded = false;
+  let loadError = false;
+
+  const $ = sel => document.querySelector(sel);
+  const grid = $('#grid');
+
+  function formatUnit(num){
+    return isNaN(num) ? String(num) : 'Unit ' + num;
+  }
+
+  function escapeHtml(s){
+    return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  async function loadEntries(){
+    grid.innerHTML = '<div class="loading">Opening the lexicon…</div>';
+    try {
+      const res = await window.storage.get(STORAGE_KEY, false);
+      entries = res ? JSON.parse(res.value) : [];
+    } catch (e) {
+      // Si la clave no existe todavía (primer uso), storage.get lanza un
+      // error en lugar de devolver null. Lo tratamos como "sin palabras aún",
+      // no como un fallo real.
+      entries = [];
+    }
+    loaded = true;
+    loadError = false;
+    render();
+  }
+
+  async function saveEntries(){
+    try {
+      await window.storage.set(STORAGE_KEY, JSON.stringify(entries), false);
+    } catch (e) {
+      console.error('Save failed', e);
+    }
+  }
+
+  function exportEntries(){
+    const blob = new Blob([JSON.stringify(entries, null, 2)], {type:'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    const date = new Date().toISOString().slice(0,10);
+    a.href = url;
+    a.download = `lexicon-english-${date}.json`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  }
+
+  function importEntriesFromFile(file){
+    const reader = new FileReader();
+    reader.onload = async () => {
+      let imported;
+      try {
+        imported = JSON.parse(reader.result);
+        if (!Array.isArray(imported)) throw new Error('invalid format');
+      } catch (e){
+        alert('This file is not a valid format. It must be a .json file exported from this notebook.');
+        return;
+      }
+      let added = 0, updated = 0, skipped = 0;
+      imported.forEach(item => {
+        if (!item || typeof item !== 'object' || !item.word || !item.category){ skipped++; return; }
+        if (!item.id) item.id = Date.now().toString(36) + Math.random().toString(36).slice(2,7);
+        const idx = entries.findIndex(e => e.id === item.id);
+        if (idx >= 0){ entries[idx] = item; updated++; }
+        else { entries.push(item); added++; }
+      });
+      await saveEntries();
+      render();
+      alert(`Import complete: ${added} new, ${updated} updated` + (skipped ? `, ${skipped} skipped (invalid format).` : '.'));
+    };
+    reader.readAsText(file);
+  }
+
+  function openPanel(entry){
+    const panel = $('#panel');
+    panel.style.display = 'block';
+    $('#panelTitle').textContent = entry ? 'Edit Term' : 'Add Term';
+    $('#editId').value = entry ? entry.id : '';
+    $('#fCat').value = entry ? entry.category : 'nombre';
+    $('#fCap').value = entry ? entry.capitulo : '';
+    $('#fWord').value = entry ? entry.word : '';
+    $('#fForms').value = entry ? entry.forms : '';
+    $('#fMeaning').value = entry ? entry.meaning : '';
+    $('#fExample').value = entry ? entry.example : '';
+    updateFormsLabel();
+    $('#fWord').focus();
+  }
+
+  function closePanel(){
+    $('#panel').style.display = 'none';
+  }
+
+  function updateFormsLabel(){
+    const c = CATS[$('#fCat').value];
+    $('#formsLabel').textContent = c.formsLabel;
+    $('#fForms').placeholder = c.formsPh;
+  }
+
+  function updateCapFilterOptions(){
+    const sel = $('#capFilter');
+    const current = sel.value;
+    const caps = [...new Set(entries.map(e => e.capitulo).filter(Boolean))]
+      .sort((a,b) => parseInt(a,10) - parseInt(b,10));
+    sel.innerHTML = '<option value="todos">Unit — all</option>' +
+      caps.map(c => `<option value="${escapeHtml(c)}">${escapeHtml(formatUnit(c))}</option>`).join('');
+    if (caps.includes(current)) sel.value = current;
+  }
+
+  function updateStats(){
+    const box = $('#stats');
+    const total = entries.length;
+    const counts = {nombre:0, adjetivo:0, verbo:0, adverbio:0};
+    entries.forEach(e => { if (counts[e.category] !== undefined) counts[e.category]++; });
+    const colorVar = {nombre:'var(--lazuli)', adjetivo:'var(--gold)', verbo:'var(--verdigris)', adverbio:'var(--rubric)'};
+    box.innerHTML = `<span class="stat"><b>${total}</b>&nbsp;words</span>` +
+      Object.keys(counts).map(k =>
+        `<span class="stat"><span class="dot" style="background:${colorVar[k]}"></span>${counts[k]} ${CATS[k].plural.toLowerCase()}</span>`
+      ).join('');
+  }
+
+  function render(){
+    updateStats();
+    updateCapFilterOptions();
+
+    if (!loaded) return;
+    if (loadError){
+      grid.innerHTML = `<div class="err">Could not load the lexicon.<br><button class="btn secondary" id="retryBtn">Retry</button></div>`;
+      $('#retryBtn').addEventListener('click', loadEntries);
+      return;
+    }
+
+    const search = $('#search').value.trim().toLowerCase();
+    let filtered = entries.filter(e => {
+      if (filterCat !== 'todas' && e.category !== filterCat) return false;
+      if (filterCap !== 'todos' && String(e.capitulo) !== String(filterCap)) return false;
+      if (search && !(e.word.toLowerCase().includes(search) || e.meaning.toLowerCase().includes(search))) return false;
+      return true;
+    });
+
+    if (entries.length === 0){
+      grid.innerHTML = `<div class="empty"><h3>The lexicon is currently empty</h3>Add the first advanced term or idiom from the unit you are studying.</div>`;
+      return;
+    }
+    if (filtered.length === 0){
+      grid.innerHTML = `<div class="empty"><h3>No results found</h3>No words match the current filtering criteria.</div>`;
+      return;
+    }
+
+    // Ordenación por unidad y luego orden alfabético inglés estándar
+    filtered.sort((a,b) => {
+      const ca = parseInt(a.capitulo,10) || 0, cb = parseInt(b.capitulo,10) || 0;
+      if (ca !== cb) return ca - cb;
+      return a.word.localeCompare(b.word, 'en');
+    });
+
+    let html = '';
+    let lastCap = null;
+    const showDividers = filterCap === 'todos';
+    filtered.forEach(e => {
+      if (showDividers && e.capitulo !== lastCap){
+        lastCap = e.capitulo;
+        html += `<div class="cap-divider"><span class="num">${escapeHtml(formatUnit(e.capitulo))}</span></div>`;
+      }
+      const cat = CATS[e.category] || CATS.nombre;
+      const initialLetter = (e.word || '?').trim()[0]?.toUpperCase() || '?';
+      const isConfirming = confirmingId === e.id;
+      html += `
+        <div class="card">
+          <div class="initial ${e.category}">${escapeHtml(initialLetter)}</div>
+          <div class="card-body">
+            <div class="card-top">
+              <span class="word">${escapeHtml(e.word)}</span>
+              ${e.forms ? `<span class="forms">${escapeHtml(e.forms)}</span>` : ''}
+            </div>
+            <p class="meaning">${escapeHtml(e.meaning)}</p>
+            ${e.example ? `<p class="example">${escapeHtml(e.example)}</p>` : ''}
+            <div class="tagrow">
+              <span class="catlabel ${e.category}">${cat.label}</span>
+              <span class="caplabel">${escapeHtml(formatUnit(e.capitulo))}</span>
+            </div>
+          </div>
+          <div class="card-actions">
+            ${isConfirming
+              ? `<div class="confirm-row">Delete?
+                   <button class="confirm-yes" data-del="${e.id}">Yes</button>
+                   <button class="confirm-no" data-cancel-del="${e.id}">No</button>
+                 </div>`
+              : `<button class="icon-btn" title="Edit" data-edit="${e.id}">✎</button>
+                 <button class="icon-btn" title="Delete" data-ask-del="${e.id}">✕</button>`
+            }
+          </div>
+        </div>`;
+    });
+    grid.innerHTML = html;
+  }
+
+  // events
+  $('#catPills').addEventListener('click', e => {
+    const btn = e.target.closest('.pill');
+    if (!btn) return;
+    filterCat = btn.dataset.cat;
+    document.querySelectorAll('.pill').forEach(p => p.dataset.active = (p === btn) ? 'true' : 'false');
+    render();
+  });
+  $('#capFilter').addEventListener('change', e => { filterCap = e.target.value; render(); });
+  $('#search').addEventListener('input', render);
+  $('#openAdd').addEventListener('click', () => openPanel(null));
+  $('#exportBtn').addEventListener('click', exportEntries);
+  $('#importBtn').addEventListener('click', () => $('#importFile').click());
+  $('#importFile').addEventListener('change', e => {
+    const file = e.target.files[0];
+    if (file) importEntriesFromFile(file);
+    e.target.value = '';
+  });
+  $('#cancelBtn').addEventListener('click', closePanel);
+  $('#fCat').addEventListener('change', updateFormsLabel);
+
+  $('#saveBtn').addEventListener('click', async () => {
+    const word = $('#fWord').value.trim();
+    const meaning = $('#fMeaning').value.trim();
+    const capitulo = $('#fCap').value.trim();
+    if (!word || !meaning || !capitulo){
+      alert('Please fill in at least the word, meaning, and unit.');
+      return;
+    }
+    const id = $('#editId').value;
+    const data = {
+      id: id || (Date.now().toString(36) + Math.random().toString(36).slice(2,7)),
+      category: $('#fCat').value,
+      word,
+      forms: $('#fForms').value.trim(),
+      meaning,
+      capitulo,
+      example: $('#fExample').value.trim(),
+      createdAt: id ? (entries.find(e=>e.id===id)?.createdAt || Date.now()) : Date.now()
+    };
+    if (id){
+      entries = entries.map(e => e.id === id ? data : e);
+    } else {
+      entries.push(data);
+    }
+    await saveEntries();
+    closePanel();
+    render();
+  });
+
+  grid.addEventListener('click', e => {
+    const editId = e.target.dataset.edit;
+    const askDel = e.target.dataset.askDel;
+    const del = e.target.dataset.del;
+    const cancelDel = e.target.dataset.cancelDel;
+    if (editId){
+      openPanel(entries.find(en => en.id === editId));
+    } else if (askDel){
+      confirmingId = askDel;
+      render();
+    } else if (cancelDel){
+      confirmingId = null;
+      render();
+    } else if (del){
+      entries = entries.filter(en => en.id !== del);
+      confirmingId = null;
+      saveEntries();
+      render();
+    }
+  });
+
+  loadEntries();
+})();
+</script>
+</body>
+</html>
