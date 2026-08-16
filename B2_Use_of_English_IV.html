@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B2 / FCE — Use of English IV</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:    #1b2a4a;
+    --blue:    #1f7a72;
+    --sky:     #dceceb;
+    --accent:  #d9a23e;
+    --green:   #2f8f7f;
+    --green-bg:#e3f3f1;
+    --plum:    #6a4a8f;
+    --plum-bg: #efe9f6;
+    --yellow:  #fff8ec;
+    --yellow-b:#f0dfb8;
+    --cream:   #faf9f5;
+    --paper:   #f1f1ec;
+    --ink:     #1c1c1c;
+    --mid:     #555;
+    --light:   #e2e2db;
+    --shadow:  rgba(27,42,74,.10);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Source Serif 4', Georgia, serif; background: var(--paper); color: var(--ink); }
+
+  nav { background: var(--navy); position: sticky; top: 0; z-index: 100; display: flex; flex-wrap: wrap; gap: .3rem; padding: .5rem .8rem; border-bottom: 3px solid var(--accent); }
+  nav a { color: rgba(255,255,255,.75); font-size: .75rem; text-decoration: none; padding: .25rem .55rem; border-radius: 4px; transition: background .2s, color .2s; font-family: 'Source Serif 4', serif; white-space: nowrap; }
+  nav a:hover { background: var(--accent); color: #fff; }
+
+  header { background: var(--navy); padding: 2.2rem 2rem 1.6rem; text-align: center; position: relative; overflow: hidden; }
+  header::before { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(45deg,transparent,transparent 28px,rgba(255,255,255,.025) 28px,rgba(255,255,255,.025) 29px); }
+  header h1 { font-family:'Playfair Display',serif; font-size:clamp(1.4rem,4vw,2.4rem); color:#fff; position:relative; }
+  header p  { font-size:.9rem; color:rgba(255,255,255,.6); font-style:italic; margin-top:.4rem; position:relative; }
+  .accent-bar { width:60px;height:3px;background:var(--accent);margin:.9rem auto 0;border-radius:2px;position:relative; }
+
+  .container { max-width:900px; margin:0 auto; padding:1.8rem 1.2rem 4rem; }
+
+  .controls { display:flex; justify-content:flex-end; gap:.7rem; margin-bottom:1.4rem; flex-wrap:wrap; }
+  .ctrl-btn { font-family:'Source Serif 4',serif; font-size:.85rem; padding:.4rem .9rem; border-radius:5px; border:1.5px solid var(--navy); background:var(--navy); color:#fff; cursor:pointer; transition:opacity .2s; }
+  .ctrl-btn:hover { opacity:.82; }
+  .ctrl-btn.outline { background:transparent; color:var(--navy); }
+
+  .section { background:var(--cream); border-radius:10px; box-shadow:0 2px 16px var(--shadow); margin-bottom:2.2rem; overflow:hidden; }
+  .section-header { background:var(--navy); color:#fff; padding:.8rem 1.4rem; font-family:'Playfair Display',serif; font-size:1.1rem; letter-spacing:.03em; display:flex; align-items:center; gap:.7rem; }
+  .section-header .tag { background:var(--accent); color:#fff; font-family:'Source Serif 4',serif; font-size:.68rem; font-weight:600; letter-spacing:.08em; text-transform:uppercase; padding:.12rem .5rem; border-radius:3px; }
+  .section-body { padding:1.3rem 1.5rem; }
+
+  p.desc { font-size:.9rem; color:var(--mid); margin-bottom:.9rem; line-height:1.6; }
+  .instructions { background:var(--sky); border-left:4px solid var(--blue); border-radius:7px; padding:.75rem 1rem; margin-bottom:1.1rem; font-size:.87rem; color:var(--navy); }
+  .instructions strong { color:var(--blue); }
+
+  .passage { background:#fff; border:1.5px solid var(--light); border-radius:8px; padding:1.1rem 1.3rem; margin-bottom:1.3rem; font-size:.95rem; line-height:2; }
+  .gap-num { display:inline-block; background:var(--navy); color:#fff; font-family:'Playfair Display',serif; font-weight:700; font-size:.72rem; padding:0 .4rem; border-radius:3px; margin:0 .1rem; vertical-align:middle; }
+  .gap-line { display:inline-block; border-bottom:2px dotted var(--accent); min-width:3.2rem; }
+
+  .mc-item, .of-item, .wf-item, .kw-item { margin-bottom:1.15rem; padding-bottom:1.15rem; border-bottom:1px solid var(--light); }
+  .mc-item:last-child, .of-item:last-child, .wf-item:last-child, .kw-item:last-child { border-bottom:none; margin-bottom:0; padding-bottom:0; }
+
+  .item-head { display:flex; align-items:baseline; gap:.5rem; margin-bottom:.4rem; }
+  .item-num { font-family:'Playfair Display',serif; color:var(--accent); font-size:1rem; font-weight:700; min-width:1.4rem; }
+  .item-line { font-size:.92rem; line-height:1.6; }
+  .wf-base { font-weight:700; color:var(--plum); letter-spacing:.03em; }
+
+  .mc-options { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:.35rem .6rem; margin:.4rem 0 .55rem 1.9rem; }
+  .mc-opt { font-size:.87rem; color:var(--mid); padding:.2rem .5rem; border-radius:5px; background:#fff; border:1px solid var(--light); }
+  .mc-opt .letter { font-weight:700; color:var(--navy); margin-right:.3rem; }
+
+  .answer-row { display:flex; align-items:stretch; gap:0; border-radius:7px; overflow:hidden; border:1.5px solid var(--light); margin-left:1.9rem; }
+  .check-cell { background:var(--yellow); padding:.38rem .65rem; display:flex; align-items:center; justify-content:center; border-right:1.5px solid var(--light); min-width:40px; }
+  .check-cell input[type="checkbox"] { width:17px; height:17px; accent-color:var(--green); cursor:pointer; }
+  .answer-cell { background:#fff; flex:1; padding:.38rem .75rem; display:flex; align-items:center; gap:.45rem; font-size:.88rem; flex-wrap:wrap; }
+  .alabel { color:#bbb; font-weight:600; font-size:.76rem; white-space:nowrap; }
+  .answer-text { color:var(--blue); font-weight:700; font-style:italic; filter:blur(5px); user-select:none; transition:filter .35s ease; cursor:pointer; }
+  .answer-text.revealed { filter:none; cursor:default; }
+  .anote { color:#aaa; font-size:.76rem; font-style:italic; }
+  .reveal-btn { background:none; border:1.5px solid var(--blue); color:var(--blue); font-family:'Source Serif 4',serif; font-size:.76rem; padding:.12rem .5rem; border-radius:4px; cursor:pointer; white-space:nowrap; transition:background .2s,color .2s; margin-left:auto; }
+  .reveal-btn:hover { background:var(--blue); color:#fff; }
+  .reveal-btn.hidden { display:none; }
+
+  .kw-key { display:inline-block; background:var(--navy); color:#fff; font-size:.72rem; font-weight:700; letter-spacing:.07em; padding:.1rem .38rem; border-radius:3px; margin:0 .25rem; font-family:'Source Serif 4',serif; }
+  .kw-constraint { font-size:.78rem; color:var(--accent); font-weight:600; margin-left:1.9rem; margin-bottom:.3rem; }
+
+  footer { text-align:center; padding:1.1rem; font-size:.8rem; color:#aaa; font-style:italic; border-top:1px solid var(--light); margin-top:1rem; }
+
+  @media(max-width:600px){
+    .section-body { padding:1rem .8rem; }
+    .passage { font-size:.88rem; line-height:1.9; padding:.9rem 1rem; }
+    .mc-options { grid-template-columns:1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>B2 / FCE — Use of English IV</h1>
+  <p>Multiple-Choice Cloze · Open Cloze · Word Formation · Key Word Transformation</p>
+  <div class="accent-bar"></div>
+</header>
+
+<nav>
+  <a href="#p1">Part 1</a>
+  <a href="#p2">Part 2</a>
+  <a href="#p3">Part 3</a>
+  <a href="#p4">Part 4</a>
+</nav>
+
+<div class="container">
+  <div class="controls">
+    <button class="ctrl-btn outline" onclick="revealAll(false)">🙈 Hide all answers</button>
+    <button class="ctrl-btn" onclick="revealAll(true)">👁 Reveal all answers</button>
+  </div>
+
+  <!-- ══════════════════════════════════
+       PART 1 — MULTIPLE-CHOICE CLOZE
+  ══════════════════════════════════ -->
+  <div class="section" id="p1">
+    <div class="section-header"><span class="tag">Part 1</span>Multiple-Choice Cloze</div>
+    <div class="section-body">
+      <p class="desc">For questions 1–8, read the text and decide which answer (A, B, C or D) best fits each gap.</p>
+      <div class="instructions"><strong>Focus:</strong> collocations, phrasal verbs and dependent prepositions.</div>
+
+      <div class="passage">
+        <strong>The Rise of Urban Beekeeping</strong><br><br>
+        A growing number of city dwellers are <span class="gap-num">1</span><span class="gap-line"></span> to the idea of keeping bees on their rooftops. What began as a niche hobby has now <span class="gap-num">2</span><span class="gap-line"></span> into a genuine urban movement, with hives appearing on office blocks, schools and even hospitals. Enthusiasts argue that cities, somewhat surprisingly, can <span class="gap-num">3</span><span class="gap-line"></span> better environments for bees than intensively farmed countryside, since parks and gardens offer a wider <span class="gap-num">4</span><span class="gap-line"></span> of flowering plants across the seasons.
+        <br><br>
+        Of course, the practice is not without its critics. Some ecologists <span class="gap-num">5</span><span class="gap-line"></span> that an excess of managed honeybee colonies can actually crowd out wild pollinators, which are <span class="gap-num">6</span><span class="gap-line"></span> greater need of protection. Would-be beekeepers are therefore encouraged to <span class="gap-num">7</span><span class="gap-line"></span> up proper training before installing a hive, and to think carefully about whether their neighbourhood can really <span class="gap-num">8</span><span class="gap-line"></span> the extra traffic of insects.
+      </div>
+
+      <div id="list-p1"></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       PART 2 — OPEN CLOZE
+  ══════════════════════════════════ -->
+  <div class="section" id="p2">
+    <div class="section-header"><span class="tag">Part 2</span>Open Cloze</div>
+    <div class="section-body">
+      <p class="desc">For questions 9–16, think of the word which best fits each gap. Use only one word in each gap.</p>
+      <div class="instructions"><strong>Focus:</strong> linkers, articles, pronouns and auxiliary/modal verbs.</div>
+
+      <div class="passage">
+        <strong>Two Wheels, One Revolution</strong><br><br>
+        The bicycle, <span class="gap-num">9</span><span class="gap-line"></span> we now consider such an ordinary object, was once seen as a marvel of engineering. It <span class="gap-num">10</span><span class="gap-line"></span> not until the late nineteenth century, with the invention of the "safety bicycle", that the design became <span class="gap-num">11</span><span class="gap-line"></span> we would recognise today. Before then, riders had to balance precariously on enormous front wheels, <span class="gap-num">12</span><span class="gap-line"></span> made falls both frequent and painful.
+        <br><br>
+        <span class="gap-num">13</span><span class="gap-line"></span> soon as pneumatic tyres appeared, the ride became far smoother, and cycling quickly grew popular among people <span class="gap-num">14</span><span class="gap-line"></span> all social classes. For many women in particular, the bicycle offered a new kind of freedom, allowing them to travel independently <span class="gap-num">15</span><span class="gap-line"></span> the first time. Today, <span class="gap-num">16</span><span class="gap-line"></span> cities invest heavily in cycle lanes, the humble bicycle is once again being reconsidered as a serious solution to urban congestion.
+      </div>
+
+      <div id="list-p2"></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       PART 3 — WORD FORMATION
+  ══════════════════════════════════ -->
+  <div class="section" id="p3">
+    <div class="section-header"><span class="tag">Part 3</span>Word Formation</div>
+    <div class="section-body">
+      <p class="desc">For questions 17–24, use the word given in capitals to form a word that fits in the gap.</p>
+      <div class="instructions"><strong>Focus:</strong> noun, adjective and adverb formation with prefixes and suffixes.</div>
+
+      <div class="passage">
+        <strong>Living With Extreme Weather</strong><br><br>
+        Communities around the world are showing remarkable <span class="gap-num">17</span><span class="gap-line"></span> (ADAPT) in the face of increasingly extreme weather. In some regions, once <span class="gap-num">18</span><span class="gap-line"></span> (RELY) flood defences have had to be entirely rebuilt, while in others, engineers are developing housing that is far more <span class="gap-num">19</span><span class="gap-line"></span> (RESIST) to high winds.
+        <br><br>
+        This shift has not been <span class="gap-num">20</span><span class="gap-line"></span> (PROBLEM) free: critics point out that such projects are often extremely <span class="gap-num">21</span><span class="gap-line"></span> (COST), and that poorer neighbourhoods are frequently the last to benefit. Nevertheless, most scientists agree that <span class="gap-num">22</span><span class="gap-line"></span> (ACT) — rather than waiting for the next disaster — is the only <span class="gap-num">23</span><span class="gap-line"></span> (REASON) way forward. As one engineer put it, adapting <span class="gap-num">24</span><span class="gap-line"></span> (GRADUAL) is far cheaper than rebuilding from scratch.
+      </div>
+
+      <div id="list-p3"></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       PART 4 — KEY WORD TRANSFORMATION
+  ══════════════════════════════════ -->
+  <div class="section" id="p4">
+    <div class="section-header"><span class="tag">Part 4</span>Key Word Transformation</div>
+    <div class="section-body">
+      <p class="desc">For questions 25–30, complete the second sentence so that it means the same as the first, using the word given. Do not change the word given.</p>
+      <div id="list-p4"></div>
+    </div>
+  </div>
+
+  <footer>☐ Tick when correct &nbsp;|&nbsp; Click blurred text to reveal</footer>
+</div>
+
+<script>
+// ---------- PART 1 : multiple choice ----------
+const p1 = [
+  { opts:["A. attracted","B. warmed","C. tempted","D. inclined"], a:"A. attracted" },
+  { opts:["A. turned","B. grown","C. developed","D. changed"], a:"B. grown" },
+  { opts:["A. make","B. do","C. provide","D. hold"], a:"C. provide" },
+  { opts:["A. amount","B. number","C. range","D. sum"], a:"C. range" },
+  { opts:["A. warn","B. discuss","C. mention","D. remark"], a:"A. warn" },
+  { opts:["A. at","B. by","C. on","D. in"], a:"D. in" },
+  { opts:["A. take","B. set","C. put","D. get"], a:"A. take" },
+  { opts:["A. carry","B. cope with","C. hold up","D. put up"], a:"B. cope with" }
+];
+
+// ---------- PART 2 : open cloze ----------
+const p2 = [
+  { ctx:"the bicycle, ____ we now consider such an ordinary object", a:"which" },
+  { ctx:"it ____ not until the late nineteenth century", a:"was" },
+  { ctx:"the design became ____ we would recognise today", a:"what" },
+  { ctx:"enormous front wheels, ____ made falls frequent", a:"which" },
+  { ctx:"____ soon as pneumatic tyres appeared", a:"As" },
+  { ctx:"popular among people ____ all social classes", a:"from" },
+  { ctx:"travel independently ____ the first time", a:"for" },
+  { ctx:"____ cities invest heavily in cycle lanes", a:"as" }
+];
+
+// ---------- PART 3 : word formation ----------
+const p3 = [
+  { ctx:"showing remarkable ____", base:"ADAPT", a:"adaptability" },
+  { ctx:"once ____ flood defences", base:"RELY", a:"reliable" },
+  { ctx:"far more ____ to high winds", base:"RESIST", a:"resistant" },
+  { ctx:"has not been ____ free", base:"PROBLEM", a:"problem" },
+  { ctx:"extremely ____", base:"COST", a:"costly" },
+  { ctx:"____ — rather than waiting", base:"ACT", a:"action" },
+  { ctx:"the only ____ way forward", base:"REASON", a:"reasonable" },
+  { ctx:"adapting ____ is far cheaper", base:"GRADUAL", a:"gradually" }
+];
+
+// ---------- PART 4 : key word transformation ----------
+const p4 = [
+  { q:"I've never seen such a chaotic meeting before.", key:"MOST", a:"This is the most chaotic meeting I've ever seen." },
+  { q:"She only realised her mistake after the client had left.", key:"UNTIL", a:"It wasn't until the client had left that she realised her mistake." },
+  { q:"I really regret not applying for that job.", key:"WISH", a:"I wish I had applied for that job." },
+  { q:"He is much more experienced than his colleague.", key:"NEARLY", a:"His colleague isn't nearly as experienced as him." },
+  { q:"The film was so boring that half the audience left early.", key:"SUCH", a:"It was such a boring film that half the audience left early." },
+  { q:"No sooner had the plane landed than the passengers began to complain.", key:"HARDLY", a:"The plane had hardly landed when the passengers began to complain." }
+];
+
+let uid = 0;
+const newId = () => 'u' + (++uid);
+
+function answerBlock(answer, note) {
+  const id = newId();
+  return `
+    <div class="answer-row">
+      <div class="check-cell"><input type="checkbox"></div>
+      <div class="answer-cell">
+        <span class="alabel">Answer:</span>
+        <span class="answer-text" id="${id}" onclick="revealOne('${id}')">${answer}</span>
+        ${note ? `<span class="anote">(${note})</span>` : ''}
+        <button class="reveal-btn" id="btn-${id}" onclick="revealOne('${id}')">Show</button>
+      </div>
+    </div>`;
+}
+
+function populateP1() {
+  const el = document.getElementById('list-p1');
+  p1.forEach((item, i) => {
+    const num = i + 1;
+    const div = document.createElement('div');
+    div.className = 'mc-item';
+    div.innerHTML = `
+      <div class="item-head"><span class="item-num">${num}.</span></div>
+      <div class="mc-options">
+        ${item.opts.map(o => `<div class="mc-opt">${o}</div>`).join('')}
+      </div>
+      ${answerBlock(item.a)}`;
+    el.appendChild(div);
+  });
+}
+
+function populateP2() {
+  const el = document.getElementById('list-p2');
+  p2.forEach((item, i) => {
+    const num = i + 9;
+    const div = document.createElement('div');
+    div.className = 'of-item';
+    div.innerHTML = `
+      <div class="item-head"><span class="item-num">${num}.</span><span class="item-line">${item.ctx}</span></div>
+      ${answerBlock(item.a)}`;
+    el.appendChild(div);
+  });
+}
+
+function populateP3() {
+  const el = document.getElementById('list-p3');
+  p3.forEach((item, i) => {
+    const num = i + 17;
+    const div = document.createElement('div');
+    div.className = 'wf-item';
+    div.innerHTML = `
+      <div class="item-head"><span class="item-num">${num}.</span><span class="item-line">${item.ctx} <span class="wf-base">(${item.base})</span></span></div>
+      ${answerBlock(item.a)}`;
+    el.appendChild(div);
+  });
+}
+
+function populateP4() {
+  const el = document.getElementById('list-p4');
+  p4.forEach((item, i) => {
+    const num = i + 25;
+    const div = document.createElement('div');
+    div.className = 'kw-item';
+    div.innerHTML = `
+      <div class="item-head"><span class="item-num">${num}.</span><span class="item-line">${item.q} <span class="kw-key">${item.key}</span></span></div>
+      ${answerBlock(item.a)}`;
+    el.appendChild(div);
+  });
+}
+
+populateP1();
+populateP2();
+populateP3();
+populateP4();
+
+function revealOne(id) {
+  document.getElementById(id).classList.add('revealed');
+  document.getElementById('btn-' + id).classList.add('hidden');
+}
+function revealAll(show) {
+  document.querySelectorAll('.answer-text').forEach(el => el.classList.toggle('revealed', show));
+  document.querySelectorAll('.reveal-btn').forEach(btn => btn.classList.toggle('hidden', show));
+}
+</script>
+</body>
+</html>
