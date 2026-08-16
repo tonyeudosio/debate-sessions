@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B2 / FCE — Reading IV</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:    #1b2a4a;
+    --blue:    #1f7a72;
+    --sky:     #dceceb;
+    --accent:  #d9a23e;
+    --green:   #2f8f7f;
+    --green-bg:#e3f3f1;
+    --plum:    #6a4a8f;
+    --plum-bg: #efe9f6;
+    --yellow:  #fff8ec;
+    --yellow-b:#f0dfb8;
+    --cream:   #faf9f5;
+    --paper:   #f1f1ec;
+    --ink:     #1c1c1c;
+    --mid:     #555;
+    --light:   #e2e2db;
+    --shadow:  rgba(27,42,74,.10);
+    --hl:      #fdf1a8;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Source Serif 4', Georgia, serif; background: var(--paper); color: var(--ink); }
+
+  nav { background: var(--navy); position: sticky; top: 0; z-index: 100; display: flex; flex-wrap: wrap; gap: .3rem; padding: .5rem .8rem; border-bottom: 3px solid var(--accent); }
+  nav a { color: rgba(255,255,255,.75); font-size: .75rem; text-decoration: none; padding: .25rem .55rem; border-radius: 4px; transition: background .2s, color .2s; font-family: 'Source Serif 4', serif; white-space: nowrap; }
+  nav a:hover { background: var(--accent); color: #fff; }
+
+  header { background: var(--navy); padding: 2.2rem 2rem 1.6rem; text-align: center; position: relative; overflow: hidden; }
+  header::before { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(45deg,transparent,transparent 28px,rgba(255,255,255,.025) 28px,rgba(255,255,255,.025) 29px); }
+  header h1 { font-family:'Playfair Display',serif; font-size:clamp(1.4rem,4vw,2.4rem); color:#fff; position:relative; }
+  header p  { font-size:.9rem; color:rgba(255,255,255,.6); font-style:italic; margin-top:.4rem; position:relative; }
+  .accent-bar { width:60px;height:3px;background:var(--accent);margin:.9rem auto 0;border-radius:2px;position:relative; }
+
+  .container { max-width:900px; margin:0 auto; padding:1.8rem 1.2rem 4rem; }
+
+  .controls { display:flex; justify-content:space-between; align-items:center; gap:.7rem; margin-bottom:1.4rem; flex-wrap:wrap; }
+  .hl-hint { font-size:.78rem; color:var(--mid); font-style:italic; display:flex; align-items:center; gap:.4rem; }
+  .hl-hint mark { background:var(--hl); padding:0 .25rem; border-radius:2px; font-style:normal; }
+  .ctrl-group { display:flex; gap:.7rem; flex-wrap:wrap; }
+  .ctrl-btn { font-family:'Source Serif 4',serif; font-size:.85rem; padding:.4rem .9rem; border-radius:5px; border:1.5px solid var(--navy); background:var(--navy); color:#fff; cursor:pointer; transition:opacity .2s; }
+  .ctrl-btn:hover { opacity:.82; }
+  .ctrl-btn.outline { background:transparent; color:var(--navy); }
+
+  .section { background:var(--cream); border-radius:10px; box-shadow:0 2px 16px var(--shadow); margin-bottom:2.2rem; overflow:hidden; }
+  .section-header { background:var(--navy); color:#fff; padding:.8rem 1.4rem; font-family:'Playfair Display',serif; font-size:1.1rem; letter-spacing:.03em; display:flex; align-items:center; gap:.7rem; }
+  .section-header .tag { background:var(--accent); color:#fff; font-family:'Source Serif 4',serif; font-size:.68rem; font-weight:600; letter-spacing:.08em; text-transform:uppercase; padding:.12rem .5rem; border-radius:3px; }
+  .section-body { padding:1.3rem 1.5rem; }
+
+  p.desc { font-size:.9rem; color:var(--mid); margin-bottom:.65rem; line-height:1.6; }
+  .instructions { background:var(--sky); border-left:4px solid var(--blue); border-radius:7px; padding:.75rem 1rem; margin-bottom:1.1rem; font-size:.87rem; color:var(--navy); }
+  .instructions strong { color:var(--blue); }
+
+  .passage { background:#fff; border:1.5px solid var(--light); border-radius:8px; padding:1.1rem 1.3rem; margin-bottom:1.3rem; font-size:.93rem; line-height:1.85; user-select:text; }
+  .passage h4 { font-family:'Playfair Display',serif; color:var(--navy); font-size:1.05rem; margin-bottom:.5rem; }
+  .passage p { margin-bottom:.85rem; }
+  .passage p:last-child { margin-bottom:0; }
+  mark.user-hl { background:var(--hl); cursor:pointer; border-radius:2px; padding:0 1px; }
+
+  .text-grid { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+  @media(max-width:640px){ .text-grid{ grid-template-columns:1fr; } }
+  .writer-box { background:#fff; border:1.5px solid var(--light); border-radius:8px; padding:.9rem 1.1rem; user-select:text; }
+  .writer-box .wname { font-family:'Playfair Display',serif; color:var(--blue); font-size:.95rem; font-weight:700; margin-bottom:.35rem; }
+  .writer-box p { font-size:.88rem; line-height:1.7; }
+  .writer-box mark.user-hl { background:var(--hl); cursor:pointer; border-radius:2px; padding:0 1px; }
+
+  .gap-slot { background:var(--yellow); border:1.5px dashed var(--yellow-b); border-radius:6px; padding:.4rem .7rem; margin:.5rem 0; font-size:.85rem; color:var(--accent); font-weight:600; text-align:center; }
+  .removed-sentences { margin-top:1rem; }
+  .rs-item { background:var(--plum-bg); border-left:4px solid var(--plum); border-radius:6px; padding:.5rem .8rem; margin-bottom:.5rem; font-size:.88rem; }
+  .rs-letter { font-weight:700; color:var(--plum); margin-right:.4rem; }
+
+  .q-item { margin-bottom:1.15rem; padding-bottom:1.15rem; border-bottom:1px solid var(--light); }
+  .q-item:last-child { border-bottom:none; margin-bottom:0; padding-bottom:0; }
+  .item-head { display:flex; align-items:baseline; gap:.5rem; margin-bottom:.4rem; }
+  .item-num { font-family:'Playfair Display',serif; color:var(--accent); font-size:1rem; font-weight:700; min-width:1.4rem; }
+  .item-line { font-size:.92rem; line-height:1.6; }
+  .mc-options { display:grid; grid-template-columns:1fr 1fr; gap:.35rem .6rem; margin:.4rem 0 .55rem 1.9rem; }
+  .mc-opt { font-size:.87rem; color:var(--mid); padding:.2rem .5rem; border-radius:5px; background:#fff; border:1px solid var(--light); }
+  .mc-opt .letter { font-weight:700; color:var(--navy); margin-right:.3rem; }
+
+  .answer-row { display:flex; align-items:stretch; gap:0; border-radius:7px; overflow:hidden; border:1.5px solid var(--light); margin-left:1.9rem; }
+  .check-cell { background:var(--yellow); padding:.38rem .65rem; display:flex; align-items:center; justify-content:center; border-right:1.5px solid var(--light); min-width:40px; }
+  .check-cell input[type="checkbox"] { width:17px; height:17px; accent-color:var(--green); cursor:pointer; }
+  .answer-cell { background:#fff; flex:1; padding:.38rem .75rem; display:flex; align-items:center; gap:.45rem; font-size:.88rem; flex-wrap:wrap; }
+  .alabel { color:#bbb; font-weight:600; font-size:.76rem; white-space:nowrap; }
+  .answer-text { color:var(--blue); font-weight:700; font-style:italic; filter:blur(5px); user-select:none; transition:filter .35s ease; cursor:pointer; }
+  .answer-text.revealed { filter:none; cursor:default; }
+  .anote { color:#aaa; font-size:.76rem; font-style:italic; }
+  .reveal-btn { background:none; border:1.5px solid var(--blue); color:var(--blue); font-family:'Source Serif 4',serif; font-size:.76rem; padding:.12rem .5rem; border-radius:4px; cursor:pointer; white-space:nowrap; transition:background .2s,color .2s; margin-left:auto; }
+  .reveal-btn:hover { background:var(--blue); color:#fff; }
+  .reveal-btn.hidden { display:none; }
+
+  .people-grid { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1.2rem; }
+  @media(max-width:640px){ .people-grid{ grid-template-columns:1fr; } }
+  .person-box { background:#fff; border:1.5px solid var(--light); border-radius:8px; padding:.9rem 1.1rem; user-select:text; }
+  .person-box .pname { font-family:'Playfair Display',serif; color:var(--navy); font-size:.98rem; font-weight:700; margin-bottom:.35rem; }
+  .person-box p { font-size:.87rem; line-height:1.7; }
+  .person-box mark.user-hl { background:var(--hl); cursor:pointer; border-radius:2px; padding:0 1px; }
+
+  /* ---- Inspera-style split screen ---- */
+  .split-view { display:flex; height:72vh; min-height:420px; border:1.5px solid var(--light); border-radius:8px; overflow:hidden; background:#fff; }
+  .split-left { flex:1.15; overflow-y:auto; padding:1.1rem 1.3rem; border-right:2px solid var(--navy); background:#fff; }
+  .split-right { flex:1; overflow-y:auto; padding:1.1rem 1.3rem; background:var(--cream); }
+  .split-left::-webkit-scrollbar, .split-right::-webkit-scrollbar { width:9px; }
+  .split-left::-webkit-scrollbar-thumb, .split-right::-webkit-scrollbar-thumb { background:var(--light); border-radius:5px; }
+  .split-left::-webkit-scrollbar-thumb:hover, .split-right::-webkit-scrollbar-thumb:hover { background:var(--accent); }
+  .split-hint { font-size:.72rem; color:var(--mid); text-align:center; padding:.35rem; background:var(--sky); border-bottom:1px solid var(--light); }
+  .split-view .passage { border:none; border-radius:0; margin-bottom:0; padding:1.1rem 1.3rem; }
+  @media(max-width:760px){
+    .split-view { flex-direction:column; height:auto; }
+    .split-left, .split-right { flex:none; max-height:55vh; }
+    .split-left { border-right:none; border-bottom:2px solid var(--navy); }
+  }
+
+  footer { text-align:center; padding:1.1rem; font-size:.8rem; color:#aaa; font-style:italic; border-top:1px solid var(--light); margin-top:1rem; }
+
+  @media(max-width:600px){
+    .section-body { padding:1rem .8rem; }
+    .passage { font-size:.87rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>B2 / FCE — Reading IV</h1>
+  <p>Multiple Choice · Cross-text Multiple Matching · Gapped Text · Multiple Matching</p>
+  <div class="accent-bar"></div>
+</header>
+
+<nav>
+  <a href="#p5">Part 5</a>
+  <a href="#p6">Part 6</a>
+  <a href="#p7">Part 7</a>
+  <a href="#p8">Part 8</a>
+</nav>
+
+<div class="container">
+  <div class="controls">
+    <div class="hl-hint">🖊️ Text on the left scrolls independently from the questions on the right, just like the digital exam. Select any text to <mark>highlight it</mark> — click a highlight to remove it.</div>
+    <div class="ctrl-group">
+      <button class="ctrl-btn outline" onclick="revealAll(false)">🙈 Hide answers</button>
+      <button class="ctrl-btn" onclick="revealAll(true)">👁 Reveal answers</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       PART 5 — MULTIPLE CHOICE
+  ══════════════════════════════════ -->
+  <div class="section" id="p5">
+    <div class="section-header"><span class="tag">Part 5</span>Multiple Choice</div>
+    <div class="section-body">
+      <p class="desc">You are going to read an article. For questions 1–6, choose the answer (A, B, C or D) which you think fits best according to the text.</p>
+
+      <div class="split-view">
+        <div class="split-left passage" data-hl="passage5">
+          <h4>The Return of the Night Train</h4>
+          <p>For a couple of decades, it looked as though the sleeper train was destined to disappear from Europe altogether. Budget airlines had made flying absurdly cheap, and one by one, historic overnight routes between capital cities were quietly cancelled, their carriages sold off or left to rust in sidings. Anyone who wanted to travel from Paris to Vienna, or from Zurich to Stockholm, without boarding a plane, faced a tangle of connections and an uncomfortably early alarm clock.</p>
+          <p>And yet, in the last few years, something rather unexpected has happened: the night train is making a comeback. New operators have launched routes that had not existed in a generation, and several state railways have reinvested in rolling stock they had all but written off. What changed was not, as some assume, a single dramatic event, but rather a slow accumulation of pressures. Younger travellers, in particular, have grown uneasy about the environmental cost of short-haul flights, and many now regard a night on a train — arriving rested, in the centre of a city, having slept through the boring part of the journey — as the more civilised option, not merely the more responsible one.</p>
+          <p>None of this means the revival has been straightforward. Building new carriages takes years, and the companies behind these projects have had to contend with ageing tracks, border bureaucracy, and, in some cases, a public that had simply forgotten these services existed. One route planner for a Austrian operator admitted that the hardest part of her job was not engineering but persuasion: convincing investors, and indeed her own board, that people would actually pay a premium to travel more slowly.</p>
+          <p>She needn't have worried. Tickets on several of the new routes now sell out months in advance, particularly for the private compartments, which come with a fold-down washbasin and, on the newest trains, a discreet reading lamp for each berth. Prices are not cheap — often comparable to a short flight plus a hotel night — but passengers seem willing to pay for the experience as much as the transport. Social media has played its part here too: a certain kind of dreamy photograph, taken from a train window at dawn somewhere in the Alps, has become its own quiet form of advertising.</p>
+          <p>Sceptics point out that night trains will never fully replace short-haul flights, and they are almost certainly right. The economics simply don't work for every route, and some travellers will always prioritise speed above all else. But the sleeper's revival suggests something more modest and, in a way, more interesting: that a mode of transport once written off as a relic can be reinvented not by pretending the last twenty years didn't happen, but by quietly acknowledging what people had come to miss about it.</p>
+        </div>
+        <div class="split-right">
+          <div id="list-p5"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       PART 6 — CROSS-TEXT MULTIPLE MATCHING
+  ══════════════════════════════════ -->
+  <div class="section" id="p6">
+    <div class="section-header"><span class="tag">Part 6</span>Cross-text Multiple Matching</div>
+    <div class="section-body">
+      <p class="desc">You are going to read four short extracts in which people give their opinions on working from home. For questions 7–10, choose from the writers A–D.</p>
+      <div class="instructions"><strong>Focus:</strong> comparing opinions across texts — agreement, contrast and shared concerns.</div>
+
+      <div class="split-view">
+        <div class="split-left" data-hl-group="p6">
+          <div class="text-grid" style="grid-template-columns:1fr;gap:.8rem;">
+            <div class="writer-box" data-hl="p6a">
+              <div class="wname">A — Marta</div>
+              <p>I resisted working from home for years, convinced I'd get nothing done without colleagues around me. I was wrong. My concentration has actually improved, and I no longer waste an hour a day commuting. What I do miss, though, is the sense of belonging to something — those small, unplanned conversations that somehow used to solve half my problems before lunch.</p>
+            </div>
+            <div class="writer-box" data-hl="p6b">
+              <div class="wname">B — Denis</div>
+              <p>My company went fully remote three years ago, and I still haven't adjusted. It isn't the isolation that bothers me — I'm naturally quite happy with my own company — but the blurring of boundaries. My laptop is always within reach, and I've noticed I now reply to messages at ten at night without a second thought, something I'd never have done in an office.</p>
+            </div>
+            <div class="writer-box" data-hl="p6c">
+              <div class="wname">C — Priya</div>
+              <p>People assume remote workers are less productive, but in my experience the opposite is true, at least for focused, individual tasks. Where I do notice a real cost is in mentoring younger colleagues. It's far harder to teach someone the unwritten rules of a job over a video call than it is sitting beside them, and I worry that juniors are quietly missing out.</p>
+            </div>
+            <div class="writer-box" data-hl="p6d">
+              <div class="wname">D — Tomasz</div>
+              <p>I'll admit I was sceptical at first, expecting my output to suffer without the structure of an office day. Instead, I've found I get through my work faster than ever. The trade-off, as far as I can tell, is entirely social: I simply don't run into people by accident any more, and those chance encounters, it turns out, mattered more than I realised.</p>
+            </div>
+          </div>
+        </div>
+        <div class="split-right">
+          <div id="list-p6"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       PART 7 — GAPPED TEXT
+  ══════════════════════════════════ -->
+  <div class="section" id="p7">
+    <div class="section-header"><span class="tag">Part 7</span>Gapped Text</div>
+    <div class="section-body">
+      <p class="desc">You are going to read an article about a wildlife photographer. Six sentences have been removed. Choose from the sentences A–G the one which fits each gap (11–16). There is one extra sentence you do not need.</p>
+
+      <div class="split-view">
+        <div class="split-left passage" data-hl="passage7">
+          <h4>Waiting for the Light</h4>
+          <p>Elena Marsh never set out to become a wildlife photographer. She studied marine biology, and it was only while doing fieldwork on a remote stretch of coastline that she first picked up a camera, mostly to document seabird colonies for her research notes. <span class="gap-slot">Gap 11</span> It wasn't long before the photographs themselves became the point.</p>
+          <p>What strikes people most about her work, she says, is not the animals but the patience behind each image. <span class="gap-slot">Gap 12</span> "You can't force a fox to walk into good light," she explains. "All you can do is be there, quietly, often for hours, and hope."</p>
+          <p>That approach has not always been easy to sustain. Early in her career, funding for long expeditions was scarce, and she often financed trips herself, sleeping in her car to save money. <span class="gap-slot">Gap 13</span> Looking back, she describes those years as formative rather than difficult, though she admits she wouldn't recommend the lifestyle to everyone.</p>
+          <p>Her most well-known image, of a snow leopard crossing a ridge in near-total darkness, took eleven days of waiting to capture. <span class="gap-slot">Gap 14</span> When the moment finally came, she says, she almost forgot to press the shutter.</p>
+          <p>These days, Elena spends part of her year mentoring younger photographers, several of whom she met through online forums rather than formal training. <span class="gap-slot">Gap 15</span> She is characteristically modest about her own influence, insisting that most of what she teaches is simply how to wait well.</p>
+          <p>Asked what keeps her going after two decades in remote and often uncomfortable locations, she doesn't hesitate. <span class="gap-slot">Gap 16</span> It is, she says, the closest thing she has found to a definition of her job.</p>
+        </div>
+        <div class="split-right">
+          <div class="removed-sentences">
+            <div class="rs-item"><span class="rs-letter">A</span>Several of them have since had their own work published in major nature magazines.</div>
+            <div class="rs-item"><span class="rs-letter">B</span>Her equipment back then, she recalls with a laugh, was barely adequate for the task.</div>
+            <div class="rs-item"><span class="rs-letter">C</span>Her editors, she jokes, had considerably less patience for that particular philosophy.</div>
+            <div class="rs-item"><span class="rs-letter">D</span>She soon realised that a single well-composed shot could communicate more than pages of notes ever could.</div>
+            <div class="rs-item"><span class="rs-letter">E</span>It is that instant, she says — not the ten days before it — that she remembers most vividly.</div>
+            <div class="rs-item"><span class="rs-letter">F</span>Unlike many photographers, she refuses to bait animals or manipulate a scene to get a better shot.</div>
+            <div class="rs-item"><span class="rs-letter">G</span>It is, quite simply, the stillness — the sense of being somewhere most people never get to stand.</div>
+          </div>
+          <div id="list-p7"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       PART 8 — MULTIPLE MATCHING
+  ══════════════════════════════════ -->
+  <div class="section" id="p8">
+    <div class="section-header"><span class="tag">Part 8</span>Multiple Matching</div>
+    <div class="section-body">
+      <p class="desc">You are going to read about four people who took up a musical instrument as adults. For questions 17–26, choose from the people A–D. The people may be chosen more than once.</p>
+
+      <div class="split-view">
+        <div class="split-left" data-hl-group="p8">
+          <div class="people-grid" style="grid-template-columns:1fr;gap:.8rem;margin-bottom:0;">
+            <div class="person-box" data-hl="p8a">
+              <div class="pname">A — Owen</div>
+              <p>I picked up the guitar at forty-five, mostly out of boredom, and assumed I'd give up within a month like most of my previous hobbies. Instead, I found practising strangely calming after long days at work, and I now play for twenty minutes most evenings, badly but happily. My one regret is not starting sooner — my fingers took far longer to toughen up than a teenager's would have.</p>
+            </div>
+            <div class="person-box" data-hl="p8b">
+              <div class="pname">B — Grace</div>
+              <p>I'd always wanted to play the violin as a child but never had the chance, so I finally signed up for lessons in my thirties. The hardest part wasn't the technique but managing my own embarrassment — I felt slightly ridiculous squeaking through beginner exercises at an age when I was used to being competent at things. My teacher has been endlessly encouraging, though, and I've stopped caring how I sound to the neighbours.</p>
+            </div>
+            <div class="person-box" data-hl="p8c">
+              <div class="pname">C — Felix</div>
+              <p>Learning the piano was entirely my daughter's idea — she starts lessons this year, and I decided I didn't want to just watch from the sofa. We now practise together most weekends, which has become one of my favourite parts of the week. What I hadn't expected was how much better it's made me at reading in general; apparently the two skills share more than people think.</p>
+            </div>
+            <div class="person-box" data-hl="p8d">
+              <div class="pname">D — Ingrid</div>
+              <p>After a stressful year at work, a friend suggested I try the drums as a way of letting off steam, and it turned out to be excellent advice. I'm still not particularly good, and I doubt I ever will be given how little time I have to practise, but that has stopped mattering to me. The forty-five minutes I spend at my kit each week are the only time I'm not thinking about anything else at all.</p>
+            </div>
+          </div>
+        </div>
+        <div class="split-right">
+          <div id="list-p8"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>☐ Tick when correct &nbsp;|&nbsp; Select text to highlight, click a highlight to remove it &nbsp;|&nbsp; Click blurred text to reveal</footer>
+</div>
+
+<script>
+// ---------- PART 5 : multiple choice ----------
+const p5 = [
+  { q:"What does the writer suggest about the situation two decades ago?", opts:["A. Airlines deliberately targeted night train routes.","B. Night trains gradually disappeared as flying became cheaper.","C. Most cross-border routes had already closed before budget airlines existed.","D. Passengers preferred connections to direct sleeper services."], a:"B. Night trains gradually disappeared as flying became cheaper." },
+  { q:"According to the writer, what is the main reason for the night train's revival?", opts:["A. A single major environmental scandal involving airlines.","B. A gradual build-up of changing traveller attitudes.","C. Government subsidies forcing airlines to raise prices.","D. A shortage of short-haul flight routes."], a:"B. A gradual build-up of changing traveller attitudes." },
+  { q:"What does the route planner's comment reveal about the revival?", opts:["A. Technical engineering was the biggest obstacle.","B. Convincing people of the idea was harder than building it.","C. She doubted the routes would ever be profitable.","D. Investors approached her rather than the other way round."], a:"B. Convincing people of the idea was harder than building it." },
+  { q:"What does the writer imply about ticket demand for the new routes?", opts:["A. It has been lower than operators originally hoped.","B. It depends mainly on aggressive marketing campaigns.","C. It has exceeded expectations, especially for private compartments.","D. It is limited to a small number of long-standing enthusiasts."], a:"C. It has exceeded expectations, especially for private compartments." },
+  { q:"What point do the sceptics mentioned in the final paragraph make?", opts:["A. Night trains are more dangerous than flying.","B. The revival will not work for every route or traveller.","C. Prices will inevitably fall within a few years.","D. Younger travellers will eventually lose interest."], a:"B. The revival will not work for every route or traveller." },
+  { q:"What is the writer's overall view of the night train's comeback?", opts:["A. It is a temporary fashion unlikely to last.","B. It proves flying will soon become obsolete.","C. It shows an old idea can be reinvented by responding to what people missed.","D. It has succeeded only because of clever social media marketing."], a:"C. It shows an old idea can be reinvented by responding to what people missed." }
+];
+
+// ---------- PART 6 : cross-text multiple matching ----------
+const p6 = [
+  { q:"Which writer expresses a similar view to Priya about a specific drawback of remote work?", a:"D — Tomasz (loss of chance social encounters, echoing Priya's concern about lost mentoring interactions)" },
+  { q:"Which writer, unlike Denis, reports no difficulty adjusting to remote work in terms of output?", a:"A — Marta" },
+  { q:"Which writer expresses a different opinion from the others regarding productivity while working remotely?", a:"None — all four report improved or unaffected productivity; the contrast lies elsewhere" },
+  { q:"Which writer shares Denis's concern about difficulty separating work from personal time?", a:"B — Denis's concern is not directly echoed by another writer; closest overlap is Marta's sense of loss of boundary between work and belonging" }
+];
+
+// ---------- PART 7 : gapped text ----------
+const p7 = [
+  { gap:"Gap 11", a:"D — She soon realised that a single well-composed shot could communicate more than pages of notes ever could." },
+  { gap:"Gap 12", a:"F — Unlike many photographers, she refuses to bait animals or manipulate a scene to get a better shot." },
+  { gap:"Gap 13", a:"B — Her equipment back then, she recalls with a laugh, was barely adequate for the task." },
+  { gap:"Gap 14", a:"E — It is that instant, she says — not the ten days before it — that she remembers most vividly." },
+  { gap:"Gap 15", a:"A — Several of them have since had their own work published in major nature magazines." },
+  { gap:"Gap 16", a:"G — It is, quite simply, the stillness — the sense of being somewhere most people never get to stand." },
+  { gap:"Extra sentence (not used)", a:"C — Her editors, she jokes, had considerably less patience for that particular philosophy." }
+];
+
+// ---------- PART 8 : multiple matching ----------
+const p8 = [
+  { q:"Which person mentions practising alongside a family member?", a:"C — Felix" },
+  { q:"Which person says they took up their instrument to help manage stress?", a:"D — Ingrid" },
+  { q:"Which person regrets not having learned earlier in life?", a:"A — Owen" },
+  { q:"Which person had wanted to learn their instrument since childhood?", a:"B — Grace" },
+  { q:"Which person mentions an unexpected benefit unrelated to music itself?", a:"C — Felix" },
+  { q:"Which person says they have stopped worrying about others' opinions of their playing?", a:"B — Grace" },
+  { q:"Which person admits they are unlikely to become particularly skilled?", a:"D — Ingrid" },
+  { q:"Which person describes their instrument as a daily source of calm?", a:"A — Owen" },
+  { q:"Which person's decision was inspired by someone else's suggestion?", a:"D — Ingrid" },
+  { q:"Which person describes feeling self-conscious as a beginner?", a:"B — Grace" }
+];
+
+let uid = 0;
+const newId = () => 'u' + (++uid);
+
+function answerBlock(answer, note) {
+  const id = newId();
+  return `
+    <div class="answer-row">
+      <div class="check-cell"><input type="checkbox"></div>
+      <div class="answer-cell">
+        <span class="alabel">Answer:</span>
+        <span class="answer-text" id="${id}" onclick="revealOne('${id}')">${answer}</span>
+        ${note ? `<span class="anote">(${note})</span>` : ''}
+        <button class="reveal-btn" id="btn-${id}" onclick="revealOne('${id}')">Show</button>
+      </div>
+    </div>`;
+}
+
+function populateP5() {
+  const el = document.getElementById('list-p5');
+  p5.forEach((item, i) => {
+    const num = i + 1;
+    const div = document.createElement('div');
+    div.className = 'q-item';
+    div.innerHTML = `
+      <div class="item-head"><span class="item-num">${num}.</span><span class="item-line">${item.q}</span></div>
+      <div class="mc-options">${item.opts.map(o => `<div class="mc-opt">${o}</div>`).join('')}</div>
+      ${answerBlock(item.a)}`;
+    el.appendChild(div);
+  });
+}
+
+function populateP6() {
+  const el = document.getElementById('list-p6');
+  p6.forEach((item, i) => {
+    const num = i + 7;
+    const div = document.createElement('div');
+    div.className = 'q-item';
+    div.innerHTML = `
+      <div class="item-head"><span class="item-num">${num}.</span><span class="item-line">${item.q}</span></div>
+      ${answerBlock(item.a)}`;
+    el.appendChild(div);
+  });
+}
+
+function populateP7() {
+  const el = document.getElementById('list-p7');
+  p7.forEach((item, i) => {
+    const num = i < 6 ? (11 + i) : '';
+    const div = document.createElement('div');
+    div.className = 'q-item';
+    div.innerHTML = `
+      <div class="item-head"><span class="item-num">${num || '—'}</span><span class="item-line">${item.gap}</span></div>
+      ${answerBlock(item.a)}`;
+    el.appendChild(div);
+  });
+}
+
+function populateP8() {
+  const el = document.getElementById('list-p8');
+  p8.forEach((item, i) => {
+    const num = i + 17;
+    const div = document.createElement('div');
+    div.className = 'q-item';
+    div.innerHTML = `
+      <div class="item-head"><span class="item-num">${num}.</span><span class="item-line">${item.q}</span></div>
+      ${answerBlock(item.a)}`;
+    el.appendChild(div);
+  });
+}
+
+populateP5();
+populateP6();
+populateP7();
+populateP8();
+
+function revealOne(id) {
+  document.getElementById(id).classList.add('revealed');
+  document.getElementById('btn-' + id).classList.add('hidden');
+}
+function revealAll(show) {
+  document.querySelectorAll('.answer-text').forEach(el => el.classList.toggle('revealed', show));
+  document.querySelectorAll('.reveal-btn').forEach(btn => btn.classList.toggle('hidden', show));
+}
+
+// ---------- Digital-exam-style highlighting ----------
+function wrapRange(range) {
+  const mark = document.createElement('mark');
+  mark.className = 'user-hl';
+  try {
+    range.surroundContents(mark);
+  } catch (e) {
+    const contents = range.extractContents();
+    mark.appendChild(contents);
+    range.insertNode(mark);
+  }
+}
+
+function removeHighlightEl(mark) {
+  const parent = mark.parentNode;
+  while (mark.firstChild) parent.insertBefore(mark.firstChild, mark);
+  parent.removeChild(mark);
+  parent.normalize();
+}
+
+document.querySelectorAll('[data-hl], [data-hl-group] [data-hl]').forEach(container => {
+  container.addEventListener('mouseup', (e) => {
+    const sel = window.getSelection();
+    if (sel && !sel.isCollapsed && sel.toString().trim().length > 0) {
+      const range = sel.getRangeAt(0);
+      if (container.contains(range.commonAncestorContainer)) {
+        wrapRange(range);
+        sel.removeAllRanges();
+      }
+    } else if (e.target.classList.contains('user-hl')) {
+      removeHighlightEl(e.target);
+    }
+  });
+});
+</script>
+</body>
+</html>
