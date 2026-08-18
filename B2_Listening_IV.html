@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B2 / FCE — Listening IV</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:    #1b2a4a;
+    --blue:    #1f7a72;
+    --sky:     #dceceb;
+    --accent:  #d9a23e;
+    --green:   #2f8f7f;
+    --green-bg:#e3f3f1;
+    --plum:    #6a4a8f;
+    --plum-bg: #efe9f6;
+    --yellow:  #fff8ec;
+    --yellow-b:#f0dfb8;
+    --cream:   #faf9f5;
+    --paper:   #f1f1ec;
+    --ink:     #1c1c1c;
+    --mid:     #555;
+    --light:   #e2e2db;
+    --shadow:  rgba(27,42,74,.10);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Source Serif 4', Georgia, serif; background: var(--paper); color: var(--ink); }
+
+  nav { background: var(--navy); position: sticky; top: 0; z-index: 100; display: flex; flex-wrap: wrap; gap: .3rem; padding: .5rem .8rem; border-bottom: 3px solid var(--accent); align-items:center; }
+  nav a { color: rgba(255,255,255,.75); font-size: .75rem; text-decoration: none; padding: .25rem .55rem; border-radius: 4px; transition: background .2s, color .2s; font-family: 'Source Serif 4', serif; white-space: nowrap; }
+  nav a:hover { background: var(--accent); color: #fff; }
+  nav .voice-panel { margin-left:auto; display:flex; align-items:center; gap:.4rem; }
+  nav select { font-size:.72rem; font-family:'Source Serif 4',serif; border-radius:4px; border:none; padding:.2rem .35rem; max-width:170px; }
+  nav .rate-label { color:rgba(255,255,255,.6); font-size:.68rem; }
+
+  header { background: var(--navy); padding: 2.2rem 2rem 1.6rem; text-align: center; position: relative; overflow: hidden; }
+  header::before { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(45deg,transparent,transparent 28px,rgba(255,255,255,.025) 28px,rgba(255,255,255,.025) 29px); }
+  header h1 { font-family:'Playfair Display',serif; font-size:clamp(1.4rem,4vw,2.4rem); color:#fff; position:relative; }
+  header p  { font-size:.9rem; color:rgba(255,255,255,.6); font-style:italic; margin-top:.4rem; position:relative; }
+  .accent-bar { width:60px;height:3px;background:var(--accent);margin:.9rem auto 0;border-radius:2px;position:relative; }
+
+  .container { max-width:900px; margin:0 auto; padding:1.8rem 1.2rem 4rem; }
+
+  .controls { display:flex; justify-content:flex-end; gap:.7rem; margin-bottom:1.4rem; flex-wrap:wrap; }
+  .ctrl-btn { font-family:'Source Serif 4',serif; font-size:.85rem; padding:.4rem .9rem; border-radius:5px; border:1.5px solid var(--navy); background:var(--navy); color:#fff; cursor:pointer; transition:opacity .2s; }
+  .ctrl-btn:hover { opacity:.82; }
+  .ctrl-btn.outline { background:transparent; color:var(--navy); }
+
+  .section { background:var(--cream); border-radius:10px; box-shadow:0 2px 16px var(--shadow); margin-bottom:2.2rem; overflow:hidden; }
+  .section-header { background:var(--navy); color:#fff; padding:.8rem 1.4rem; font-family:'Playfair Display',serif; font-size:1.1rem; letter-spacing:.03em; display:flex; align-items:center; gap:.7rem; }
+  .section-header .tag { background:var(--accent); color:#fff; font-family:'Source Serif 4',serif; font-size:.68rem; font-weight:600; letter-spacing:.08em; text-transform:uppercase; padding:.12rem .5rem; border-radius:3px; }
+  .section-body { padding:1.3rem 1.5rem; }
+
+  p.desc { font-size:.9rem; color:var(--mid); margin-bottom:.65rem; line-height:1.6; }
+  .instructions { background:var(--sky); border-left:4px solid var(--blue); border-radius:7px; padding:.75rem 1rem; margin-bottom:1.1rem; font-size:.87rem; color:var(--navy); }
+  .instructions strong { color:var(--blue); }
+
+  /* audio player */
+  .player { background:#fff; border:1.5px solid var(--light); border-radius:8px; padding:.85rem 1.1rem; margin-bottom:1.1rem; display:flex; align-items:center; gap:.7rem; flex-wrap:wrap; }
+  .play-btn { background:var(--blue); color:#fff; border:none; border-radius:50%; width:42px; height:42px; font-size:1.05rem; cursor:pointer; flex-shrink:0; display:flex; align-items:center; justify-content:center; transition:opacity .2s; }
+  .play-btn:hover { opacity:.85; }
+  .play-btn.playing { background:var(--accent); }
+  .player-label { font-size:.85rem; color:var(--navy); font-weight:600; flex:1; min-width:120px; }
+  .player-status { font-size:.76rem; color:var(--mid); font-style:italic; }
+  .transcript-toggle { background:none; border:1.5px solid var(--plum); color:var(--plum); font-family:'Source Serif 4',serif; font-size:.78rem; padding:.25rem .6rem; border-radius:4px; cursor:pointer; }
+  .transcript-toggle:hover { background:var(--plum); color:#fff; }
+  .transcript { display:none; background:var(--plum-bg); border-left:4px solid var(--plum); border-radius:6px; padding:.8rem 1rem; margin-bottom:1.1rem; font-size:.87rem; line-height:1.7; }
+  .transcript.shown { display:block; }
+  .transcript .spk { font-weight:700; color:var(--plum); }
+
+  .q-item { margin-bottom:1.15rem; padding-bottom:1.15rem; border-bottom:1px solid var(--light); }
+  .q-item:last-child { border-bottom:none; margin-bottom:0; padding-bottom:0; }
+  .item-head { display:flex; align-items:baseline; gap:.5rem; margin-bottom:.4rem; }
+  .item-num { font-family:'Playfair Display',serif; color:var(--accent); font-size:1rem; font-weight:700; min-width:1.4rem; }
+  .item-line { font-size:.92rem; line-height:1.6; }
+  .mc-options { display:grid; grid-template-columns:1fr; gap:.35rem; margin:.4rem 0 .55rem 1.9rem; }
+  .mc-opt { font-size:.87rem; color:var(--mid); padding:.25rem .6rem; border-radius:5px; background:#fff; border:1px solid var(--light); }
+  .mc-opt .letter { font-weight:700; color:var(--navy); margin-right:.3rem; }
+
+  .answer-row { display:flex; align-items:stretch; gap:0; border-radius:7px; overflow:hidden; border:1.5px solid var(--light); margin-left:1.9rem; }
+  .check-cell { background:var(--yellow); padding:.38rem .65rem; display:flex; align-items:center; justify-content:center; border-right:1.5px solid var(--light); min-width:40px; }
+  .check-cell input[type="checkbox"] { width:17px; height:17px; accent-color:var(--green); cursor:pointer; }
+  .answer-cell { background:#fff; flex:1; padding:.38rem .75rem; display:flex; align-items:center; gap:.45rem; font-size:.88rem; flex-wrap:wrap; }
+  .alabel { color:#bbb; font-weight:600; font-size:.76rem; white-space:nowrap; }
+  .answer-text { color:var(--blue); font-weight:700; font-style:italic; filter:blur(5px); user-select:none; transition:filter .35s ease; cursor:pointer; }
+  .answer-text.revealed { filter:none; cursor:default; }
+  .reveal-btn { background:none; border:1.5px solid var(--blue); color:var(--blue); font-family:'Source Serif 4',serif; font-size:.76rem; padding:.12rem .5rem; border-radius:4px; cursor:pointer; white-space:nowrap; transition:background .2s,color .2s; margin-left:auto; }
+  .reveal-btn:hover { background:var(--blue); color:#fff; }
+  .reveal-btn.hidden { display:none; }
+
+  .gap-input { border:none; border-bottom:2px dotted var(--accent); background:var(--yellow); font-family:'Source Serif 4',serif; font-size:.9rem; padding:.15rem .3rem; width:9rem; color:var(--navy); }
+
+  /* drag and drop part 3 */
+  .dnd-wrap { display:flex; gap:1.4rem; flex-wrap:wrap; margin-bottom:1rem; }
+  .speakers-col { display:flex; flex-direction:column; gap:.6rem; min-width:150px; }
+  .speaker-chip { background:var(--navy); color:#fff; font-family:'Playfair Display',serif; font-size:.85rem; padding:.5rem .8rem; border-radius:6px; cursor:grab; text-align:center; user-select:none; }
+  .speaker-chip.placed { opacity:.35; cursor:default; }
+  .options-col { flex:1; min-width:260px; display:flex; flex-direction:column; gap:.5rem; }
+  .option-slot { display:flex; align-items:center; gap:.6rem; background:#fff; border:1.5px dashed var(--light); border-radius:6px; padding:.5rem .7rem; min-height:2.2rem; }
+  .option-slot.dragover { border-color:var(--accent); background:var(--yellow); }
+  .option-letter { font-weight:700; color:var(--accent); font-family:'Playfair Display',serif; min-width:1.3rem; }
+  .option-text { font-size:.85rem; color:var(--mid); flex:1; }
+  .drop-target { min-width:78px; min-height:1.8rem; border:1.5px solid var(--light); border-radius:5px; background:var(--paper); display:flex; align-items:center; justify-content:center; font-size:.78rem; color:#aaa; }
+  .drop-target.filled { background:var(--green-bg); border-color:var(--green); color:var(--navy); font-weight:700; }
+  .dnd-reset { font-size:.78rem; }
+
+  footer { text-align:center; padding:1.1rem; font-size:.8rem; color:#aaa; font-style:italic; border-top:1px solid var(--light); margin-top:1rem; }
+
+  @media(max-width:600px){
+    .section-body { padding:1rem .8rem; }
+    nav .voice-panel { width:100%; margin-left:0; margin-top:.3rem; justify-content:space-between; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>B2 / FCE — Listening IV</h1>
+  <p>Multiple Choice · Sentence Completion · Multiple Matching · Multiple Choice (Interview)</p>
+  <div class="accent-bar"></div>
+</header>
+
+<nav>
+  <a href="#p1">Part 1</a>
+  <a href="#p2">Part 2</a>
+  <a href="#p3">Part 3</a>
+  <a href="#p4">Part 4</a>
+  <div class="voice-panel">
+    <span class="rate-label">Voice:</span>
+    <select id="voiceSelect"></select>
+    <span class="rate-label">Speed:</span>
+    <select id="rateSelect">
+      <option value="0.85">0.85×</option>
+      <option value="1" selected>1×</option>
+      <option value="1.15">1.15×</option>
+    </select>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="controls">
+    <button class="ctrl-btn outline" onclick="revealAll(false)">🙈 Hide answers</button>
+    <button class="ctrl-btn" onclick="revealAll(true)">👁 Reveal answers</button>
+  </div>
+  <p style="font-size:.78rem;color:var(--mid);font-style:italic;margin:-.9rem 0 1.4rem;text-align:right;">🔊 Audio is generated live in your browser (Web Speech API), set to a British English voice where available.</p>
+
+  <!-- ══════════════════════════════════
+       PART 1 — MULTIPLE CHOICE (short extracts)
+  ══════════════════════════════════ -->
+  <div class="section" id="p1">
+    <div class="section-header"><span class="tag">Part 1</span>Multiple Choice</div>
+    <div class="section-body">
+      <p class="desc">You will hear eight short extracts. For questions 1–8, choose the best answer (A, B or C).</p>
+      <div id="list-p1"></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       PART 2 — SENTENCE COMPLETION
+  ══════════════════════════════════ -->
+  <div class="section" id="p2">
+    <div class="section-header"><span class="tag">Part 2</span>Sentence Completion</div>
+    <div class="section-body">
+      <p class="desc">You will hear a woman called Rachel talking about volunteering abroad. For questions 9–18, complete the sentences.</p>
+
+      <div class="player">
+        <button class="play-btn" id="play-p2" onclick="toggleSpeak('p2')">▶</button>
+        <div class="player-label">Rachel — Volunteering Abroad</div>
+        <span class="player-status" id="status-p2"></span>
+        <button class="transcript-toggle" onclick="toggleTranscript('t-p2')">Show transcript</button>
+      </div>
+      <div class="transcript" id="t-p2"></div>
+
+      <div id="list-p2"></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       PART 3 — MULTIPLE MATCHING (drag & drop)
+  ══════════════════════════════════ -->
+  <div class="section" id="p3">
+    <div class="section-header"><span class="tag">Part 3</span>Multiple Matching</div>
+    <div class="section-body">
+      <p class="desc">You will hear five short extracts in which people talk about a course they did. For questions 19–23, drag each speaker onto the statement (A–H) that best matches what they say. There are three extra statements you do not need.</p>
+      <div class="instructions"><strong>Tip:</strong> drag a speaker chip from the left column onto the empty slot beside the matching statement.</div>
+
+      <div class="dnd-wrap">
+        <div class="speakers-col" id="speakers-p3"></div>
+        <div class="options-col" id="options-p3"></div>
+      </div>
+      <button class="ctrl-btn outline dnd-reset" onclick="resetDnd()">↺ Reset matching</button>
+
+      <div style="margin-top:1.2rem;" id="list-p3-audio"></div>
+      <div id="list-p3-answers" style="margin-top:.6rem;"></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       PART 4 — MULTIPLE CHOICE (interview)
+  ══════════════════════════════════ -->
+  <div class="section" id="p4">
+    <div class="section-header"><span class="tag">Part 4</span>Multiple Choice (Interview)</div>
+    <div class="section-body">
+      <p class="desc">You will hear an interview with a man called Daniel Ferris, who restores old furniture for a living. For questions 24–30, choose the best answer (A, B or C).</p>
+
+      <div class="player">
+        <button class="play-btn" id="play-p4" onclick="toggleSpeak('p4')">▶</button>
+        <div class="player-label">Interview with Daniel Ferris</div>
+        <span class="player-status" id="status-p4"></span>
+        <button class="transcript-toggle" onclick="toggleTranscript('t-p4')">Show transcript</button>
+      </div>
+      <div class="transcript" id="t-p4"></div>
+
+      <div id="list-p4"></div>
+    </div>
+  </div>
+
+  <footer>☐ Tick when correct &nbsp;|&nbsp; Click ▶ to hear the audio &nbsp;|&nbsp; Click blurred text to reveal</footer>
+</div>
+
+<script>
+/* ========================================================
+   CONTENT
+======================================================== */
+const p1 = [
+  { script:"You hear a man leaving a voicemail message.\n\nMAN: Hi, it's me. Listen, I'm really sorry but I'm going to be late — the traffic on the ring road is completely stuck. Could you go ahead and start without me? I should be there in about twenty minutes, half an hour at the most. Save me a seat near the front if you can.", q:"Why is the man calling?", opts:["A. To cancel a meeting","B. To warn that he will arrive late","C. To ask someone to reschedule"], a:"B. To warn that he will arrive late" },
+  { script:"You hear two friends talking about a film.\n\nWOMAN: So, what did you think in the end?\nMAN: Honestly? I wanted to love it — the reviews were amazing — but I kept checking my watch after the first hour. The acting was fine, I just don't think the story needed to be that long.", q:"What does the man say about the film?", opts:["A. He disliked the acting.","B. He found it too long.","C. He disagreed with the reviews entirely."], a:"B. He found it too long." },
+  { script:"You hear a radio announcer talking about traffic.\n\nANNOUNCER: And a quick update for anyone travelling into the city this morning — the northbound lane on Bridge Street remains closed following yesterday's works, so do allow extra time or consider the riverside route instead.", q:"What is the announcer doing?", opts:["A. Apologising for a delay","B. Advising an alternative route","C. Announcing when roadworks will begin"], a:"B. Advising an alternative route" },
+  { script:"You hear a woman talking to a colleague about a report.\n\nWOMAN: I've nearly finished it, I just need the sales figures from Marco before I can send it off. He said he'd get them to me by lunchtime, so fingers crossed.", q:"What is the woman waiting for?", opts:["A. Approval from her manager","B. Information from a colleague","C. Feedback on a draft"], a:"B. Information from a colleague" },
+  { script:"You hear part of an interview with a chef.\n\nINTERVIEWER: What's the secret, then?\nCHEF: Honestly, it's less about clever techniques and more about not being afraid to taste as you go. Most mistakes I see are things that could've been caught halfway through cooking.", q:"According to the chef, what is most important?", opts:["A. Following a recipe precisely","B. Tasting food throughout the process","C. Using advanced techniques"], a:"B. Tasting food throughout the process" },
+  { script:"You hear a man talking about his new flat.\n\nMAN: It's smaller than I expected from the photos, if I'm honest, but the location more than makes up for it — I can walk to work in ten minutes, which I never thought I'd have again.", q:"What does the man say about his flat?", opts:["A. It is bigger than the photos suggested.","B. Its size disappoints him but the location compensates.","C. It is too far from his workplace."], a:"B. Its size disappoints him but the location compensates." },
+  { script:"You hear a shop assistant speaking to a customer.\n\nASSISTANT: I'm afraid that particular model's out of stock until next week, but I can order it in for you, or show you a very similar one we do have on the shelf right now.", q:"What does the assistant offer to do?", opts:["A. Refund the customer immediately","B. Order the item or suggest an alternative","C. Check another branch for stock"], a:"B. Order the item or suggest an alternative" },
+  { script:"You hear a woman talking about a course she attended.\n\nWOMAN: It was useful, I suppose, but pitched at a much more basic level than the description suggested — I already knew most of it, which was a bit frustrating given how much it cost.", q:"How does the woman feel about the course?", opts:["A. Satisfied with its value for money","B. Disappointed that it wasn't challenging enough","C. Surprised by how advanced it was"], a:"B. Disappointed that it wasn't challenging enough" }
+];
+
+const p2script = `Thanks for having me. So, I spent eight months volunteering in rural Peru, mainly on a project that built small footbridges for villages that got cut off every rainy season. I found the project through a listing on a university noticeboard, of all places, and applied almost on a whim.
+
+The first few weeks were honestly the hardest. I struggled most with the altitude, not the language, which surprised me — I'd prepared for the Spanish and completely underestimated how tired I'd feel just walking uphill.
+
+We usually started work at six in the morning, before the heat became unbearable, and finished by early afternoon. Accommodation was basic: I shared a room with three other volunteers in a house belonging to a local family, the Ramirez family, who cooked for us most evenings.
+
+The project I'm proudest of was a bridge near a village called Huayllabamba, which meant children no longer had to cross a dangerous river to reach their school. Watching the first group of kids cross it safely is something I'll never forget.
+
+If I'm honest, the skill I developed most wasn't construction at all — it was patience. Plans changed constantly, materials arrived late, and you simply had to adapt without losing your temper.
+
+For anyone considering something similar, my one piece of advice would be to learn basic first aid before you go. We had a qualified volunteer with us, thankfully, but I felt useless in an emergency and promised myself I'd fix that before my next trip.
+
+I'm actually going back next year, this time to Bolivia, to work on a similar water access project.`;
+
+const p2 = [
+  { pre:"9. Rachel found out about the volunteering project through a", suf:"noticeboard.", a:"university" },
+  { pre:"10. Rachel struggled most with the", suf:"rather than the language.", a:"altitude" },
+  { pre:"11. Volunteers usually began work at", suf:"in the morning.", a:"six" },
+  { pre:"12. Rachel shared a room with three other volunteers in a house belonging to the", suf:"family.", a:"Ramirez" },
+  { pre:"13. The bridge Rachel is proudest of was built near a village called", suf:".", a:"Huayllabamba" },
+  { pre:"14. Before that bridge, children had to cross a dangerous", suf:"to reach school.", a:"river" },
+  { pre:"15. The skill Rachel feels she developed most was", suf:".", a:"patience" },
+  { pre:"16. Plans often changed because", suf:"arrived late.", a:"materials" },
+  { pre:"17. Rachel's advice for future volunteers is to learn basic", suf:"before going.", a:"first aid" },
+  { pre:"18. Rachel is returning next year to work in", suf:"on a water access project.", a:"Bolivia" }
+];
+
+const p3speakers = [
+  { name:"Speaker 1", script:"I only signed up because a friend nagged me into it, but it turned out to be the best decision I made all year. I've actually kept in touch with two people from the group." },
+  { name:"Speaker 2", script:"I'll be honest, I nearly dropped out after the first week — it moved far faster than I expected and I felt completely out of my depth for a while." },
+  { name:"Speaker 3", script:"What I valued most wasn't really the content, which was fairly standard, but the instructor herself. She had a way of explaining things that just clicked for me." },
+  { name:"Speaker 4", script:"It was fine, nothing special, but it did exactly what it promised on the tin, which is more than I can say for some courses I've paid for." },
+  { name:"Speaker 5", script:"I went in with fairly low expectations, honestly, and came out having completely changed my mind about the subject. I'm now considering studying it further." }
+];
+const p3options = [
+  { letter:"A", text:"The speaker was persuaded to join by someone else.", answerIdx:0 },
+  { letter:"B", text:"The speaker found the pace overwhelming at first.", answerIdx:1 },
+  { letter:"C", text:"The speaker's opinion of the subject changed significantly.", answerIdx:4 },
+  { letter:"D", text:"The speaker felt the course was overpriced.", answerIdx:null },
+  { letter:"E", text:"The speaker praised the teacher rather than the material.", answerIdx:2 },
+  { letter:"F", text:"The speaker regretted enrolling on the course.", answerIdx:null },
+  { letter:"G", text:"The speaker said the course met basic expectations without impressing them.", answerIdx:3 },
+  { letter:"H", text:"The speaker missed several sessions due to work commitments.", answerIdx:null }
+];
+
+const p4script = `INTERVIEWER: Daniel, you've been restoring furniture professionally for almost twenty years now. How did it all start?
+DANIEL: Almost by accident, really. I was working in an unrelated job and bought a battered old chest of drawers at a market, mostly because it was cheap. I had no intention of restoring it properly — I just wanted somewhere to put my clothes. But once I started stripping the old varnish off, I was hooked.
+
+INTERVIEWER: What is it about the process that appeals to you so much?
+DANIEL: I think it's the transformation, but not in the way people assume. It's not about making something look brand new — quite the opposite. The pieces I enjoy most are the ones where you can still see their history: a scratch here, a repaired joint there. My job is to make sure the piece survives another hundred years, not to erase the marks of the last hundred.
+
+INTERVIEWER: Do clients ever disagree with that philosophy?
+DANIEL: Constantly, actually. Plenty of people bring me a piece expecting it to come back looking factory-fresh, and I have to explain, gently, why that's usually the wrong approach for something genuinely old. Most come round to my way of thinking once they see the results, but I have turned down jobs where a client insisted on sanding away everything that made a piece interesting.
+
+INTERVIEWER: What's the hardest part of the work, would you say?
+DANIEL: People assume it's physical — and it can be, lifting heavy pieces around a workshop all day takes its toll — but honestly, the hardest part is patience. Certain repairs simply cannot be rushed. Glue needs days to cure properly, and if you push ahead too early, you can undo weeks of careful work in seconds.
+
+INTERVIEWER: Has the business changed much since you started?
+DANIEL: Enormously. When I began, almost all my clients were local, people who'd seen a sign outside my workshop. Now, thanks to photographs online, I get enquiries from much further afield, which is flattering, but it also means I have to be far more selective about which jobs I actually take on.
+
+INTERVIEWER: Any advice for someone starting out in this trade today?
+DANIEL: Work on cheap pieces first, and expect to ruin a few. I certainly did. There's a temptation to practise on something valuable because you're excited, and that's exactly when expensive mistakes happen.
+
+INTERVIEWER: And finally, what's next for you?
+DANIEL: I'd like to start running short workshops for beginners. I get asked constantly whether I teach, and for years I've said no because I didn't have the space, but I've recently taken on a larger workshop, so it finally feels possible.`;
+
+const p4 = [
+  { q:"How did Daniel first become interested in furniture restoration?", opts:["A. He trained for it professionally from a young age.","B. He restored a piece he'd bought for a practical reason.","C. He inherited a family workshop."], a:"B. He restored a piece he'd bought for a practical reason." },
+  { q:"What does Daniel say he tries to preserve in a restored piece?", opts:["A. Its original, factory-fresh appearance","B. Signs of its age and history","C. Its market value above all"], a:"B. Signs of its age and history" },
+  { q:"How does Daniel usually respond when clients disagree with his approach?", opts:["A. He always follows the client's instructions regardless.","B. He explains his reasoning, and sometimes refuses the job.","C. He immediately ends the working relationship."], a:"B. He explains his reasoning, and sometimes refuses the job." },
+  { q:"What does Daniel identify as the hardest part of the work?", opts:["A. The physical demands of lifting furniture","B. Needing patience during certain repairs","C. Finding rare replacement materials"], a:"B. Needing patience during certain repairs" },
+  { q:"How has Daniel's client base changed over time?", opts:["A. It has become entirely limited to local customers.","B. It now includes people from further away, found online.","C. It has shrunk significantly since he started."], a:"B. It now includes people from further away, found online." },
+  { q:"What advice does Daniel give to beginners?", opts:["A. Practise on valuable pieces to learn faster.","B. Start with inexpensive items and accept some failures.","C. Avoid making any mistakes at all costs."], a:"B. Start with inexpensive items and accept some failures." },
+  { q:"What does Daniel plan to do in the future?", opts:["A. Retire from restoration work entirely.","B. Move to a smaller workshop.","C. Start teaching short workshops for beginners."], a:"C. Start teaching short workshops for beginners." }
+];
+
+/* ========================================================
+   RENDERING
+======================================================== */
+let uid = 0;
+const newId = () => 'u' + (++uid);
+
+function answerBlock(answer) {
+  const id = newId();
+  return `
+    <div class="answer-row">
+      <div class="check-cell"><input type="checkbox"></div>
+      <div class="answer-cell">
+        <span class="alabel">Answer:</span>
+        <span class="answer-text" id="${id}" onclick="revealOne('${id}')">${answer}</span>
+        <button class="reveal-btn" id="btn-${id}" onclick="revealOne('${id}')">Show</button>
+      </div>
+    </div>`;
+}
+
+function populateP1() {
+  const el = document.getElementById('list-p1');
+  p1.forEach((item, i) => {
+    const num = i + 1;
+    const btnId = 'play-p1-' + i;
+    const statusId = 'status-p1-' + i;
+    const div = document.createElement('div');
+    div.className = 'q-item';
+    div.innerHTML = `
+      <div class="player" style="margin-bottom:.7rem;">
+        <button class="play-btn" id="${btnId}" onclick="toggleSpeakInline('${btnId}','${statusId}', p1[${i}].script)">▶</button>
+        <div class="player-label">Extract ${num}</div>
+        <span class="player-status" id="${statusId}"></span>
+      </div>
+      <div class="item-head"><span class="item-num">${num}.</span><span class="item-line">${item.q}</span></div>
+      <div class="mc-options">${item.opts.map(o => `<div class="mc-opt">${o}</div>`).join('')}</div>
+      ${answerBlock(item.a)}`;
+    el.appendChild(div);
+  });
+}
+
+function populateP2() {
+  const el = document.getElementById('list-p2');
+  p2.forEach((item, i) => {
+    const div = document.createElement('div');
+    div.className = 'q-item';
+    div.innerHTML = `
+      <div class="item-line">${item.pre} <span class="gap-input">&nbsp;</span> ${item.suf}</div>
+      ${answerBlock(item.a)}`;
+    el.appendChild(div);
+  });
+  document.getElementById('t-p2').innerHTML = p2script.split('\n\n').map(p => `<p style="margin-bottom:.6rem;">${p}</p>`).join('');
+}
+
+function populateP3() {
+  const spEl = document.getElementById('speakers-p3');
+  p3speakers.forEach((sp, i) => {
+    const wrap = document.createElement('div');
+    wrap.style.display = 'flex';
+    wrap.style.flexDirection = 'column';
+    wrap.style.gap = '.3rem';
+    const btnId = 'play-p3-' + i;
+    const statusId = 'status-p3-' + i;
+    wrap.innerHTML = `
+      <div class="speaker-chip" id="chip-${i}" draggable="true" ondragstart="dragStart(event,${i})">${sp.name}</div>
+      <div class="player" style="padding:.4rem .6rem;">
+        <button class="play-btn" style="width:32px;height:32px;font-size:.85rem;" id="${btnId}" onclick="toggleSpeakInline('${btnId}','${statusId}', p3speakers[${i}].script)">▶</button>
+        <span class="player-status" id="${statusId}" style="font-size:.7rem;"></span>
+      </div>`;
+    spEl.appendChild(wrap);
+  });
+
+  const opEl = document.getElementById('options-p3');
+  p3options.forEach((opt, i) => {
+    const slot = document.createElement('div');
+    slot.className = 'option-slot';
+    slot.innerHTML = `
+      <span class="option-letter">${opt.letter}</span>
+      <span class="option-text">${opt.text}</span>
+      <span class="drop-target" id="drop-${i}" ondragover="event.preventDefault(); this.classList.add('dragover')" ondragleave="this.classList.remove('dragover')" ondrop="dropSpeaker(event,${i})">drop here</span>`;
+    opEl.appendChild(slot);
+  });
+
+  const num0 = 19;
+  const ansEl = document.getElementById('list-p3-answers');
+  p3options.filter(o => o.answerIdx !== null).forEach((opt) => {
+    const num = num0 + p3options.filter(o=>o.answerIdx!==null).indexOf(opt);
+  });
+  let counter = 19;
+  const div = document.createElement('div');
+  div.innerHTML = '<p class="desc" style="margin-top:1rem;"><strong>Answer key (19–23):</strong></p>';
+  ansEl.appendChild(div);
+  p3speakers.forEach((sp, i) => {
+    const matchedOpt = p3options.find(o => o.answerIdx === i);
+    const num = 19 + i;
+    const item = document.createElement('div');
+    item.className = 'q-item';
+    item.innerHTML = `
+      <div class="item-head"><span class="item-num">${num}.</span><span class="item-line">${sp.name}</span></div>
+      ${answerBlock(matchedOpt.letter + ' — ' + matchedOpt.text)}`;
+    ansEl.appendChild(item);
+  });
+}
+
+function populateP4() {
+  const el = document.getElementById('list-p4');
+  p4.forEach((item, i) => {
+    const num = i + 24;
+    const div = document.createElement('div');
+    div.className = 'q-item';
+    div.innerHTML = `
+      <div class="item-head"><span class="item-num">${num}.</span><span class="item-line">${item.q}</span></div>
+      <div class="mc-options">${item.opts.map(o => `<div class="mc-opt">${o}</div>`).join('')}</div>
+      ${answerBlock(item.a)}`;
+    el.appendChild(div);
+  });
+  document.getElementById('t-p4').innerHTML = p4script.split('\n').map(l => {
+    const m = l.match(/^(INTERVIEWER|DANIEL):\s*(.*)$/);
+    return m ? `<p style="margin-bottom:.5rem;"><span class="spk">${m[1]}:</span> ${m[2]}</p>` : `<p>${l}</p>`;
+  }).join('');
+}
+
+populateP1();
+populateP2();
+populateP3();
+populateP4();
+
+function revealOne(id) {
+  document.getElementById(id).classList.add('revealed');
+  document.getElementById('btn-' + id).classList.add('hidden');
+}
+function revealAll(show) {
+  document.querySelectorAll('.answer-text').forEach(el => el.classList.toggle('revealed', show));
+  document.querySelectorAll('.reveal-btn').forEach(btn => btn.classList.toggle('hidden', show));
+}
+function toggleTranscript(id) {
+  document.getElementById(id).classList.toggle('shown');
+}
+
+/* ========================================================
+   DRAG & DROP — PART 3
+======================================================== */
+function dragStart(e, idx) {
+  e.dataTransfer.setData('text/plain', idx);
+}
+function dropSpeaker(e, slotIdx) {
+  e.preventDefault();
+  e.currentTarget.classList.remove('dragover');
+  const speakerIdx = e.dataTransfer.getData('text/plain');
+  const chip = document.getElementById('chip-' + speakerIdx);
+  e.currentTarget.textContent = p3speakers[speakerIdx].name;
+  e.currentTarget.classList.add('filled');
+  chip.classList.add('placed');
+  chip.setAttribute('draggable', 'false');
+}
+function resetDnd() {
+  p3options.forEach((_, i) => {
+    const d = document.getElementById('drop-' + i);
+    d.textContent = 'drop here';
+    d.classList.remove('filled');
+  });
+  p3speakers.forEach((_, i) => {
+    const chip = document.getElementById('chip-' + i);
+    chip.classList.remove('placed');
+    chip.setAttribute('draggable', 'true');
+  });
+}
+
+/* ========================================================
+   TEXT-TO-SPEECH ENGINE
+======================================================== */
+let voices = [];
+let currentUtterance = null;
+let currentBtn = null;
+let currentStatus = null;
+
+function loadVoices() {
+  voices = window.speechSynthesis.getVoices();
+  const sel = document.getElementById('voiceSelect');
+  sel.innerHTML = '';
+  // Prefer British English voices first
+  const sorted = [...voices].sort((a, b) => {
+    const aGB = a.lang.toLowerCase().startsWith('en-gb') ? 0 : 1;
+    const bGB = b.lang.toLowerCase().startsWith('en-gb') ? 0 : 1;
+    if (aGB !== bGB) return aGB - bGB;
+    const aEN = a.lang.toLowerCase().startsWith('en') ? 0 : 1;
+    const bEN = b.lang.toLowerCase().startsWith('en') ? 0 : 1;
+    return aEN - bEN;
+  });
+  sorted.forEach((v, i) => {
+    const opt = document.createElement('option');
+    opt.value = voices.indexOf(v);
+    opt.textContent = `${v.name} (${v.lang})`;
+    sel.appendChild(opt);
+  });
+  // Auto-select first en-GB voice if present
+  const gbIdx = voices.findIndex(v => v.lang.toLowerCase().startsWith('en-gb'));
+  if (gbIdx >= 0) sel.value = gbIdx;
+}
+window.speechSynthesis.onvoiceschanged = loadVoices;
+loadVoices();
+
+function getSelectedVoice() {
+  const sel = document.getElementById('voiceSelect');
+  const idx = parseInt(sel.value, 10);
+  return voices[idx] || null;
+}
+function getSelectedRate() {
+  return parseFloat(document.getElementById('rateSelect').value);
+}
+
+function speakText(text, btn, status) {
+  window.speechSynthesis.cancel();
+  const utter = new SpeechSynthesisUtterance(text);
+  const voice = getSelectedVoice();
+  if (voice) utter.voice = voice;
+  utter.rate = getSelectedRate();
+  utter.onstart = () => { btn.classList.add('playing'); btn.textContent = '⏸'; status.textContent = 'Playing…'; };
+  utter.onend = () => { btn.classList.remove('playing'); btn.textContent = '▶'; status.textContent = ''; currentUtterance = null; };
+  utter.onerror = () => { btn.classList.remove('playing'); btn.textContent = '▶'; status.textContent = 'Audio error — try again'; };
+  currentUtterance = utter;
+  currentBtn = btn;
+  currentStatus = status;
+  window.speechSynthesis.speak(utter);
+}
+
+function toggleSpeak(part) {
+  const btn = document.getElementById('play-' + part);
+  const status = document.getElementById('status-' + part);
+  const scriptMap = { p2: p2script, p4: p4script };
+  if (window.speechSynthesis.speaking && btn.classList.contains('playing')) {
+    window.speechSynthesis.cancel();
+    btn.classList.remove('playing'); btn.textContent = '▶'; status.textContent = '';
+    return;
+  }
+  speakText(scriptMap[part].replace(/INTERVIEWER:|DANIEL:/g, ''), btn, status);
+}
+
+function toggleSpeakInline(btnId, statusId, text) {
+  const btn = document.getElementById(btnId);
+  const status = document.getElementById(statusId);
+  if (window.speechSynthesis.speaking && btn.classList.contains('playing')) {
+    window.speechSynthesis.cancel();
+    btn.classList.remove('playing'); btn.textContent = '▶'; status.textContent = '';
+    return;
+  }
+  speakText(text, btn, status);
+}
+</script>
+</body>
+</html>
