@@ -143,7 +143,7 @@
     <button class="ctrl-btn outline" onclick="revealAll(false)">🙈 Hide answers</button>
     <button class="ctrl-btn" onclick="revealAll(true)">👁 Reveal answers</button>
   </div>
-  <p style="font-size:.78rem;color:var(--mid);font-style:italic;margin:-.9rem 0 1.4rem;text-align:right;">🔊 Audio is generated live in your browser (Web Speech API), set to a British English voice where available.</p>
+  <p style="font-size:.78rem;color:var(--mid);font-style:italic;margin:-.9rem 0 1.4rem;text-align:right;">🔊 Audio is generated live in your browser (Web Speech API). For the most natural sound, choose a voice labelled <strong>"Online (Natural)"</strong> in the Voice menu above — the plain "Microsoft George/Hazel/Susan" voices sound noticeably more robotic.</p>
 
   <!-- ══════════════════════════════════
        PART 1 — MULTIPLE CHOICE (short extracts)
@@ -489,24 +489,27 @@ function loadVoices() {
   voices = window.speechSynthesis.getVoices();
   const sel = document.getElementById('voiceSelect');
   sel.innerHTML = '';
-  // Prefer British English voices first
-  const sorted = [...voices].sort((a, b) => {
-    const aGB = a.lang.toLowerCase().startsWith('en-gb') ? 0 : 1;
-    const bGB = b.lang.toLowerCase().startsWith('en-gb') ? 0 : 1;
-    if (aGB !== bGB) return aGB - bGB;
-    const aEN = a.lang.toLowerCase().startsWith('en') ? 0 : 1;
-    const bEN = b.lang.toLowerCase().startsWith('en') ? 0 : 1;
-    return aEN - bEN;
-  });
-  sorted.forEach((v, i) => {
+  // Rank voices: "Online (Natural)" en-GB first, then any Natural voice, then plain en-GB, then any English
+  const rank = (v) => {
+    const n = v.name.toLowerCase();
+    const isGB = v.lang.toLowerCase().startsWith('en-gb');
+    const isNatural = n.includes('online') && n.includes('natural');
+    const isEN = v.lang.toLowerCase().startsWith('en');
+    if (isGB && isNatural) return 0;
+    if (isNatural) return 1;
+    if (isGB) return 2;
+    if (isEN) return 3;
+    return 4;
+  };
+  const sorted = [...voices].sort((a, b) => rank(a) - rank(b));
+  sorted.forEach((v) => {
     const opt = document.createElement('option');
     opt.value = voices.indexOf(v);
     opt.textContent = `${v.name} (${v.lang})`;
     sel.appendChild(opt);
   });
-  // Auto-select first en-GB voice if present
-  const gbIdx = voices.findIndex(v => v.lang.toLowerCase().startsWith('en-gb'));
-  if (gbIdx >= 0) sel.value = gbIdx;
+  // Auto-select the best-ranked voice (an en-GB "Online (Natural)" voice if present)
+  if (sorted.length) sel.value = voices.indexOf(sorted[0]);
 }
 window.speechSynthesis.onvoiceschanged = loadVoices;
 loadVoices();
