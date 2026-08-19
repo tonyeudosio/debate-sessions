@@ -19,6 +19,7 @@
     --lazuli:#33506c;
     --verdigris:#4a6b5a;
     --gold:#9c6f26;
+    --indigo:#4b3f72;
     --card-bg:#f5eeda;
     --shadow:0 1px 2px rgba(33,29,22,.08), 0 6px 16px rgba(33,29,22,.06);
     font-size:16px;
@@ -112,6 +113,7 @@
   .pill[data-cat="adjetivo"][data-active="true"]{background:var(--gold);}
   .pill[data-cat="verbo"][data-active="true"]{background:var(--verdigris);}
   .pill[data-cat="adverbio"][data-active="true"]{background:var(--rubric);}
+  .pill[data-cat="gramatica"][data-active="true"]{background:var(--indigo);}
 
   .toolbar-right{display:flex; gap:8px; margin-left:auto; flex-wrap:wrap;}
   input[type="text"], select, textarea{
@@ -209,6 +211,7 @@
   .initial.adjetivo{background:var(--gold);}
   .initial.verbo{background:var(--verdigris);}
   .initial.adverbio{background:var(--rubric);}
+  .initial.gramatica{background:var(--indigo);}
 
   .card-body{flex:1; min-width:0;}
   .card-top{display:flex; align-items:baseline; gap:10px; flex-wrap:wrap;}
@@ -225,6 +228,7 @@
   .catlabel.adjetivo{background:var(--gold);}
   .catlabel.verbo{background:var(--verdigris);}
   .catlabel.adverbio{background:var(--rubric);}
+  .catlabel.gramatica{background:var(--indigo);}
   .caplabel{font-family:'IBM Plex Mono', monospace; font-size:.7rem; color:var(--ink-soft);}
 
   .card-actions{
@@ -274,6 +278,7 @@
       <button class="pill" data-cat="adjetivo">Adjectives</button>
       <button class="pill" data-cat="verbo">Verbs</button>
       <button class="pill" data-cat="adverbio">Adverbs</button>
+      <button class="pill" data-cat="gramatica">Grammar</button>
     </div>
     <div class="toolbar-right">
       <input type="text" id="search" placeholder="Search…">
@@ -296,6 +301,7 @@
           <option value="adjetivo">Adjective</option>
           <option value="verbo">Verb</option>
           <option value="adverbio">Adverb</option>
+          <option value="gramatica">Grammar</option>
         </select>
       </div>
       <div>
@@ -303,7 +309,7 @@
         <input type="text" id="fCap" placeholder="e.g. 1">
       </div>
       <div>
-        <label for="fWord">Word / Idiom</label>
+        <label id="wordLabel" for="fWord">Word / Idiom</label>
         <input type="text" id="fWord" placeholder="e.g. serendipity">
       </div>
       <div>
@@ -311,11 +317,11 @@
         <input type="text" id="fForms" placeholder="[C] / plural: -ies">
       </div>
       <div class="full">
-        <label for="fMeaning">Definition / Meaning</label>
+        <label id="meaningLabel" for="fMeaning">Definition / Meaning</label>
         <input type="text" id="fMeaning" placeholder="Definition or meaning in English/Spanish">
       </div>
       <div class="full">
-        <label for="fExample">Example Context (C2)</label>
+        <label id="exampleLabel" for="fExample">Example Context (C2)</label>
         <textarea id="fExample" placeholder="Write an academic or advanced sentence using the term."></textarea>
       </div>
     </div>
@@ -340,10 +346,26 @@
 <script>
 (function(){
   const CATS = {
-    nombre:   {label:'Noun',      plural:'Nouns',       formsLabel:'Tipo / Plural', formsPh:'e.g. [C], [U], plural: -aes'},
-    adjetivo: {label:'Adjective', plural:'Adjectives',  formsLabel:'Collocations / Synonyms', formsPh:'e.g. highly + adj, striking'},
-    verbo:    {label:'Verb',      plural:'Verbs',       formsLabel:'Patterns / Prepositions', formsPh:'e.g. verb + to-inf, depend on'},
-    adverbio: {label:'Adverb',    plural:'Adverbs',     formsLabel:'Collocations / Synonyms', formsPh:'e.g. utterly, thoroughly'}
+    nombre:   {label:'Noun',      plural:'Nouns',       wordLabel:'Word / Idiom', wordPh:'e.g. serendipity',
+               formsLabel:'Type / Plural', formsPh:'e.g. [C], [U], plural: -aes',
+               meaningLabel:'Definition / Meaning', meaningPh:'Definition or meaning in English/Spanish',
+               exampleLabel:'Example Context (C2)', examplePh:'Write an academic or advanced sentence using the term.'},
+    adjetivo: {label:'Adjective', plural:'Adjectives',  wordLabel:'Word / Idiom', wordPh:'e.g. serendipity',
+               formsLabel:'Collocations / Synonyms', formsPh:'e.g. highly + adj, striking',
+               meaningLabel:'Definition / Meaning', meaningPh:'Definition or meaning in English/Spanish',
+               exampleLabel:'Example Context (C2)', examplePh:'Write an academic or advanced sentence using the term.'},
+    verbo:    {label:'Verb',      plural:'Verbs',       wordLabel:'Word / Idiom', wordPh:'e.g. serendipity',
+               formsLabel:'Patterns / Prepositions', formsPh:'e.g. verb + to-inf, depend on',
+               meaningLabel:'Definition / Meaning', meaningPh:'Definition or meaning in English/Spanish',
+               exampleLabel:'Example Context (C2)', examplePh:'Write an academic or advanced sentence using the term.'},
+    adverbio: {label:'Adverb',    plural:'Adverbs',     wordLabel:'Word / Idiom', wordPh:'e.g. serendipity',
+               formsLabel:'Collocations / Synonyms', formsPh:'e.g. utterly, thoroughly',
+               meaningLabel:'Definition / Meaning', meaningPh:'Definition or meaning in English/Spanish',
+               exampleLabel:'Example Context (C2)', examplePh:'Write an academic or advanced sentence using the term.'},
+    gramatica:{label:'Grammar',   plural:'Grammar',     wordLabel:'Structure', wordPh:'e.g. Conditionals',
+               formsLabel:'Form', formsPh:'e.g. 1st Conditional: If + present, will + base',
+               meaningLabel:'Use', meaningPh:'e.g. Statements that are always true',
+               exampleLabel:'Sample sentence', examplePh:'e.g. If the temperature drops below 0, water freezes.'}
   };
   // Clave única para evitar conflictos con los datos del cuaderno de latín
   const STORAGE_KEY = 'english-vocab-entries';
@@ -462,7 +484,7 @@
     $('#fForms').value = entry ? entry.forms : '';
     $('#fMeaning').value = entry ? entry.meaning : '';
     $('#fExample').value = entry ? entry.example : '';
-    updateFormsLabel();
+    updateFieldLabels();
     $('#fWord').focus();
   }
 
@@ -470,10 +492,16 @@
     $('#panel').style.display = 'none';
   }
 
-  function updateFormsLabel(){
+  function updateFieldLabels(){
     const c = CATS[$('#fCat').value];
+    $('#wordLabel').textContent = c.wordLabel;
+    $('#fWord').placeholder = c.wordPh;
     $('#formsLabel').textContent = c.formsLabel;
     $('#fForms').placeholder = c.formsPh;
+    $('#meaningLabel').textContent = c.meaningLabel;
+    $('#fMeaning').placeholder = c.meaningPh;
+    $('#exampleLabel').textContent = c.exampleLabel;
+    $('#fExample').placeholder = c.examplePh;
   }
 
   function updateCapFilterOptions(){
@@ -489,10 +517,10 @@
   function updateStats(){
     const box = $('#stats');
     const total = entries.length;
-    const counts = {nombre:0, adjetivo:0, verbo:0, adverbio:0};
+    const counts = {nombre:0, adjetivo:0, verbo:0, adverbio:0, gramatica:0};
     entries.forEach(e => { if (counts[e.category] !== undefined) counts[e.category]++; });
-    const colorVar = {nombre:'var(--lazuli)', adjetivo:'var(--gold)', verbo:'var(--verdigris)', adverbio:'var(--rubric)'};
-    box.innerHTML = `<span class="stat"><b>${total}</b>&nbsp;words</span>` +
+    const colorVar = {nombre:'var(--lazuli)', adjetivo:'var(--gold)', verbo:'var(--verdigris)', adverbio:'var(--rubric)', gramatica:'var(--indigo)'};
+    box.innerHTML = `<span class="stat"><b>${total}</b>&nbsp;entries</span>` +
       Object.keys(counts).map(k =>
         `<span class="stat"><span class="dot" style="background:${colorVar[k]}"></span>${counts[k]} ${CATS[k].plural.toLowerCase()}</span>`
       ).join('');
@@ -518,7 +546,7 @@
     });
 
     if (entries.length === 0){
-      grid.innerHTML = `<div class="empty"><h3>The lexicon is currently empty</h3>Add the first advanced term or idiom from the unit you are studying.</div>`;
+      grid.innerHTML = `<div class="empty"><h3>The lexicon is currently empty</h3>Add the first advanced term, idiom, or grammar reminder from the unit you are studying.</div>`;
       return;
     }
     if (filtered.length === 0){
@@ -593,7 +621,7 @@
     e.target.value = '';
   });
   $('#cancelBtn').addEventListener('click', closePanel);
-  $('#fCat').addEventListener('change', updateFormsLabel);
+  $('#fCat').addEventListener('change', updateFieldLabels);
 
   $('#saveBtn').addEventListener('click', async () => {
     const word = $('#fWord').value.trim();
