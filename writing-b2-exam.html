@@ -266,6 +266,26 @@
   .practice-card{ margin-bottom:26px; }
   .practice-card .ptop{ display:flex; justify-content:space-between; align-items:flex-start; gap:12px; flex-wrap:wrap; }
   .practice-card h3{ font-size:1.1rem; }
+
+  .name-card{
+    background: var(--gold-soft); border:1px solid #E4CE9C; border-radius:14px;
+    padding:18px 20px; margin-bottom:26px; display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+  }
+  .name-card label{ font-weight:700; color:#7A5A22; font-size:0.9rem; }
+  .name-card input{
+    flex:1 1 220px; font-family:'Inter',sans-serif; font-size:0.95rem;
+    padding:9px 12px; border-radius:8px; border:1px solid #E4CE9C; background:#fff; color:var(--ink);
+  }
+  .name-card .hint{ width:100%; font-size:0.8rem; color:#8A6A2E; margin-top:2px; }
+  .send-row{ margin-top:14px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .send-btn{
+    font-family:'Inter',sans-serif; font-weight:700; font-size:0.85rem;
+    background: var(--margin); color:#fff; border:none; border-radius:999px;
+    padding:10px 18px; cursor:pointer; display:inline-flex; align-items:center; gap:7px;
+    box-shadow: var(--shadow); transition: transform .12s ease;
+  }
+  .send-btn:hover{ transform: translateY(-1px); }
+  .send-note{ font-size:0.78rem; color:var(--ink-faint); }
   .wordbadge{
     font-family:'Inter',sans-serif; font-weight:700; font-size:0.78rem;
     background: var(--gold-soft); color:#7A5A22; padding:5px 11px; border-radius:999px;
@@ -873,7 +893,13 @@
     <div class="sec-head">
       <span class="tag">Your turn</span>
       <h2>Practice zone</h2>
-      <p class="lede">One fresh task per genre. Write it, check the word count as you go, then reveal the model answer and mark your own attempt with the same four-criteria scale examiners use.</p>
+      <p class="lede">One fresh task per genre. Write it, check the word count as you go, then reveal the model answer and mark your own attempt with the same four-criteria scale examiners use. When you're ready, download your answer and send it on to me yourself.</p>
+    </div>
+
+    <div class="name-card">
+      <label for="student-name">Your name</label>
+      <input type="text" id="student-name" placeholder="So the downloaded file has your name on it">
+      <div class="hint">Nothing here is uploaded anywhere — this just labels the file you download, so I know whose writing it is once you send it to me.</div>
     </div>
 
     <!-- ESSAY PRACTICE -->
@@ -900,6 +926,10 @@
         <div class="brow"><label>Organisation</label><select data-c><option value="">–</option><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
         <div class="brow"><label>Language</label><select data-c><option value="">–</option><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
         <div class="band-total" id="total-essay">Total: — / 20</div>
+      </div>
+      <div class="send-row">
+        <button class="send-btn" type="button" onclick="downloadAnswer('essay','Essay — the environment')">⬇️ Download to send</button>
+        <span class="send-note">Saves a text file you can attach to an email to me.</span>
       </div>
     </div>
 
@@ -929,6 +959,10 @@
         <div class="brow"><label>Language</label><select data-c><option value="">–</option><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
         <div class="band-total" id="total-email">Total: — / 20</div>
       </div>
+      <div class="send-row">
+        <button class="send-btn" type="button" onclick="downloadAnswer('email','Email — the borrowed bike')">⬇️ Download to send</button>
+        <span class="send-note">Saves a text file you can attach to an email to me.</span>
+      </div>
     </div>
 
     <!-- ARTICLE PRACTICE -->
@@ -956,6 +990,10 @@
         <div class="brow"><label>Organisation</label><select data-c><option value="">–</option><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
         <div class="brow"><label>Language</label><select data-c><option value="">–</option><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
         <div class="band-total" id="total-article">Total: — / 20</div>
+      </div>
+      <div class="send-row">
+        <button class="send-btn" type="button" onclick="downloadAnswer('article','Article — technology that changed your life')">⬇️ Download to send</button>
+        <span class="send-note">Saves a text file you can attach to an email to me.</span>
       </div>
     </div>
 
@@ -985,6 +1023,10 @@
         <div class="brow"><label>Language</label><select data-c><option value="">–</option><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
         <div class="band-total" id="total-report">Total: — / 20</div>
       </div>
+      <div class="send-row">
+        <button class="send-btn" type="button" onclick="downloadAnswer('report','Report — the school canteen')">⬇️ Download to send</button>
+        <span class="send-note">Saves a text file you can attach to an email to me.</span>
+      </div>
     </div>
 
     <!-- REVIEW PRACTICE -->
@@ -1013,6 +1055,10 @@
         <div class="brow"><label>Language</label><select data-c><option value="">–</option><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
         <div class="band-total" id="total-review">Total: — / 20</div>
       </div>
+      <div class="send-row">
+        <button class="send-btn" type="button" onclick="downloadAnswer('review','Review — an app you use often')">⬇️ Download to send</button>
+        <span class="send-note">Saves a text file you can attach to an email to me.</span>
+      </div>
     </div>
 
     <!-- STORY PRACTICE -->
@@ -1039,6 +1085,10 @@
         <div class="brow"><label>Organisation</label><select data-c><option value="">–</option><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
         <div class="brow"><label>Language</label><select data-c><option value="">–</option><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
         <div class="band-total" id="total-story">Total: — / 20</div>
+      </div>
+      <div class="send-row">
+        <button class="send-btn" type="button" onclick="downloadAnswer('story','Story — the phone call')">⬇️ Download to send</button>
+        <span class="send-note">Saves a text file you can attach to an email to me.</span>
       </div>
     </div>
   </section>
@@ -1083,6 +1133,45 @@
   }
 
   // Wire up word counters for every practice task
+  // Download a practice answer as a plain text file — nothing leaves the browser
+  function downloadAnswer(taskKey, taskLabel){
+    const ta = document.getElementById('write-' + taskKey);
+    if(!ta) return;
+    const text = ta.value.trim();
+    if(!text){
+      alert('Write something first — the box is still empty!');
+      return;
+    }
+    const nameField = document.getElementById('student-name');
+    const name = (nameField && nameField.value.trim()) || 'Student';
+    const words = text.split(/\s+/).length;
+    const header = taskLabel + '\nName: ' + name + '\nWord count: ' + words + '\n\n';
+    const blob = new Blob([header + text], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    const safeName = name.replace(/[^a-z0-9]+/gi, '_');
+    const safeTask = taskKey.replace(/[^a-z0-9]+/gi, '_');
+    a.download = safeName + '_' + safeTask + '.txt';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  // Remember the student's name between visits (stored only in this browser, never sent anywhere)
+  (function(){
+    const nameField = document.getElementById('student-name');
+    if(!nameField) return;
+    try {
+      const saved = localStorage.getItem('b2writing-student-name');
+      if(saved) nameField.value = saved;
+      nameField.addEventListener('input', () => {
+        try { localStorage.setItem('b2writing-student-name', nameField.value); } catch(e){}
+      });
+    } catch(e){ /* localStorage unavailable — form still works, just won't remember the name */ }
+  })();
+
   attachCounter('write-essay', 'count-essay', 140, 190);
   attachCounter('write-email', 'count-email', 140, 190);
   attachCounter('write-article', 'count-article', 140, 190);
