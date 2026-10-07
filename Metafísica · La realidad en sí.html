@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Metafísica · La realidad en sí</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f7f5ef;--card:#fff;--ink:#1c2433;--mut:#5b6577;--navy:#14284b;--teal:#0f766e;--gold:#b8860b;--line:#e2dccb;--tealbg:#e6f3f1;--goldbg:#f8f0d9;--navybg:#e8ecf4;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1624;--card:#17213a;--ink:#e8ebf2;--mut:#9aa6bd;--navy:#9db8ec;--teal:#4fd1c0;--gold:#e5b94a;--line:#2a3652;--tealbg:#12322f;--goldbg:#3a3015;--navybg:#1c2a4a}}
+:root[data-theme="dark"]{--bg:#0f1624;--card:#17213a;--ink:#e8ebf2;--mut:#9aa6bd;--navy:#9db8ec;--teal:#4fd1c0;--gold:#e5b94a;--line:#2a3652;--tealbg:#12322f;--goldbg:#3a3015;--navybg:#1c2a4a}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 Inter,system-ui,sans-serif}
+.w{max-width:880px;margin:0 auto;padding:20px 16px 60px}
+h1,h2,h3{font-family:Fraunces,Georgia,serif;color:var(--navy);line-height:1.2}
+header{background:var(--navy);color:#fff;border-radius:16px;padding:28px 24px;border-bottom:5px solid var(--gold)}
+header h1{color:#fff;margin:0 0 6px;font-size:2rem}header p{margin:0;opacity:.85}
+.nav{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0}
+.nav a{background:var(--card);border:1px solid var(--line);color:var(--navy);text-decoration:none;padding:6px 12px;border-radius:99px;font-size:.85rem;font-weight:500}
+section{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px;margin:18px 0}
+section>h2{margin:0 0 4px;font-size:1.4rem}section>h2 span{color:var(--gold);margin-right:8px}
+.lead{color:var(--mut);margin:0 0 14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.pair{border:1px solid var(--line);border-radius:12px;padding:14px;background:var(--bg)}
+.pair h3{margin:0 0 8px;font-size:1rem}
+.pair p{margin:6px 0;font-size:.92rem}
+.pair b{color:var(--teal)}
+.pair b.g{color:var(--gold)}
+.k{font-family:Fraunces,serif;font-weight:700;color:var(--gold);font-size:1.15em}
+.quest{background:var(--navybg);border-left:4px solid var(--navy);padding:12px 16px;border-radius:8px;margin:10px 0}
+.quest li{margin:4px 0}
+.diag{display:grid;grid-template-columns:1fr 1.1fr 1fr;gap:10px;text-align:center;align-items:stretch}
+.box{padding:14px 10px;border-radius:10px;border:1px solid var(--line);font-size:.9rem}
+.box.top{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:10px;border:0;padding:0}
+.n{background:var(--tealbg);border:1px solid var(--teal);border-radius:10px;padding:12px}
+.p{background:var(--goldbg);border:1px solid var(--gold);border-radius:10px;padding:12px}
+.core{background:var(--navy);color:#fff;font-family:Fraunces,serif;font-weight:700;font-size:1.3rem;display:flex;align-items:center;justify-content:center;border-radius:10px}
+.ap{background:var(--navybg)}.ir{background:var(--card);border:1px dashed var(--mut)}
+.row{display:grid;grid-template-columns:150px 1fr;gap:10px;padding:12px 0;border-top:1px solid var(--line)}
+.row:first-of-type{border-top:0}.row strong{color:var(--navy)}
+.tag{display:inline-block;background:var(--tealbg);color:var(--teal);font-weight:600;border-radius:6px;padding:1px 8px;font-size:.78rem;margin-bottom:4px}
+.tri{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.tri div{background:var(--tealbg);border-radius:12px;padding:14px;border-top:4px solid var(--teal)}
+.tri h3{margin:0 0 6px;font-size:1rem}
+.note{background:var(--goldbg);border-radius:10px;padding:12px 14px;font-size:.9rem;margin-top:14px}
+.sum{width:100%;border-collapse:collapse;font-size:.9rem}
+.sum th,.sum td{border:1px solid var(--line);padding:8px;text-align:left}.sum th{background:var(--navybg);color:var(--navy)}
+.wide{overflow-x:auto}
+footer{text-align:center;color:var(--mut);font-size:.8rem;margin-top:24px}
+@media(max-width:560px){.row{grid-template-columns:1fr}.diag{grid-template-columns:1fr}.box.top{grid-template-columns:1fr}}
+@media print{body{background:#fff}.nav{display:none}section{break-inside:avoid}}
+</style>
+</head>
+<body>
+<div class="w">
+<header>
+<h1>La realidad en sí</h1>
+<p>Metafísica · Guía de estudio a partir del folio del profesor (Pablo López López)</p>
+</header>
+
+<nav class="nav">
+<a href="#s1">I · Preguntas</a><a href="#s2">II · Conceptos</a><a href="#s3">III · Esquema</a><a href="#s4">IV · Imposibles</a><a href="#s5">V · Dimensiones</a><a href="#s6">VI · Trascendentales</a><a href="#s7">VII · Ramas</a><a href="#s8">Repaso</a>
+</nav>
+
+<section id="s1">
+<h2><span>I</span>El punto de partida: ¿por qué metafísica?</h2>
+<p class="lead">El folio abre con una batería de preguntas. Todas son metafísicas: tratan de qué es lo que hay y cómo es.</p>
+<div class="quest"><ul>
+<li>¿Qué diferencia hay entre realidad, irrealidad, idealidad y virtualidad?</li>
+<li>¿Qué es el ser frente a la nada o a la apariencia?</li>
+<li>¿Qué distingue ser y estar?</li>
+<li>¿Qué son la substancia y los accidentes?</li>
+<li>¿Qué son la posibilidad y la necesidad?</li>
+</ul></div>
+<p><b>Idea central:</b> no se puede pensar sin conceptos metafísicos, y no se puede ser libre sin pensar. Por eso conviene ser consciente de cómo los usamos: el que no lo hace los usa igualmente, pero sin criterio.</p>
+</section>
+
+<section id="s2">
+<h2><span>II</span>Los conceptos clave, por parejas</h2>
+<p class="lead">El profesor los agrupa en pares o tríadas. Aprende cada pareja como una oposición que se aclara por contraste.</p>
+<div class="grid">
+
+<div class="pair"><h3><span class="k">R</span>ealidad · <span class="k">A</span>pariencia · <span class="k">I</span>rrealidad</h3>
+<p><b>Realidad:</b> lo auténtico, lo que es de verdad.</p>
+<p><b>Apariencia:</b> cómo algo se nos muestra; puede coincidir o no con lo que es.</p>
+<p><b>Irrealidad:</b> lo que no es, aunque se pueda imaginar.</p></div>
+
+<div class="pair"><h3><span class="k">S</span>er · <span class="k">E</span>star · <span class="k">N</span>ada</h3>
+<p><b>Ser:</b> lo que algo es en sí, lo estable y esencial.</p>
+<p><b>Estar:</b> el modo circunstancial de ser: dónde, cómo o en qué situación se encuentra.</p>
+<p><b>Nada:</b> el vacío, la ausencia de ser.</p></div>
+
+<div class="pair"><h3><span class="k">A</span>cto · <span class="k">P</span>otencia</h3>
+<p><b>Acto:</b> lo hecho, lo que ya es realizado.</p>
+<p><b>Potencia:</b> la posibilidad real de llegar a ser algo (la semilla es encina en potencia).</p>
+<p>Para Aristóteles y Tomás de Aquino, todo ser que cambia mezcla acto y potencia; Dios es acto puro, sin potencia.</p></div>
+
+<div class="pair"><h3><span class="k">E</span>xistencia · <span class="k">E</span>sencia</h3>
+<p><b>Existencia:</b> el hecho de que algo es (el «que»).</p>
+<p><b>Esencia:</b> lo que algo es (el «qué»): aquello sin lo cual dejaría de ser lo que es.</p></div>
+
+<div class="pair"><h3><span class="k">S</span>ubstancia · <span class="k">A</span>ccidente</h3>
+<p><b>Substancia:</b> lo que existe por sí mismo, el sujeto (Sócrates).</p>
+<p><b>Accidente:</b> lo que solo existe en otro y puede cambiar sin que el sujeto deje de ser él (ser alto, estar sentado).</p></div>
+
+<div class="pair"><h3><span class="k">N</span>ecesidad · <span class="k">C</span>ontingencia</h3>
+<p><b>Necesario:</b> lo que no puede no ser o ser de otro modo.</p>
+<p><b>Contingente:</b> lo que es, pero podría no ser o ser distinto.</p></div>
+
+<div class="pair"><h3><span class="k">S</span>obrenaturalidad · <span class="k">N</span>aturaleza · <span class="k">C</span>ultura</h3>
+<p><b>Sobrenatural:</b> lo que excede la naturaleza y viene de Dios.</p>
+<p><b>Naturaleza (Creación):</b> lo dado, no producido por el hombre.</p>
+<p><b>Cultura:</b> lo que el hombre añade con su artificio y creatividad.</p></div>
+
+<div class="pair"><h3><span class="k">E</span>spíritu · <span class="k">M</span>ateria</h3>
+<p><b>Espíritu:</b> psiquis, conciencia, idea.</p>
+<p><b>Materia:</b> lo físico.</p></div>
+
+<div class="pair"><h3><span class="k">C</span>ausa · <span class="k">E</span>fecto</h3>
+<p><b>Causa:</b> lo que condiciona o produce.</p>
+<p><b>Efecto:</b> la consecuencia; el folio añade «virtualidad»: lo que está contenido en la causa y puede salir de ella.</p></div>
+
+<div class="pair"><h3><span class="k">A</span>bsoluto · <span class="k">R</span>elatividad</h3>
+<p><b>Absoluto:</b> lo que no depende de nada.</p>
+<p><b>Relativo:</b> lo que solo se entiende en relación con otra cosa.</p></div>
+
+<div class="pair"><h3><span class="k">U</span>nidad · <span class="k">P</span>luralidad</h3>
+<p><b>Unidad:</b> lo uno, indiviso en sí mismo.</p>
+<p><b>Pluralidad:</b> la multiplicidad de seres distintos.</p></div>
+
+<div class="pair"><h3><span class="k">I</span>dentidad · <span class="k">C</span>ambio</h3>
+<p><b>Identidad:</b> permanencia, inercia: seguir siendo lo mismo.</p>
+<p><b>Cambio:</b> distinción, vitalidad: llegar a ser distinto.</p>
+<p>El gran problema clásico es cómo algo cambia y sigue siendo él.</p></div>
+
+</div>
+<div class="note">Truco de estudio: cada pareja trae sus iniciales resaltadas en el folio (R-A-I, S-E-N, A-P…). Son una ayuda para recordar las oposiciones en orden.</div>
+</section>
+
+<section id="s3">
+<h2><span>III</span>El esquema central</h2>
+<p class="lead">Ordena el territorio: arriba, los modos de ser real; abajo, la realidad flanqueada por lo que se le parece pero no es.</p>
+<div class="diag">
+<div class="box top">
+<div class="n"><b>Necesidad</b><br>infalibilidad: no puede fallar</div>
+<div class="p"><b>Posibilidad · Contingencia</b><br>puede ser y puede no ser</div>
+</div>
+<div class="box ap"><b>Apariencia</b><br>exterioridad / virtualidad</div>
+<div class="box core">REALIDAD</div>
+<div class="box ir"><b>Irrealidad · Imposibilidad</b><br>lo que no puede ser</div>
+</div>
+<div class="note"><b>Cómo leerlo:</b> la realidad se mueve entre lo necesario y lo posible. Su borde exterior es la apariencia (cómo se muestra) y, más allá, la irrealidad: lo que no es y ni siquiera puede ser.</div>
+</section>
+
+<section id="s4">
+<h2><span>IV</span>Tipos de imposibilidad</h2>
+<p class="lead">No todo lo imposible lo es en el mismo grado. De más a menos fuerte:</p>
+<div class="row"><div><span class="tag">a</span><br><strong>Metafísica o absoluta</strong></div><div>Choca con la lógica universal de lo real: es contradictoria. <i>Ejemplo:</i> un círculo cuadrado. Ni Dios lo hace, porque no es nada pensable.</div></div>
+<div class="row"><div><span class="tag">b</span><br><strong>Física o natural</strong></div><div>Va contra las leyes naturales. <i>Ejemplo:</i> volar sin ayuda. Solo cabe superarla con un milagro.</div></div>
+<div class="row"><div><span class="tag">c</span><br><strong>Moral, psíquica o cultural</strong></div><div>Va contra costumbres arraigadas, y es la más débil: es posible, pero muy improbable o inaceptable en una cultura.</div></div>
+</section>
+
+<section id="s5">
+<h2><span>V</span>Las tres dimensiones de la realidad</h2>
+<p class="lead">Toda realidad se puede mirar desde tres ángulos a la vez.</p>
+<div class="tri">
+<div><h3>A) Substancial</h3>Qué es la cosa en sí misma: su ser, su esencia.</div>
+<div><h3>B) Relacional</h3>Cómo se relaciona con otras realidades: nada existe aislado del todo.</div>
+<div><h3>C) Procesual</h3>Cómo evoluciona en el tiempo: nace, cambia, se desarrolla.</div>
+</div>
+<div class="note">Conecta con la pareja identidad/cambio: la dimensión substancial da la permanencia, y la procesual el cambio.</div>
+</section>
+
+<section id="s6">
+<h2><span>VI</span>Los trascendentales del ser</h2>
+<p class="lead">Son propiedades que acompañan a todo ser, sea cual sea. «Trascienden» las categorías: no pertenecen a un género concreto, sino a todo lo que es. Por eso se dice que son convertibles con el ser: todo lo que es, es uno, verdadero, bueno y bello.</p>
+<div class="grid">
+<div class="pair"><h3>Unidad · <i>unum</i></h3><p>Cada ser es indiviso en sí y distinto de los demás.</p></div>
+<div class="pair"><h3>Verdad · <i>verum</i></h3><p>El ser es inteligible: se deja conocer. Es la adecuación entre la cosa y el entendimiento.</p></div>
+<div class="pair"><h3>Bien · <i>bonum</i></h3><p>El ser es deseable: es perfecto en su medida y atrae la voluntad.</p></div>
+<div class="pair"><h3>Belleza · <i>pulchrum</i></h3><p>El ser agrada al ser contemplado, por su armonía y esplendor.</p></div>
+</div>
+<div class="note">El folio los presenta con el ser (<i>esse</i>) como raíz. Algunos manuales clásicos incluyen también <i>res</i> y <i>aliquid</i>; comprueba cuáles pide tu profesor.</div>
+</section>
+
+<section id="s7">
+<h2><span>VII</span>Las ramas de la metafísica</h2>
+<div class="tri">
+<div><h3>1. Ontología</h3>Estudia el ser en cuanto ser, y sus propiedades generales.</div>
+<div><h3>2. Teología natural</h3>Estudia a Dios con la razón, no con la revelación.</div>
+<div><h3>3. Filosofía de la naturaleza</h3>Llamada también cosmología: estudia el mundo físico y su estructura.</div>
+</div>
+</section>
+
+<section id="s8">
+<h2>Repaso exprés</h2>
+<div class="wide"><table class="sum">
+<tr><th>Apartado</th><th>Idea para recordar</th></tr>
+<tr><td>I</td><td>Pensar y ser libre exigen conceptos metafísicos.</td></tr>
+<tr><td>II</td><td>12 pares o tríadas: realidad, ser, acto, esencia, substancia, necesidad, naturaleza, espíritu, causa, absoluto, unidad, identidad.</td></tr>
+<tr><td>III</td><td>Realidad entre necesidad y posibilidad; apariencia e irrealidad en sus bordes.</td></tr>
+<tr><td>IV</td><td>Imposible: metafísico (lógica) &gt; físico (leyes) &gt; moral (costumbres).</td></tr>
+<tr><td>V</td><td>Tres dimensiones: substancial, relacional, procesual.</td></tr>
+<tr><td>VI</td><td>Trascendentales: unum, verum, bonum, pulchrum.</td></tr>
+<tr><td>VII</td><td>Ramas: ontología, teología natural, cosmología.</td></tr>
+</table></div>
+</section>
+
+<footer>Elaborado a partir del folio «La realidad en sí». Úsalo como guía; las definiciones están ajustadas a la tradición aristotélico-tomista.</footer>
+</div>
+</body>
+</html>
