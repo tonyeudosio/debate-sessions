@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B2 / FCE — Use of English V</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:    #1b2a4a;
+    --blue:    #1f7a72;
+    --sky:     #dceceb;
+    --accent:  #d9a23e;
+    --green:   #2f8f7f;
+    --green-bg:#e3f3f1;
+    --plum:    #6a4a8f;
+    --plum-bg: #efe9f6;
+    --yellow:  #fff8ec;
+    --yellow-b:#f0dfb8;
+    --cream:   #faf9f5;
+    --paper:   #f1f1ec;
+    --ink:     #1c1c1c;
+    --mid:     #555;
+    --light:   #e2e2db;
+    --shadow:  rgba(27,42,74,.10);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Source Serif 4', Georgia, serif; background: var(--paper); color: var(--ink); }
+
+  nav { background: var(--navy); position: sticky; top: 0; z-index: 100; display: flex; flex-wrap: wrap; gap: .3rem; padding: .5rem .8rem; border-bottom: 3px solid var(--accent); }
+  nav a { color: rgba(255,255,255,.75); font-size: .75rem; text-decoration: none; padding: .25rem .55rem; border-radius: 4px; transition: background .2s, color .2s; font-family: 'Source Serif 4', serif; white-space: nowrap; }
+  nav a:hover { background: var(--accent); color: #fff; }
+
+  header { background: var(--navy); padding: 2.2rem 2rem 1.6rem; text-align: center; position: relative; overflow: hidden; }
+  header::before { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(45deg,transparent,transparent 28px,rgba(255,255,255,.025) 28px,rgba(255,255,255,.025) 29px); }
+  header h1 { font-family:'Playfair Display',serif; font-size:clamp(1.4rem,4vw,2.4rem); color:#fff; position:relative; }
+  header p  { font-size:.9rem; color:rgba(255,255,255,.6); font-style:italic; margin-top:.4rem; position:relative; }
+  .accent-bar { width:60px;height:3px;background:var(--accent);margin:.9rem auto 0;border-radius:2px;position:relative; }
+
+  .container { max-width:900px; margin:0 auto; padding:1.8rem 1.2rem 4rem; }
+
+  .welcome { background:var(--yellow); border:1.5px solid var(--yellow-b); border-radius:10px; padding:1.1rem 1.3rem; margin-bottom:1.6rem; box-shadow:0 2px 16px var(--shadow); }
+  .welcome .hello { font-family:'Playfair Display',serif; color:var(--navy); font-size:1.05rem; margin-bottom:.35rem; }
+  .welcome p { font-size:.9rem; color:var(--mid); line-height:1.65; }
+  .welcome .row { display:flex; flex-wrap:wrap; gap:.6rem 1rem; align-items:center; margin-top:.8rem; }
+
+  .timer { display:flex; align-items:center; gap:.55rem; flex-wrap:wrap; }
+  .timer .clock { font-family:'Playfair Display',serif; font-size:1.25rem; font-weight:700; color:var(--navy); background:#fff; border:1.5px solid var(--yellow-b); border-radius:7px; padding:.15rem .7rem; min-width:86px; text-align:center; font-variant-numeric:tabular-nums; }
+  .timer .clock.over { color:#b4392c; border-color:#b4392c; }
+  .tbtn { font-family:'Source Serif 4',serif; font-size:.8rem; padding:.32rem .75rem; border-radius:5px; border:1.5px solid var(--navy); background:var(--navy); color:#fff; cursor:pointer; transition:opacity .2s; }
+  .tbtn:hover { opacity:.82; }
+  .tbtn.outline { background:transparent; color:var(--navy); }
+  .timer .hint { font-size:.75rem; color:#999; font-style:italic; }
+
+  .controls { display:flex; justify-content:flex-end; gap:.7rem; margin-bottom:1.4rem; flex-wrap:wrap; }
+  .ctrl-btn { font-family:'Source Serif 4',serif; font-size:.85rem; padding:.4rem .9rem; border-radius:5px; border:1.5px solid var(--navy); background:var(--navy); color:#fff; cursor:pointer; transition:opacity .2s; }
+  .ctrl-btn:hover { opacity:.82; }
+  .ctrl-btn.outline { background:transparent; color:var(--navy); }
+
+  .section { background:var(--cream); border-radius:10px; box-shadow:0 2px 16px var(--shadow); margin-bottom:2.2rem; overflow:hidden; }
+  .section-header { background:var(--navy); color:#fff; padding:.8rem 1.4rem; font-family:'Playfair Display',serif; font-size:1.1rem; letter-spacing:.03em; display:flex; align-items:center; gap:.7rem; }
+  .section-header .tag { background:var(--accent); color:#fff; font-family:'Source Serif 4',serif; font-size:.68rem; font-weight:600; letter-spacing:.08em; text-transform:uppercase; padding:.12rem .5rem; border-radius:3px; }
+  .section-body { padding:1.3rem 1.5rem; }
+
+  p.desc { font-size:.9rem; color:var(--mid); margin-bottom:.9rem; line-height:1.6; }
+  .instructions { background:var(--sky); border-left:4px solid var(--blue); border-radius:7px; padding:.75rem 1rem; margin-bottom:1.1rem; font-size:.87rem; color:var(--navy); }
+  .instructions strong { color:var(--blue); }
+
+  .passage { background:#fff; border:1.5px solid var(--light); border-radius:8px; padding:1.1rem 1.3rem; margin-bottom:1.3rem; font-size:.95rem; line-height:2; }
+  .gap-num { display:inline-block; background:var(--navy); color:#fff; font-family:'Playfair Display',serif; font-weight:700; font-size:.72rem; padding:0 .4rem; border-radius:3px; margin:0 .1rem; vertical-align:middle; }
+  .gap-line { display:inline-block; border-bottom:2px dotted var(--accent); min-width:3.2rem; }
+
+  .mc-item, .of-item, .wf-item, .kw-item { margin-bottom:1.15rem; padding-bottom:1.15rem; border-bottom:1px solid var(--light); }
+  .mc-item:last-child, .of-item:last-child, .wf-item:last-child, .kw-item:last-child { border-bottom:none; margin-bottom:0; padding-bottom:0; }
+
+  .item-head { display:flex; align-items:baseline; gap:.5rem; margin-bottom:.4rem; }
+  .item-num { font-family:'Playfair Display',serif; color:var(--accent); font-size:1rem; font-weight:700; min-width:1.4rem; }
+  .item-line { font-size:.92rem; line-height:1.6; }
+  .wf-base { font-weight:700; color:var(--plum); letter-spacing:.03em; }
+
+  .mc-options { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:.35rem .6rem; margin:.4rem 0 .55rem 1.9rem; }
+  .mc-opt { font-size:.87rem; color:var(--mid); padding:.2rem .5rem; border-radius:5px; background:#fff; border:1px solid var(--light); cursor:pointer; transition:border-color .15s, background .15s; }
+  .mc-opt:hover { border-color:var(--accent); }
+  .mc-opt.chosen { border-color:var(--blue); background:var(--green-bg); color:var(--navy); }
+  .mc-opt .letter { font-weight:700; color:var(--navy); margin-right:.3rem; }
+
+  .type-answer { font-family:'Source Serif 4',serif; font-size:.9rem; color:var(--ink); padding:.35rem .6rem; border:1.5px solid var(--light); border-radius:6px; margin:.25rem 0 .55rem 1.9rem; width:min(320px, calc(100% - 1.9rem)); background:#fff; }
+  .type-answer:focus { outline:none; border-color:var(--blue); }
+
+  .answer-row { display:flex; align-items:stretch; gap:0; border-radius:7px; overflow:hidden; border:1.5px solid var(--light); margin-left:1.9rem; }
+  .check-cell { background:var(--yellow); padding:.38rem .65rem; display:flex; align-items:center; justify-content:center; border-right:1.5px solid var(--light); min-width:40px; }
+  .check-cell input[type="checkbox"] { width:17px; height:17px; accent-color:var(--green); cursor:pointer; }
+  .answer-cell { background:#fff; flex:1; padding:.38rem .75rem; display:flex; align-items:center; gap:.45rem; font-size:.88rem; flex-wrap:wrap; }
+  .alabel { color:#bbb; font-weight:600; font-size:.76rem; white-space:nowrap; }
+  .answer-text { color:var(--blue); font-weight:700; font-style:italic; filter:blur(5px); user-select:none; transition:filter .35s ease; cursor:pointer; }
+  .answer-text.revealed { filter:none; cursor:default; }
+  .anote { color:#aaa; font-size:.76rem; font-style:italic; }
+  .reveal-btn { background:none; border:1.5px solid var(--blue); color:var(--blue); font-family:'Source Serif 4',serif; font-size:.76rem; padding:.12rem .5rem; border-radius:4px; cursor:pointer; white-space:nowrap; transition:background .2s,color .2s; margin-left:auto; }
+  .reveal-btn:hover { background:var(--blue); color:#fff; }
+  .reveal-btn.hidden { display:none; }
+
+  .kw-key { display:inline-block; background:var(--navy); color:#fff; font-size:.72rem; font-weight:700; letter-spacing:.07em; padding:.1rem .38rem; border-radius:3px; margin:0 .25rem; font-family:'Source Serif 4',serif; }
+  .kw-constraint { font-size:.78rem; color:var(--accent); font-weight:600; margin-left:1.9rem; margin-bottom:.3rem; }
+
+  .sendoff { background:var(--green-bg); border:1.5px solid #bcd9d4; border-radius:10px; padding:1.1rem 1.3rem; box-shadow:0 2px 16px var(--shadow); }
+  .sendoff .hello { font-family:'Playfair Display',serif; color:var(--navy); font-size:1.05rem; margin-bottom:.35rem; }
+  .sendoff p { font-size:.9rem; color:var(--mid); line-height:1.65; margin-bottom:.5rem; }
+  .scoreline { font-size:.85rem; color:var(--navy); background:#fff; border:1px solid #bcd9d4; border-radius:7px; padding:.55rem .8rem; margin:.4rem 0 .7rem; }
+
+  footer { text-align:center; padding:1.1rem; font-size:.8rem; color:#aaa; font-style:italic; border-top:1px solid var(--light); margin-top:1rem; }
+
+
+  .ref-table { width:100%; border-collapse:collapse; font-size:.88rem; margin:.8rem 0 1.2rem; }
+  .ref-table th { background:var(--navy); color:#fff; padding:.5rem .75rem; text-align:left; font-family:'Playfair Display',serif; }
+  .ref-table td { padding:.45rem .75rem; border-bottom:1px solid var(--light); vertical-align:top; }
+  .ref-table tr:last-child td { border-bottom:none; }
+  .ref-table tr:nth-child(odd)  td { background:var(--sky); }
+  .ref-table tr:nth-child(even) td { background:var(--cream); }
+  .ref-table .c1 { font-weight:600; color:var(--navy); }
+  .ref-table .c3 { font-style:italic; color:var(--blue); font-weight:600; }
+  .theory-h { font-family:'Playfair Display',serif; color:var(--navy); font-size:1rem; margin:1.1rem 0 .2rem; }
+  .partb { text-align:center; margin:0 0 1.6rem; }
+  .partb span { display:inline-block; background:var(--accent); color:#fff; font-family:'Source Serif 4',serif; font-size:.72rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; padding:.28rem 1rem; border-radius:999px; }
+  @media(max-width:600px){
+    .section-body { padding:1rem .8rem; }
+    .passage { font-size:.88rem; line-height:1.9; padding:.9rem 1rem; }
+    .mc-options { grid-template-columns:1fr 1fr; }
+    .ref-table { font-size:.78rem; }
+    .ref-table th,.ref-table td { padding:.38rem .45rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#top">Top</a>
+  <a href="#theory">📖 Theory</a>
+  <a href="#part1">Part 1 · Multiple Choice</a>
+  <a href="#part2">Part 2 · Open Cloze</a>
+  <a href="#part3">Part 3 · Word Formation</a>
+  <a href="#part4">Part 4 · Key Word</a>
+  <a href="#finish">Finish</a>
+</nav>
+
+<header id="top">
+  <h1>B2 / FCE — Use of English V</h1>
+  <p>Multiple-Choice Cloze · Open Cloze · Word Formation · Key Word Transformation</p>
+  <div class="accent-bar"></div>
+</header>
+
+<div class="container">
+
+  <div class="welcome">
+    <div class="hello">Welcome back!</div>
+    <p>A fresh round of Use of English to keep your eye in. First a quick theory refresher, then a full set of self-correcting exercises: have a proper go, and the answers will come out when you click them. Perfect for a few spare minutes on your phone. In the real exam, these four parts sit inside the Reading and Use of English paper (1 hour 15 minutes for all seven parts). The timer here is just for practice: about <strong>45 minutes</strong> feels close to exam conditions. No peeking until you have tried!</p>
+    <div class="row">
+      <div class="timer">
+        <span class="clock" id="clock">45:00</span>
+        <button class="tbtn" id="t-start" onclick="toggleTimer()">▶ Start</button>
+        <button class="tbtn outline" onclick="resetTimer()">↺ Reset</button>
+        <span class="hint">optional, for exam conditions</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button class="ctrl-btn outline" onclick="revealAll(false)">🙈 Hide all answers</button>
+    <button class="ctrl-btn" onclick="revealAll(true)">👁 Reveal all answers</button>
+  </div>
+
+
+  <!-- ============ PART A : THEORY ============ -->
+  <div class="section" id="theory">
+    <div class="section-header"><span class="tag">Part A</span> Quick Theory Refresh</div>
+    <div class="section-body">
+      <p class="desc">Two minutes here makes the exercises much easier. Skim the tables, then scroll down and test yourself.</p>
+
+      <div class="theory-h">1 · Collocations &amp; fixed expressions (Part 1)</div>
+      <table class="ref-table">
+        <tr><th>Expression</th><th>Example</th></tr>
+        <tr><td class="c1">strike somebody as + adjective</td><td>The idea struck me as odd.</td></tr>
+        <tr><td class="c1">point something out</td><td>She pointed out the benefits of resting.</td></tr>
+        <tr><td class="c1">reach for</td><td>He reached for his phone without thinking.</td></tr>
+        <tr><td class="c1">lift your mood</td><td>A short walk can lift your mood.</td></tr>
+        <tr><td class="c1">require (no) effort</td><td>The exercise requires no special equipment.</td></tr>
+        <tr><td class="c1">insist (that) + clause</td><td>He insisted that he was right.</td></tr>
+        <tr><td class="c1">overcome a feeling / a difficulty</td><td>She overcame her fear of speaking in public.</td></tr>
+      </table>
+
+      <div class="theory-h">2 · Small words that carry the grammar (Part 2)</div>
+      <table class="ref-table">
+        <tr><th>Pattern</th><th>Example</th></tr>
+        <tr><td class="c1">the way (that) + clause</td><td>I love the way she explains things.</td></tr>
+        <tr><td class="c1">missing verb: be + adjective</td><td>Adults are better at grammar than they think.</td></tr>
+        <tr><td class="c1">such as (= for example)</td><td>Activities such as gardening help you relax.</td></tr>
+        <tr><td class="c1">not X but Y</td><td>What they lack is not ability but time.</td></tr>
+        <tr><td class="c1">preposition + gerund</td><td>They are afraid of making mistakes.</td></tr>
+        <tr><td class="c1">what (= the thing that)</td><td>Mistakes are what helps us improve.</td></tr>
+        <tr><td class="c1">so (result)</td><td>It was late, so we went home.</td></tr>
+        <tr><td class="c1">dependent prepositions</td><td>depend on · consist of · succeed in · believe in</td></tr>
+      </table>
+
+      <div class="theory-h">3 · Word formation toolkit (Part 3)</div>
+      <table class="ref-table">
+        <tr><th>Change</th><th>Typical endings</th><th>Example</th></tr>
+        <tr><td class="c1">adjective → noun</td><td>-ity · -ence · -ness</td><td>popular → popularity · patient → patience</td></tr>
+        <tr><td class="c1">negative adjective</td><td>un- · in- · im- · dis-</td><td>used → unused · polite → impolite</td></tr>
+        <tr><td class="c1">noun → adjective</td><td>-ful · -ial · -al · -ous</td><td>colour → colourful · benefit → beneficial</td></tr>
+        <tr><td class="c1">verb/noun → adjective of feeling</td><td>-ly · -ed · -ing</td><td>lone → lonely · bore → bored</td></tr>
+        <tr><td class="c1">adjective → adverb</td><td>-ly · -ably · -ibly</td><td>remarkable → remarkably</td></tr>
+        <tr><td class="c3" colspan="2">Tip: look at the words around the gap. After 'the' you need a noun; after 'feel' an adjective; before a noun, usually an adjective.</td><td></td></tr>
+      </table>
+
+      <div class="theory-h">4 · Transformation patterns that keep coming up (Part 4)</div>
+      <table class="ref-table">
+        <tr><th>Pattern</th><th>Example</th></tr>
+        <tr><td class="c1">must have + past participle (sure about the past)</td><td>I'm sure she forgot. → She must have forgotten.</td></tr>
+        <tr><td class="c1">present perfect + for / since</td><td>We last met in 2020. → We haven't met for years.</td></tr>
+        <tr><td class="c1">present perfect continuous</td><td>I started learning in 2023. → I have been learning since 2023.</td></tr>
+        <tr><td class="c1">Would you mind + -ing</td><td>Could you open the window? → Would you mind opening the window?</td></tr>
+        <tr><td class="c1">passive with say / think / expect</td><td>People expect it to rain. → It is expected to rain.</td></tr>
+        <tr><td class="c1">it + adjective + to-infinitive</td><td>It is difficult to concentrate. → It is hard to concentrate.</td></tr>
+        <tr><td class="c3" colspan="2">Remember: between two and five words, and never change the word in capitals.</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="partb"><span>Part B · Self-correcting practice</span></div>
+  <!-- ============ PART 1 ============ -->
+  <div class="section" id="part1">
+    <div class="section-header"><span class="tag">Part 1</span> Multiple-Choice Cloze</div>
+    <div class="section-body">
+      <div class="instructions"><strong>Questions 1–8.</strong> Read the text and decide which answer (A, B, C or D) best fits each gap. Focus: collocations, phrasal verbs and fixed expressions.</div>
+      <div class="passage">
+        <strong>The Quiet Power of Doing Nothing</strong><br>
+        In a culture that prizes constant activity, the idea of deliberately doing nothing can <span class="gap-num">1</span><span class="gap-line"></span> many people as rather odd. Yet psychologists are increasingly keen to <span class="gap-num">2</span><span class="gap-line"></span> out the benefits of mental rest. Studies suggest that letting the mind wander, instead of <span class="gap-num">3</span><span class="gap-line"></span> for a screen at every spare moment, gives the brain time to recover. The Dutch even have a word for it: <em>niksen</em>, which roughly <span class="gap-num">4</span><span class="gap-line"></span> 'doing nothing in particular'. Unlike meditation, <em>niksen</em> <span class="gap-num">5</span><span class="gap-line"></span> no effort, training or special equipment; it can be practised on a park bench, at a bus stop, or while gazing out of a window. Fans of the practice <span class="gap-num">6</span><span class="gap-line"></span> that even five quiet minutes can <span class="gap-num">7</span><span class="gap-line"></span> your mood for hours afterwards. The hardest part, they admit, is <span class="gap-num">8</span><span class="gap-line"></span> the guilt of not being 'productive'. But that, they say, is precisely the point.
+      </div>
+      <div id="p1-items"></div>
+    </div>
+  </div>
+
+  <!-- ============ PART 2 ============ -->
+  <div class="section" id="part2">
+    <div class="section-header"><span class="tag">Part 2</span> Open Cloze</div>
+    <div class="section-body">
+      <div class="instructions"><strong>Questions 9–16.</strong> Think of the word which best fits each gap. Use only <strong>one word</strong> in each gap. Focus: linkers, articles, pronouns and auxiliary verbs.</div>
+      <div class="passage">
+        <strong>Never Too Late to Learn</strong><br>
+        It is often said that adults cannot learn a language <span class="gap-num">9</span><span class="gap-line"></span> way children do. While it is true that children seem to absorb new sounds without effort, research suggests that adults <span class="gap-num">10</span><span class="gap-line"></span> actually better at certain parts of the process, such <span class="gap-num">11</span><span class="gap-line"></span> understanding rules and patterns. What many adults lack is not ability <span class="gap-num">12</span><span class="gap-line"></span> time and confidence. Some give up because they are afraid of <span class="gap-num">13</span><span class="gap-line"></span> mistakes in front of other people. Yet mistakes are exactly <span class="gap-num">14</span><span class="gap-line"></span> helps the brain improve. Teachers advise adult learners to find a partner or a group, <span class="gap-num">15</span><span class="gap-line"></span> regular practice becomes enjoyable rather than stressful. In the end, progress depends far more <span class="gap-num">16</span><span class="gap-line"></span> steady practice than on age.
+      </div>
+      <div id="p2-items"></div>
+    </div>
+  </div>
+
+  <!-- ============ PART 3 ============ -->
+  <div class="section" id="part3">
+    <div class="section-header"><span class="tag">Part 3</span> Word Formation</div>
+    <div class="section-body">
+      <div class="instructions"><strong>Questions 17–24.</strong> Use the word given in capitals to form a word that fits in the gap. Focus: noun, adjective and adverb formation with prefixes and suffixes.</div>
+      <div class="passage">
+        <strong>The Garden on the Corner</strong><br>
+        The <span class="gap-num">17</span><span class="gap-line"></span> <span class="wf-base">POPULAR</span> of community gardens has grown steadily in recent years. In many cities, small plots of land that were once <span class="gap-num">18</span><span class="gap-line"></span> <span class="wf-base">USE</span> have been transformed into <span class="gap-num">19</span><span class="gap-line"></span> <span class="wf-base">COLOUR</span> spaces where neighbours grow fruit and vegetables together. The benefits go far beyond fresh food. People who take part often say they feel less <span class="gap-num">20</span><span class="gap-line"></span> <span class="wf-base">LONE</span> and more connected to the place where they live. Gardening also provides gentle <span class="gap-num">21</span><span class="gap-line"></span> <span class="wf-base">PHYSICS</span> activity, which doctors consider highly <span class="gap-num">22</span><span class="gap-line"></span> <span class="wf-base">BENEFIT</span> for both body and mind. Perhaps most <span class="gap-num">23</span><span class="gap-line"></span> <span class="wf-base">REMARK</span>, these gardens cost very little to run. As one organiser put it: 'All you really need is soil, seeds and a little <span class="gap-num">24</span><span class="gap-line"></span> <span class="wf-base">PATIENT</span>.'
+      </div>
+      <div id="p3-items"></div>
+    </div>
+  </div>
+
+  <!-- ============ PART 4 ============ -->
+  <div class="section" id="part4">
+    <div class="section-header"><span class="tag">Part 4</span> Key Word Transformation</div>
+    <div class="section-body">
+      <div class="instructions"><strong>Questions 25–30.</strong> Complete the second sentence so that it has a similar meaning to the first, using the word given. <strong>Do not change the word given.</strong> Use between two and five words, including the word given.</div>
+      <div id="p4-items"></div>
+    </div>
+  </div>
+
+  <!-- ============ FINISH ============ -->
+  <div class="sendoff" id="finish">
+    <div class="hello">How did you do?</div>
+    <p>Count your ticks. As a rough practice guide, out of 30 questions:</p>
+    <div class="scoreline">24–30: excellent, you are ready for the real thing &nbsp;·&nbsp; 18–23: solid B2, keep polishing &nbsp;·&nbsp; under 18: no drama, that is what practice is for</div>
+    <p style="font-size:.82rem;">In the real exam, Parts 1–3 score 1 mark per answer and Part 4 scores up to 2 marks per answer, so those long answers are worth the extra care.</p>
+    <p>For anything you missed, go back to the theory tables in Part A, then hide the answers and have another go. Nothing on this page is saved or sent anywhere: your answers stay on your own device and disappear when you close the tab.</p>
+  </div>
+
+  <footer>☐ Tick when correct &nbsp;|&nbsp; Click blurred text to reveal</footer>
+</div>
+
+<script>
+// ---------- PART 1 : multiple choice ----------
+const p1 = [
+  { n:1, opts:["A. strike","B. hit","C. beat","D. knock"], a:"A. strike", note:"collocation: to strike somebody as odd / strange" },
+  { n:2, opts:["A. call","B. point","C. mark","D. show"], a:"B. point", note:"phrasal verb: to point out (= to highlight)" },
+  { n:3, opts:["A. reaching","B. stretching","C. asking","D. searching"], a:"A. reaching", note:"to reach for = to grab without thinking" },
+  { n:4, opts:["A. means","B. spells","C. tells","D. says"], a:"A. means", note:"a word or expression 'means' something" },
+  { n:5, opts:["A. requires","B. requests","C. commands","D. orders"], a:"A. requires", note:"to require = to need (no object person here)" },
+  { n:6, opts:["A. insist","B. persist","C. consist","D. resist"], a:"A. insist", note:"insist (that) + clause = state firmly" },
+  { n:7, opts:["A. lift","B. rise","C. raise","D. arise"], a:"A. lift", note:"collocation: to lift your mood" },
+  { n:8, opts:["A. beating","B. defeating","C. winning","D. overcoming"], a:"D. overcoming", note:"to overcome a feeling or a difficulty" }
+];
+
+// ---------- PART 2 : open cloze ----------
+const p2 = [
+  { n:9,  ctx:"adults cannot learn a language ____ way children do", a:"the", note:"fixed phrase: 'the way (that) somebody does something'" },
+  { n:10, ctx:"research suggests that adults ____ actually better", a:"are", note:"missing verb: 'adults ARE better at...'" },
+  { n:11, ctx:"at certain parts of the process, such ____ understanding rules", a:"as", note:"fixed phrase: 'such as' (= for example)" },
+  { n:12, ctx:"not ability ____ time and confidence", a:"but", note:"contrast structure: 'not X but Y'" },
+  { n:13, ctx:"afraid of ____ mistakes", a:"making", note:"collocation: to make mistakes; gerund after 'of'" },
+  { n:14, ctx:"mistakes are exactly ____ helps the brain improve", a:"what", note:"'what' = 'the thing that'" },
+  { n:15, ctx:"find a partner or a group, ____ regular practice becomes enjoyable", a:"so", note:"linker of result: 'so'" },
+  { n:16, ctx:"progress depends far more ____ steady practice", a:"on", note:"dependent preposition: to depend on" }
+];
+
+// ---------- PART 3 : word formation ----------
+const p3 = [
+  { n:17, ctx:"the ____ of community gardens has grown", base:"POPULAR", a:"popularity", note:"adjective to noun: popular → popularity" },
+  { n:18, ctx:"plots of land that were once ____", base:"USE", a:"unused", note:"negative adjective: un- + used" },
+  { n:19, ctx:"transformed into ____ spaces", base:"COLOUR", a:"colourful", note:"noun to adjective: colour + -ful" },
+  { n:20, ctx:"they feel less ____ and more connected", base:"LONE", a:"lonely", note:"adjective of feeling: lone → lonely" },
+  { n:21, ctx:"gentle ____ activity", base:"PHYSICS", a:"physical", note:"adjective before a noun: physical" },
+  { n:22, ctx:"which doctors consider highly ____", base:"BENEFIT", a:"beneficial", note:"noun to adjective: benefit → beneficial" },
+  { n:23, ctx:"perhaps most ____, these gardens cost very little", base:"REMARK", a:"remarkably", note:"adverb commenting on the whole sentence" },
+  { n:24, ctx:"soil, seeds and a little ____", base:"PATIENT", a:"patience", note:"adjective to noun: patient → patience" }
+];
+
+// ---------- PART 4 : key word transformation ----------
+const p4 = [
+  { n:25, q:"I'm sure Maria forgot about the meeting.", key:"MUST", s1:"Maria ", s2:" about the meeting.", a:"must have forgotten", note:"certainty about the past: must have + participle" },
+  { n:26, q:"We last ate at that restaurant two years ago.", key:"FOR", s1:"We ", s2:" at that restaurant for two years.", a:"haven't eaten", note:"present perfect + for (also accept: have not eaten)" },
+  { n:27, q:"I started learning Portuguese three years ago.", key:"BEEN", s1:"I ", s2:" Portuguese for three years.", a:"have been learning", note:"present perfect continuous for an action still going on" },
+  { n:28, q:"Could you water my plants while I'm away?", key:"MIND", s1:"Would ", s2:" my plants while I'm away?", a:"you mind watering", note:"Would you mind + -ing" },
+  { n:29, q:"People expect the new library to open in spring.", key:"EXPECTED", s1:"The new library ", s2:" in spring.", a:"is expected to open", note:"passive: is expected to + infinitive" },
+  { n:30, q:"I find it difficult to concentrate in noisy places.", key:"HARD", s1:"I find ", s2:" in noisy places.", a:"it hard to concentrate", note:"difficult = hard; keep 'it'" }
+];
+
+const answers = {};
+
+function answerBlock(num, ans, note){
+  return '<div class="answer-row">' +
+    '<div class="check-cell"><input type="checkbox" title="Tick when correct"></div>' +
+    '<div class="answer-cell">' +
+      '<span class="alabel">Answer:</span>' +
+      '<span class="answer-text" id="ans-' + num + '" onclick="revealOne(' + num + ')">' + ans + '</span>' +
+      (note ? '<span class="anote">' + note + '</span>' : '') +
+      '<button class="reveal-btn" id="btn-' + num + '" onclick="revealOne(' + num + ')">Reveal</button>' +
+    '</div></div>';
+}
+
+// ---------- build Part 1 ----------
+function populateP1(){
+  const box = document.getElementById('p1-items');
+  box.innerHTML = p1.map(it => {
+    const opts = it.opts.map(o => {
+      const letter = o.split('.')[0];
+      return '<div class="mc-opt" data-q="' + it.n + '" data-letter="' + letter + '" onclick="chooseOpt(' + it.n + ', this)"><span class="letter">' + letter + '.</span>' + o.slice(3) + '</div>';
+    }).join('');
+    return '<div class="mc-item"><div class="item-head"><span class="item-num">' + it.n + '.</span>' +
+      '<span class="item-line">Gap ' + it.n + '</span></div>' +
+      '<div class="mc-options">' + opts + '</div>' +
+      answerBlock(it.n, it.a, it.note) + '</div>';
+  }).join('');
+}
+function chooseOpt(q, el){
+  document.querySelectorAll('.mc-opt[data-q="' + q + '"]').forEach(e => e.classList.remove('chosen'));
+  el.classList.add('chosen');
+  answers['q' + q] = el.dataset.letter;
+}
+
+// ---------- build Parts 2 & 3 ----------
+function buildGapItems(list, mountId, key, withBase){
+  const box = document.getElementById(mountId);
+  box.innerHTML = list.map(it => {
+    const cls = key === 'p2' ? 'of-item' : 'wf-item';
+    return '<div class="' + cls + '"><div class="item-head"><span class="item-num">' + it.n + '.</span>' +
+      '<span class="item-line">' + it.ctx.replace('____', '________') + (withBase ? ' &nbsp;<span class="wf-base">' + it.base + '</span>' : '') + '</span></div>' +
+      '<input class="type-answer" id="in-' + it.n + '" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Type your answer">' +
+      answerBlock(it.n, it.a, it.note) + '</div>';
+  }).join('');
+}
+
+// ---------- build Part 4 ----------
+function populateP4(){
+  const box = document.getElementById('p4-items');
+  box.innerHTML = p4.map(it =>
+    '<div class="kw-item"><div class="item-head"><span class="item-num">' + it.n + '.</span>' +
+    '<span class="item-line">' + it.q + '</span></div>' +
+    '<div class="kw-constraint"><span class="kw-key">' + it.key + '</span></div>' +
+    '<div class="item-line" style="margin-left:1.9rem;margin-bottom:.25rem;">' + it.s1 +
+    '<input class="type-answer" id="in-' + it.n + '" style="margin:0 .2rem;width:min(300px,60%);" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="gap">' + it.s2 + '</div>' +
+    answerBlock(it.n, it.a, it.note) + '</div>'
+  ).join('');
+}
+
+// ---------- reveal mechanics ----------
+function revealOne(num){
+  const el = document.getElementById('ans-' + num);
+  const btn = document.getElementById('btn-' + num);
+  if(el) el.classList.add('revealed');
+  if(btn) btn.classList.add('hidden');
+}
+function revealAll(show){
+  document.querySelectorAll('.answer-text').forEach(el => {
+    el.classList.toggle('revealed', show);
+  });
+  document.querySelectorAll('.reveal-btn').forEach(b => {
+    b.classList.toggle('hidden', show);
+  });
+}
+
+// ---------- timer ----------
+let tLeft = 45 * 60, tId = null;
+function fmt(s){
+  const m = Math.floor(Math.abs(s) / 60), ss = Math.abs(s) % 60;
+  return (s < 0 ? '-' : '') + String(m).padStart(2,'0') + ':' + String(ss).padStart(2,'0');
+}
+function drawClock(){
+  const c = document.getElementById('clock');
+  c.textContent = fmt(tLeft);
+  c.classList.toggle('over', tLeft < 0);
+}
+function toggleTimer(){
+  const btn = document.getElementById('t-start');
+  if(tId){
+    clearInterval(tId); tId = null;
+    btn.textContent = '▶ Start';
+  } else {
+    btn.textContent = '⏸ Pause';
+    tId = setInterval(() => {
+      tLeft--;
+      drawClock();
+      if(tLeft === 0){
+        alert('Time! Put your pencil down. Now check your answers and count your ticks.');
+      }
+    }, 1000);
+  }
+}
+function resetTimer(){
+  clearInterval(tId); tId = null;
+  tLeft = 45 * 60;
+  document.getElementById('t-start').textContent = '▶ Start';
+  drawClock();
+}
+
+
+
+populateP1();
+buildGapItems(p2, 'p2-items', 'p2', false);
+buildGapItems(p3, 'p3-items', 'p3', true);
+populateP4();
+drawClock();
+</script>
+
+</body>
+</html>
