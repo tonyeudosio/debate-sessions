@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Existence and Function of God in Descartes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#14264a;
+    --navy-2:#1c3254;
+    --navy-3:#243a5f;
+    --line:#3a4f72;
+    --teal:#4fa3b5;
+    --gold:#e0a93f;
+    --gold-soft:#f3d79a;
+    --ink:#1b2437;
+    --muted:#5b6578;
+    --paper:#faf8f3;
+    --card:#ffffff;
+    --rule:#e4dfd2;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ink:#e7e9ef; --muted:#a3adc0; --paper:#0f1a30; --card:#16233f; --rule:#2b3c5c;
+    }
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+    font-size:17px; line-height:1.7;
+  }
+  .wrap{max-width:820px; margin:0 auto; padding:0 16px 64px}
+
+  /* Header */
+  header.hero{
+    background:var(--navy); color:#fff; margin:0 -16px 40px; padding:48px 24px 40px;
+    border-top:6px solid var(--gold); text-align:center;
+  }
+  .eyebrow{
+    font-family:'Inter',sans-serif; font-weight:600; font-size:12.5px; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--gold); margin:0 0 14px;
+  }
+  header.hero h1{
+    font-family:'Fraunces',Georgia,serif; font-weight:700; font-size:clamp(28px,5.5vw,44px);
+    line-height:1.15; margin:0 0 14px;
+  }
+  .sub{margin:0 auto; max-width:560px; color:#c9d3e6; font-size:15.5px; line-height:1.55}
+  .sub em{color:#fff}
+  .badge{
+    display:inline-block; margin-top:18px; padding:5px 14px; border:1px solid var(--gold);
+    color:var(--gold-soft); border-radius:999px; font-size:12.5px; letter-spacing:.04em;
+  }
+
+  /* Text */
+  h2{
+    font-family:'Fraunces',Georgia,serif; font-weight:700; font-size:clamp(21px,3.6vw,27px);
+    line-height:1.25; margin:44px 0 10px; color:var(--ink);
+  }
+  h2 .num{
+    display:inline-flex; align-items:center; justify-content:center; width:34px; height:34px;
+    border-radius:50%; background:var(--gold); color:var(--navy); font-family:'Inter',sans-serif;
+    font-size:16px; font-weight:700; margin-right:10px; vertical-align:2px;
+  }
+  p{margin:0 0 16px}
+  .lede{font-size:18.5px}
+  .lede::first-letter{
+    font-family:'Fraunces',Georgia,serif; font-weight:700; font-size:3.3em; float:left;
+    line-height:.85; padding:6px 10px 0 0; color:var(--gold);
+  }
+  .aside{
+    border-left:4px solid var(--gold); padding:4px 0 4px 18px; margin:26px 0; color:var(--muted);
+    font-family:'Fraunces',Georgia,serif; font-style:italic; font-size:18px; line-height:1.6;
+  }
+  strong{font-weight:600}
+  .rule{height:1px; background:var(--rule); border:0; margin:40px 0}
+
+  .callout{
+    background:var(--navy); color:#fff; border-radius:14px; padding:22px 24px; margin:28px 0;
+    border:1px solid var(--line);
+  }
+  .callout p{margin:0; font-family:'Fraunces',Georgia,serif; font-size:19px; line-height:1.55}
+  .callout strong{color:var(--gold-soft)}
+
+  /* Criticisms */
+  .crit{
+    background:var(--card); border:1px solid var(--rule); border-radius:14px; padding:20px 22px;
+    margin:0 0 16px; border-top:4px solid var(--teal);
+  }
+  .crit h3{
+    font-family:'Fraunces',Georgia,serif; font-size:19px; line-height:1.3; margin:0 0 4px;
+  }
+  .crit .who{font-size:12.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--teal); font-weight:600; margin:0 0 10px}
+  .crit p{margin:0; font-size:16.5px}
+  .crit p b{font-weight:600}
+
+  /* Infographic */
+  figure.slide{
+    --pad:clamp(16px,3vw,40px);
+    margin:30px 0; background:var(--navy); color:#fff; border-top:8px solid var(--gold);
+    border-radius:6px; padding:calc(var(--pad)*.8) var(--pad) calc(var(--pad)*.7);
+    font-family:'Inter',sans-serif; line-height:1.4;
+  }
+  .slide .s-eyebrow{
+    text-align:center; font-size:clamp(10.5px,1.45vw,13px); font-weight:600; letter-spacing:.06em;
+    color:var(--gold); text-transform:uppercase; margin:0 0 8px;
+  }
+  .slide .s-title{
+    text-align:center; font-family:'Inter',sans-serif; font-weight:700;
+    font-size:clamp(22px,3.7vw,34px); line-height:1.15; margin:0 0 clamp(14px,2.2vw,24px); color:#fff;
+  }
+  .slide .key{
+    background:var(--navy-2); border:1px solid var(--teal); border-radius:10px;
+    padding:clamp(10px,1.6vw,16px) 18px; text-align:center; font-weight:600;
+    font-size:clamp(14px,2vw,19px); margin:0 0 clamp(12px,1.8vw,20px); color:#fff;
+  }
+  .slide .key span{letter-spacing:.02em}
+  .grid{display:grid; grid-template-columns:1fr; gap:clamp(10px,1.6vw,18px)}
+  @media (min-width:600px){.grid{grid-template-columns:repeat(2,1fr)}}
+  @media (min-width:900px){.grid{grid-template-columns:repeat(3,1fr)}}
+  .card{
+    background:var(--navy-2); border:1px solid var(--line); border-radius:22px;
+    padding:clamp(12px,1.7vw,18px) clamp(14px,2vw,22px) clamp(12px,1.7vw,18px);
+  }
+  .card h3{
+    display:flex; align-items:center; gap:12px; margin:0 0 8px; font-family:'Inter',sans-serif;
+    font-size:clamp(13px,1.6vw,15.5px); font-weight:700; letter-spacing:.05em; text-transform:uppercase;
+    color:var(--gold);
+  }
+  .card h3 i{
+    flex:none; width:34px; height:34px; border-radius:50%; background:var(--gold); color:var(--navy);
+    display:inline-flex; align-items:center; justify-content:center; font-style:normal; font-size:15px; font-weight:700;
+  }
+  .card ul{list-style:none; margin:0; padding:0}
+  .card li{
+    position:relative; padding-left:16px; margin:0 0 6px; font-size:clamp(12.5px,1.45vw,14px); line-height:1.4; color:#e9eef8;
+  }
+  .card li::before{
+    content:""; position:absolute; left:2px; top:.55em; width:5px; height:5px; border-radius:50%; background:var(--gold);
+  }
+  .card li b{color:#fff; font-weight:700}
+  .thread{
+    text-align:center; font-style:italic; color:#aab6cc; font-size:clamp(11px,1.45vw,13.5px);
+    margin:clamp(10px,1.6vw,16px) 0 0; line-height:1.5;
+  }
+  .thread b{font-style:normal; letter-spacing:.04em; text-transform:uppercase; font-weight:500}
+  figcaption.cap{
+    text-align:center; color:var(--muted); font-size:14px; margin:-14px 0 28px;
+  }
+
+  footer{
+    margin-top:48px; padding-top:20px; border-top:1px solid var(--rule); text-align:center;
+    font-size:14px; color:var(--muted)
+  }
+  footer b{font-family:'Fraunces',Georgia,serif; color:var(--gold); font-size:16px}
+
+  @media print{
+    body{font-size:11.5pt}
+    figure.slide, .callout, header.hero{-webkit-print-color-adjust:exact; print-color-adjust:exact}
+    .crit, figure{break-inside:avoid}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <p class="eyebrow">Tony's Corner · History of Modern Philosophy</p>
+    <h1>Existence and Function of God in Descartes</h1>
+    <p class="sub">A summary based on <em>From Humanism to Descartes</em> (Volume III) by Giovanni Reale and Dario Antiseri</p>
+    <span class="badge">Prepared for a 12-minute presentation</span>
+  </header>
+
+  <p class="lede"><em>From Humanism to Descartes</em> (Volume III) is a major work by the Italian philosophers <strong>Giovanni Reale</strong> and <strong>Dario Antiseri</strong>, covering the transition from Renaissance humanism and the Scientific Revolution to the rationalism of René Descartes. On reading it, we soon realise that Descartes is not trying to raise a religious or metaphysical question for its own sake, but rather to find the “final, absolute” foundation on which human beings can justify the existence of God. Although it is not the purpose of this blog to go deep into philosophy, I have found such significant depth in this part of the book that I would like to share it with you, if you will allow me.</p>
+
+  <p>And so we arrive at <strong>Methodical Doubt</strong>.</p>
+
+  <p>Its approach, although it had quite a few detractors, as we shall see below, is nonetheless ingenious. It even leads this humble servant, a faithful (or so he pretends to be) practitioner of Jesuit discernment, to wonder whether St Ignatius might not have based part of his mystical method on this brilliant entry into the world of the mind and its workings. Setting aside this opening, which aims to be more eloquent than accurate, I shall go on to illustrate a little of what I have managed to glean from this excellent book and its authors.</p>
+
+  <p class="aside">As an aside, I hope I may be forgiven for mentioning that this exposition was designed to last 12 minutes — the script demanded it!</p>
+
+  <hr class="rule">
+
+  <h2>Introduction: Locked inside the <em>Cogito</em></h2>
+  <p>When Descartes utters his famous phrase <em>“I think, therefore I am”</em>, he achieves absolute certainty, but he also walks into a blind alley: he knows that he exists as a thinking mind, yet he cannot be sure that the external world, his own body or even mathematics are real. He might be dreaming, or being deceived by what he calls an <strong><em>“Evil Genius”</em></strong>. To break out of this isolation and give his knowledge a foundation, Descartes needs a bridge between his mind and objective reality. That bridge will be God, discovered through <strong>innate</strong> ideas.</p>
+
+  <h2><span class="num">1</span>The discovery of God in the mind</h2>
+  <p>Surveying his own mind, Descartes sorts what he finds there. Some ideas come from outside (<em>adventitious</em>, such as heat) and some are invented (<em>factitious</em>, such as a mermaid). But there is a third class: <strong>innate ideas</strong>, which are born with us. Among them, one stands out: the idea of an infinite and absolutely perfect being.</p>
+  <p>From this innate idea, Descartes proves that God exists by means of three basic arguments. First, by <strong>causality</strong>: a finite and imperfect being such as man cannot produce for himself the idea of absolute perfection; that idea must have been placed in our minds by a being who really is perfect. Second, by <strong>our own existence</strong>: if human beings were their own creators, they would have given themselves every perfection they can imagine; since we are limited, we depend on a superior Creator. And third, the <strong>ontological argument</strong>: existence is itself a perfection, so a perfect God who did not exist would be a logical contradiction, just like a triangle without three sides.</p>
+
+  <figure class="slide" aria-label="Infographic: The existence and function of God in Descartes">
+    <p class="s-eyebrow">History of Modern Philosophy &nbsp;·&nbsp; Descartes</p>
+    <h3 class="s-title">5. The Existence and Function of God</h3>
+    <div class="key"><span>KEY IDEA &nbsp;·&nbsp; The <i>cogito</i> starts the journey; God guarantees the objectivity of knowledge.</span></div>
+    <div class="grid">
+      <section class="card">
+        <h3><i>1</i>The problem</h3>
+        <ul>
+          <li>The <i>cogito</i> is certain, but only of the self.</li>
+          <li>Do my ideas correspond to anything outside me?</li>
+          <li><b>Metaphysical doubt:</b> a deceiving God could make me err even in 2+3=5.</li>
+        </ul>
+      </section>
+      <section class="card">
+        <h3><i>2</i>The idea of God</h3>
+        <ul>
+          <li><b>Three kinds of ideas:</b> innate, adventitious and factitious.</li>
+          <li>Adventitious ideas (the external world) need a guarantee.</li>
+          <li><b>Innate idea of God:</b> an infinite, perfect being. What causes it?</li>
+        </ul>
+      </section>
+      <section class="card">
+        <h3><i>3</i>Three arguments</h3>
+        <ul>
+          <li><b>Causal:</b> the idea of the infinite cannot come from me, since I am finite.</li>
+          <li><b>My existence:</b> had I made myself, I would have given myself every perfection.</li>
+          <li><b>Ontological (Anselm):</b> existence is inseparable from the essence of God.</li>
+        </ul>
+      </section>
+      <section class="card">
+        <h3><i>4</i>God as guarantor</h3>
+        <ul>
+          <li><b>God, being perfect, is truthful:</b> he does not deceive and vouches for my faculties, which are his work.</li>
+          <li><b>Eternal truths:</b> freely created by God; contingent, but “eternal” because God is immutable.</li>
+        </ul>
+      </section>
+      <section class="card">
+        <h3><i>5</i>Human error</h3>
+        <ul>
+          <li>God is not responsible for error.</li>
+          <li><b>It arises in judgement:</b> the will affirms more than the understanding perceives clearly.</li>
+          <li><b>Remedy:</b> suspend judgement.</li>
+        </ul>
+      </section>
+      <section class="card">
+        <h3><i>6</i>Conclusion</h3>
+        <ul>
+          <li>From the <i>cogito</i> to God as guarantor of objective knowledge.</li>
+          <li><b>Function of God:</b> not theological primacy, but the defence of human reason and science.</li>
+          <li>Only for the atheist does doubt remain.</li>
+        </ul>
+      </section>
+    </div>
+    <p class="thread"><b>Thread:</b> metaphysical doubt → idea of God → proofs → guarantee and eternal truths → error → objective knowledge</p>
+  </figure>
+  <figcaption class="cap">The argument at a glance — a visual summary of the six steps.</figcaption>
+
+  <h2><span class="num">2</span>God as guarantee of truth, and the origin of error</h2>
+  <p>Once the existence of this perfect God has been proved, the Cartesian system changes completely. Since lying and deceit are signs of imperfection or malice, <strong>God, being perfect, must be truthful</strong>. God does not deceive us, and that means he vouches for our mental faculties and for the eternal truths (such as mathematics and logic). Mathematics is certain and eternal because God, who is immutable, freely designed it that way for our universe.</p>
+  <p>Here a reasonable doubt arises: if God guarantees our reason, why do we make mistakes? Descartes answers that <strong>God is not responsible for our errors</strong>. Error is born of judgement, which is the clash between two faculties: the understanding (which is limited and does not grasp everything) and the will (which is infinite and absolutely free). We go wrong when our will rushes ahead and affirms or denies things that the understanding has not yet perceived with complete clarity and distinctness. The remedy is simple: when in doubt, suspend judgement.</p>
+
+  <h2>Conclusion: A God for science</h2>
+  <p>In short, Descartes' journey runs from the subjective certainty of the <em>Cogito</em> to God as guarantor of objective knowledge. What is revolutionary in his thought is that he does not seek God for traditional theological or religious reasons, but to defend the autonomy of human reason and to give science a solid basis. Indeed, Descartes goes so far as to claim that <strong>for the atheist, doubt remains</strong>. An atheist may solve a mathematical problem at a given moment, but, lacking an absolute guarantee for his mind, he can never be sure whether he is living in constant deception. Only with God does knowledge become truly firm and stable.</p>
+
+  <hr class="rule">
+
+  <h2>Criticisms from other philosophers: the case against</h2>
+  <p>It only remains to mention that this approach received harsh criticism from great thinkers, both contemporary and later.</p>
+
+  <article class="crit">
+    <h3>1. The Cartesian Circle</h3>
+    <p class="who">Antoine Arnauld</p>
+    <p><b>The argument:</b> this is the most famous criticism. Arnauld accused Descartes of circular reasoning. Descartes says that we know God exists because we perceive him “clearly and distinctly”. But he then says that we know that whatever we perceive “clearly and distinctly” is true <em>because God exists and does not deceive us</em>. One thing is justified by the other in a logical loop.</p>
+  </article>
+
+  <article class="crit">
+    <h3>2. The critique of the Ontological Argument</h3>
+    <p class="who">Immanuel Kant</p>
+    <p><b>The argument:</b> centuries later, Kant demolished Descartes' third argument. He explained that <strong>existence is not a predicate or a quality</strong>. You can describe a 100-euro note with all its features (colour, size, value), but adding “and it also exists” neither changes its essence nor makes it any more perfect in your mind. One cannot move from the order of thought (the definition of God) to the order of reality (his actual existence) by mere verbal logic.</p>
+  </article>
+
+  <article class="crit">
+    <h3>3. The “God of the gaps”</h3>
+    <p class="who">Thomas Hobbes and Blaise Pascal</p>
+    <p><b>The argument:</b> both philosophers considered Descartes' God to be artificial. Pascal went so far as to write that Descartes used God in his philosophy only to “give the universe its first flick” and set the laws of physics in motion, but that after that he had no further use for God. They criticised him for reducing the divinity to a mere piece in a logical-scientific jigsaw puzzle.</p>
+  </article>
+
+  <footer>
+    <b>Tony's Corner</b> — Tailor-Made English<br>
+    Study notes for History of Modern Philosophy · Reale &amp; Antiseri, <em>From Humanism to Descartes</em>
+  </footer>
+</div>
+</body>
+</html>
