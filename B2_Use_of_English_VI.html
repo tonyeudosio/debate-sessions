@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B2 / FCE — Use of English VI</title>
+<style>
+  :root {
+    --navy:    #1b2a4a;
+    --blue:    #1f7a72;
+    --sky:     #dceceb;
+    --accent:  #d9a23e;
+    --green:   #2f8f7f;
+    --green-bg:#e3f3f1;
+    --plum:    #6a4a8f;
+    --plum-bg: #efe9f6;
+    --yellow:  #fff8ec;
+    --yellow-b:#f0dfb8;
+    --cream:   #faf9f5;
+    --paper:   #f1f1ec;
+    --ink:     #1c1c1c;
+    --mid:     #555;
+    --light:   #e2e2db;
+    --shadow:  rgba(27,42,74,.10);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family:Georgia, 'Times New Roman', serif; background: var(--paper); color: var(--ink); }
+
+  nav { background: var(--navy); position: sticky; top: 0; z-index: 100; display: flex; flex-wrap: wrap; gap: .3rem; padding: .5rem .8rem; border-bottom: 3px solid var(--accent); }
+  nav a { color: rgba(255,255,255,.75); font-size: .75rem; text-decoration: none; padding: .25rem .55rem; border-radius: 4px; transition: background .2s, color .2s; font-family:Georgia, 'Times New Roman', serif; white-space: nowrap; }
+  nav a:hover { background: var(--accent); color: #fff; }
+
+  header { background: var(--navy); padding: 2.2rem 2rem 1.6rem; text-align: center; position: relative; overflow: hidden; }
+  header::before { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(45deg,transparent,transparent 28px,rgba(255,255,255,.025) 28px,rgba(255,255,255,.025) 29px); }
+  header h1 { font-family:Georgia, 'Times New Roman', serif; font-size:clamp(1.4rem,4vw,2.4rem); color:#fff; position:relative; }
+  header p  { font-size:.9rem; color:rgba(255,255,255,.6); font-style:italic; margin-top:.4rem; position:relative; }
+  .accent-bar { width:60px;height:3px;background:var(--accent);margin:.9rem auto 0;border-radius:2px;position:relative; }
+
+  .container { max-width:900px; margin:0 auto; padding:1.8rem 1.2rem 4rem; }
+
+  .welcome { background:var(--yellow); border:1.5px solid var(--yellow-b); border-radius:10px; padding:1.1rem 1.3rem; margin-bottom:1.6rem; box-shadow:0 2px 16px var(--shadow); }
+  .welcome .hello { font-family:Georgia, 'Times New Roman', serif; color:var(--navy); font-size:1.05rem; margin-bottom:.35rem; }
+  .welcome p { font-size:.9rem; color:var(--mid); line-height:1.65; }
+  .welcome .row { display:flex; flex-wrap:wrap; gap:.6rem 1rem; align-items:center; margin-top:.8rem; }
+
+  .timer { display:flex; align-items:center; gap:.55rem; flex-wrap:wrap; }
+  .timer .clock { font-family:Georgia, 'Times New Roman', serif; font-size:1.25rem; font-weight:700; color:var(--navy); background:#fff; border:1.5px solid var(--yellow-b); border-radius:7px; padding:.15rem .7rem; min-width:86px; text-align:center; font-variant-numeric:tabular-nums; }
+  .timer .clock.over { color:#b4392c; border-color:#b4392c; }
+  .tbtn { font-family:Georgia, 'Times New Roman', serif; font-size:.8rem; padding:.32rem .75rem; border-radius:5px; border:1.5px solid var(--navy); background:var(--navy); color:#fff; cursor:pointer; transition:opacity .2s; }
+  .tbtn:hover { opacity:.82; }
+  .tbtn.outline { background:transparent; color:var(--navy); }
+  .timer .hint { font-size:.75rem; color:#999; font-style:italic; }
+
+  .controls { display:flex; justify-content:flex-end; gap:.7rem; margin-bottom:1.4rem; flex-wrap:wrap; }
+  .ctrl-btn { font-family:Georgia, 'Times New Roman', serif; font-size:.85rem; padding:.4rem .9rem; border-radius:5px; border:1.5px solid var(--navy); background:var(--navy); color:#fff; cursor:pointer; transition:opacity .2s; }
+  .ctrl-btn:hover { opacity:.82; }
+  .ctrl-btn.outline { background:transparent; color:var(--navy); }
+
+  .section { background:var(--cream); border-radius:10px; box-shadow:0 2px 16px var(--shadow); margin-bottom:2.2rem; overflow:hidden; }
+  .section-header { background:var(--navy); color:#fff; padding:.8rem 1.4rem; font-family:Georgia, 'Times New Roman', serif; font-size:1.1rem; letter-spacing:.03em; display:flex; align-items:center; gap:.7rem; }
+  .section-header .tag { background:var(--accent); color:#fff; font-family:Georgia, 'Times New Roman', serif; font-size:.68rem; font-weight:600; letter-spacing:.08em; text-transform:uppercase; padding:.12rem .5rem; border-radius:3px; }
+  .section-body { padding:1.3rem 1.5rem; }
+
+  p.desc { font-size:.9rem; color:var(--mid); margin-bottom:.9rem; line-height:1.6; }
+  .instructions { background:var(--sky); border-left:4px solid var(--blue); border-radius:7px; padding:.75rem 1rem; margin-bottom:1.1rem; font-size:.87rem; color:var(--navy); }
+  .instructions strong { color:var(--blue); }
+
+  .passage { background:#fff; border:1.5px solid var(--light); border-radius:8px; padding:1.1rem 1.3rem; margin-bottom:1.3rem; font-size:.95rem; line-height:2; }
+  .gap-num { display:inline-block; background:var(--navy); color:#fff; font-family:Georgia, 'Times New Roman', serif; font-weight:700; font-size:.72rem; padding:0 .4rem; border-radius:3px; margin:0 .1rem; vertical-align:middle; }
+  .gap-line { display:inline-block; border-bottom:2px dotted var(--accent); min-width:3.2rem; }
+
+  .mc-item, .of-item, .wf-item, .kw-item { margin-bottom:1.15rem; padding-bottom:1.15rem; border-bottom:1px solid var(--light); }
+  .mc-item:last-child, .of-item:last-child, .wf-item:last-child, .kw-item:last-child { border-bottom:none; margin-bottom:0; padding-bottom:0; }
+
+  .item-head { display:flex; align-items:baseline; gap:.5rem; margin-bottom:.4rem; }
+  .item-num { font-family:Georgia, 'Times New Roman', serif; color:var(--accent); font-size:1rem; font-weight:700; min-width:1.4rem; }
+  .item-line { font-size:.92rem; line-height:1.6; }
+  .wf-base { font-weight:700; color:var(--plum); letter-spacing:.03em; }
+
+  .mc-options { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:.35rem .6rem; margin:.4rem 0 .55rem 1.9rem; }
+  .mc-opt { font-size:.87rem; color:var(--mid); padding:.2rem .5rem; border-radius:5px; background:#fff; border:1px solid var(--light); cursor:pointer; transition:border-color .15s, background .15s; }
+  .mc-opt:hover { border-color:var(--accent); }
+  .mc-opt.chosen { border-color:var(--blue); background:var(--green-bg); color:var(--navy); }
+  .mc-opt .letter { font-weight:700; color:var(--navy); margin-right:.3rem; }
+
+  .type-answer { font-family:Georgia, 'Times New Roman', serif; font-size:.9rem; color:var(--ink); padding:.35rem .6rem; border:1.5px solid var(--light); border-radius:6px; margin:.25rem 0 .55rem 1.9rem; width:min(320px, calc(100% - 1.9rem)); background:#fff; }
+  .type-answer:focus { outline:none; border-color:var(--blue); }
+
+  .answer-row { display:flex; align-items:stretch; gap:0; border-radius:7px; overflow:hidden; border:1.5px solid var(--light); margin-left:1.9rem; }
+  .check-cell { background:var(--yellow); padding:.38rem .65rem; display:flex; align-items:center; justify-content:center; border-right:1.5px solid var(--light); min-width:40px; }
+  .check-cell input[type="checkbox"] { width:17px; height:17px; accent-color:var(--green); cursor:pointer; }
+  .answer-cell { background:#fff; flex:1; padding:.38rem .75rem; display:flex; align-items:center; gap:.45rem; font-size:.88rem; flex-wrap:wrap; }
+  .alabel { color:#bbb; font-weight:600; font-size:.76rem; white-space:nowrap; }
+  .answer-text { color:var(--blue); font-weight:700; font-style:italic; filter:blur(5px); user-select:none; transition:filter .35s ease; cursor:pointer; }
+  .answer-text.revealed { filter:none; cursor:default; }
+  .anote { color:#aaa; font-size:.76rem; font-style:italic; }
+  .reveal-btn { background:none; border:1.5px solid var(--blue); color:var(--blue); font-family:Georgia, 'Times New Roman', serif; font-size:.76rem; padding:.12rem .5rem; border-radius:4px; cursor:pointer; white-space:nowrap; transition:background .2s,color .2s; margin-left:auto; }
+  .reveal-btn:hover { background:var(--blue); color:#fff; }
+  .reveal-btn.hidden { display:none; }
+
+  .kw-key { display:inline-block; background:var(--navy); color:#fff; font-size:.72rem; font-weight:700; letter-spacing:.07em; padding:.1rem .38rem; border-radius:3px; margin:0 .25rem; font-family:Georgia, 'Times New Roman', serif; }
+  .kw-constraint { font-size:.78rem; color:var(--accent); font-weight:600; margin-left:1.9rem; margin-bottom:.3rem; }
+
+  .sendoff { background:var(--green-bg); border:1.5px solid #bcd9d4; border-radius:10px; padding:1.1rem 1.3rem; box-shadow:0 2px 16px var(--shadow); }
+  .sendoff .hello { font-family:Georgia, 'Times New Roman', serif; color:var(--navy); font-size:1.05rem; margin-bottom:.35rem; }
+  .sendoff p { font-size:.9rem; color:var(--mid); line-height:1.65; margin-bottom:.5rem; }
+  .scoreline { font-size:.85rem; color:var(--navy); background:#fff; border:1px solid #bcd9d4; border-radius:7px; padding:.55rem .8rem; margin:.4rem 0 .7rem; }
+
+  footer { text-align:center; padding:1.1rem; font-size:.8rem; color:#aaa; font-style:italic; border-top:1px solid var(--light); margin-top:1rem; }
+
+
+  .ref-table { width:100%; border-collapse:collapse; font-size:.88rem; margin:.8rem 0 1.2rem; }
+  .ref-table th { background:var(--navy); color:#fff; padding:.5rem .75rem; text-align:left; font-family:Georgia, 'Times New Roman', serif; }
+  .ref-table td { padding:.45rem .75rem; border-bottom:1px solid var(--light); vertical-align:top; }
+  .ref-table tr:last-child td { border-bottom:none; }
+  .ref-table tr:nth-child(odd)  td { background:var(--sky); }
+  .ref-table tr:nth-child(even) td { background:var(--cream); }
+  .ref-table .c1 { font-weight:600; color:var(--navy); }
+  .ref-table .c3 { font-style:italic; color:var(--blue); font-weight:600; }
+  .theory-h { font-family:Georgia, 'Times New Roman', serif; color:var(--navy); font-size:1rem; margin:1.1rem 0 .2rem; }
+  .partb { text-align:center; margin:0 0 1.6rem; }
+  .partb span { display:inline-block; background:var(--accent); color:#fff; font-family:Georgia, 'Times New Roman', serif; font-size:.72rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; padding:.28rem 1rem; border-radius:999px; }
+  @media(max-width:600px){
+    .section-body { padding:1rem .8rem; }
+    .passage { font-size:.88rem; line-height:1.9; padding:.9rem 1rem; }
+    .mc-options { grid-template-columns:1fr 1fr; }
+    .ref-table { font-size:.78rem; }
+    .ref-table th,.ref-table td { padding:.38rem .45rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#top">Top</a>
+  <a href="#theory">📖 Theory</a>
+  <a href="#part1">Part 1 · Multiple Choice</a>
+  <a href="#part2">Part 2 · Open Cloze</a>
+  <a href="#part3">Part 3 · Word Formation</a>
+  <a href="#part4">Part 4 · Key Word</a>
+  <a href="#finish">Finish</a>
+</nav>
+
+<header id="top">
+  <h1>B2 / FCE — Use of English VI</h1>
+  <p>Multiple-Choice Cloze · Open Cloze · Word Formation · Key Word Transformation</p>
+  <div class="accent-bar"></div>
+</header>
+
+<div class="container">
+
+  <div class="welcome">
+    <div class="hello">Welcome back!</div>
+    <p>Here is a sixth helping of Use of English, with brand-new texts and answers to match. As always, there is a quick theory refresher first, then a full set of self-correcting exercises: have a proper go, and the answers will come out when you click them. Perfect for a few spare minutes on your phone. In the real exam, these four parts sit inside the Reading and Use of English paper (1 hour 15 minutes for all seven parts). The timer here is just for practice: about <strong>45 minutes</strong> feels close to exam conditions. No peeking until you have tried!</p>
+    <div class="row">
+      <div class="timer">
+        <span class="clock" id="clock">45:00</span>
+        <button class="tbtn" id="t-start" onclick="toggleTimer()">▶ Start</button>
+        <button class="tbtn outline" onclick="resetTimer()">↺ Reset</button>
+        <span class="hint">optional, for exam conditions</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button class="ctrl-btn outline" onclick="revealAll(false)">🙈 Hide all answers</button>
+    <button class="ctrl-btn" onclick="revealAll(true)">👁 Reveal all answers</button>
+  </div>
+
+
+  <!-- ============ PART A : THEORY ============ -->
+  <div class="section" id="theory">
+    <div class="section-header"><span class="tag">Part A</span> Quick Theory Refresh</div>
+    <div class="section-body">
+      <p class="desc">Two minutes here makes the exercises much easier. Skim the tables, then scroll down and test yourself.</p>
+
+      <div class="theory-h">1 · Collocations &amp; fixed expressions (Part 1)</div>
+      <table class="ref-table">
+        <tr><th>Expression</th><th>Example</th></tr>
+        <tr><td class="c1">a new lease of life</td><td>The old bicycle got a new lease of life.</td></tr>
+        <tr><td class="c1">give up your time</td><td>They give up their weekends to help others.</td></tr>
+        <tr><td class="c1">lose the habit of</td><td>Many of us have lost the habit of writing letters.</td></tr>
+        <tr><td class="c1">bring something back to life</td><td>She brought the old radio back to life.</td></tr>
+        <tr><td class="c1">cover the costs</td><td>A small donation covers the costs of the materials.</td></tr>
+        <tr><td class="c1">go away (having learnt something)</td><td>Visitors go away feeling inspired.</td></tr>
+        <tr><td class="c1">raise awareness of</td><td>The campaign raises awareness of food waste.</td></tr>
+        <tr><td class="c1">make a (real) difference</td><td>One small change can make a real difference.</td></tr>
+      </table>
+
+      <div class="theory-h">2 · Small words that carry the grammar (Part 2)</div>
+      <table class="ref-table">
+        <tr><th>Pattern</th><th>Example</th></tr>
+        <tr><td class="c1">relative pronoun who / that</td><td>Students who teach remember more.</td></tr>
+        <tr><td class="c1">comparison: better ... than</td><td>Teaching works better than rereading.</td></tr>
+        <tr><td class="c1">comment clause: , which</td><td>Teaching forces you to organise ideas, which helps memory.</td></tr>
+        <tr><td class="c1">there is no need (for)</td><td>There is no need for a real audience.</td></tr>
+        <tr><td class="c1">even though</td><td>They did better, even though they never taught.</td></tr>
+        <tr><td class="c1">the next time</td><td>The next time you study, explain it aloud.</td></tr>
+        <tr><td class="c1">how much</td><td>You will discover how much you really understand.</td></tr>
+        <tr><td class="c1">relative pronoun that</td><td>It is one of the simplest techniques that exists.</td></tr>
+      </table>
+
+      <div class="theory-h">3 · Word formation toolkit (Part 3)</div>
+      <table class="ref-table">
+        <tr><th>Change</th><th>Typical endings</th><th>Example</th></tr>
+        <tr><td class="c1">noun/verb → adjective</td><td>-ful · -al · -able · -ing</td><td>success → successful · value → valuable</td></tr>
+        <tr><td class="c1">adjective → noun</td><td>-ity · -ence · -edge</td><td>major → majority · know → knowledge</td></tr>
+        <tr><td class="c1">noun → noun (relationship)</td><td>-ship</td><td>friend → friendship · member → membership</td></tr>
+        <tr><td class="c1">verb → -ing adjective</td><td>-ing</td><td>grow → growing · surprise → surprising</td></tr>
+        <tr><td class="c1">verb → noun (no ending change!)</td><td>—</td><td>expense → expense · cost → cost</td></tr>
+        <tr><td class="c3" colspan="2">Tip: look at the words around the gap. After 'the' you need a noun; after 'feel' an adjective; before a noun, usually an adjective.</td><td></td></tr>
+      </table>
+
+      <div class="theory-h">4 · Transformation patterns that keep coming up (Part 4)</div>
+      <table class="ref-table">
+        <tr><th>Pattern</th><th>Example</th></tr>
+        <tr><td class="c1">wish + past (a regret about now)</td><td>It's a pity I can't swim. → I wish I could swim.</td></tr>
+        <tr><td class="c1">call off (= cancel)</td><td>They cancelled the match. → The match was called off.</td></tr>
+        <tr><td class="c1">accused of + -ing</td><td>They think he took the money. → He was accused of taking the money.</td></tr>
+        <tr><td class="c1">had better (not)</td><td>You shouldn't leave yet. → You had better not leave yet.</td></tr>
+        <tr><td class="c1">so → such a + adjective + noun</td><td>The book was so good. → It was such a good book.</td></tr>
+        <tr><td class="c1">prevent somebody from + -ing</td><td>The rain didn't stop us playing. → The rain did not prevent us from playing.</td></tr>
+        <tr><td class="c3" colspan="2">Remember: between two and five words, and never change the word in capitals.</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="partb"><span>Part B · Self-correcting practice</span></div>
+  <!-- ============ PART 1 ============ -->
+  <div class="section" id="part1">
+    <div class="section-header"><span class="tag">Part 1</span> Multiple-Choice Cloze</div>
+    <div class="section-body">
+      <div class="instructions"><strong>Questions 1–8.</strong> Read the text and decide which answer (A, B, C or D) best fits each gap. Focus: collocations, phrasal verbs and fixed expressions.</div>
+      <div class="passage">
+        <strong>A Second Life for Broken Things</strong><br>
+        On a Saturday morning in a small community hall, an old toaster is being given a new <span class="gap-num">1</span><span class="gap-line"></span> of life. Welcome to the repair café, where volunteers happily <span class="gap-num">2</span><span class="gap-line"></span> up their free time to fix whatever arrives: lamps, bicycles, even a much-loved teddy bear. The idea began in the Netherlands and has spread around the world, partly because many of us have simply <span class="gap-num">3</span><span class="gap-line"></span> the habit of repairing things. Here, broken objects are <span class="gap-num">4</span><span class="gap-line"></span> back to life while their owners watch, learn and drink coffee. The repairs are free, although a small donation is usually enough to <span class="gap-num">5</span><span class="gap-line"></span> the cost of materials. Most visitors <span class="gap-num">6</span><span class="gap-line"></span> away having learnt something new, and many return as helpers themselves. Organisers say the cafés also <span class="gap-num">7</span><span class="gap-line"></span> awareness of how much perfectly good material we throw away. Above all, they are proof that small local actions can <span class="gap-num">8</span><span class="gap-line"></span> a real difference.
+      </div>
+      <div id="p1-items"></div>
+    </div>
+  </div>
+
+  <!-- ============ PART 2 ============ -->
+  <div class="section" id="part2">
+    <div class="section-header"><span class="tag">Part 2</span> Open Cloze</div>
+    <div class="section-body">
+      <div class="instructions"><strong>Questions 9–16.</strong> Think of the word which best fits each gap. Use only <strong>one word</strong> in each gap. Focus: linkers, articles, pronouns and auxiliary verbs.</div>
+      <div class="passage">
+        <strong>To Learn Something, Teach It</strong><br>
+        It turns out that one of the best ways to understand something is to explain it to somebody else. Students <span class="gap-num">9</span><span class="gap-line"></span> are asked to teach a topic remember it far better <span class="gap-num">10</span><span class="gap-line"></span> those who simply reread their notes. The reason is simple: when you teach, you have to organise your ideas clearly, <span class="gap-num">11</span><span class="gap-line"></span> forces your brain to fill in the gaps. There is <span class="gap-num">12</span><span class="gap-line"></span> need for a real audience, either. In one study, people who merely expected to teach later performed better in tests, <span class="gap-num">13</span><span class="gap-line"></span> though they never actually taught anyone. So <span class="gap-num">14</span><span class="gap-line"></span> next time you prepare for an exam, try explaining the material to a friend, to your dog, or even to an empty chair. You will quickly discover how <span class="gap-num">15</span><span class="gap-line"></span> you really understand. It is one of the cheapest and most effective study techniques <span class="gap-num">16</span><span class="gap-line"></span> exists.
+      </div>
+      <div id="p2-items"></div>
+    </div>
+  </div>
+
+  <!-- ============ PART 3 ============ -->
+  <div class="section" id="part3">
+    <div class="section-header"><span class="tag">Part 3</span> Word Formation</div>
+    <div class="section-body">
+      <div class="instructions"><strong>Questions 17–24.</strong> Use the word given in capitals to form a word that fits in the gap. Focus: noun, adjective and adverb formation with prefixes and suffixes.</div>
+      <div class="passage">
+        <strong>The Library That Lends Everything</strong><br>
+        In a small town in the north of England, a new kind of library is proving surprisingly <span class="gap-num">17</span><span class="gap-line"></span> <span class="wf-base">SUCCESS</span>. Instead of books, it lends tools, tents and even sewing machines. The idea is simple. Many household objects are bought at great <span class="gap-num">18</span><span class="gap-line"></span> <span class="wf-base">EXPENSIVE</span>, used once or twice, and then forgotten in a cupboard. Borrowing them is far more <span class="gap-num">19</span><span class="gap-line"></span> <span class="wf-base">ECONOMY</span>. Members pay a small annual fee and can take home anything from a drill to a chocolate fountain. The <span class="gap-num">20</span><span class="gap-line"></span> <span class="wf-base">MAJOR</span> of members say they joined to save money, but they soon discover other benefits. There is a <span class="gap-num">21</span><span class="gap-line"></span> <span class="wf-base">GROW</span> sense of community, and several members have formed <span class="gap-num">22</span><span class="gap-line"></span> <span class="wf-base">FRIEND</span> while waiting for a cake tin to come back. Staff say the most <span class="gap-num">23</span><span class="gap-line"></span> <span class="wf-base">VALUE</span> thing on offer is not the objects themselves but the advice that comes with them. 'Nobody is born knowing how to fix a tap,' the founder says with a laugh. 'A little <span class="gap-num">24</span><span class="gap-line"></span> <span class="wf-base">KNOW</span> goes a long way.'
+      </div>
+      <div id="p3-items"></div>
+    </div>
+  </div>
+
+  <!-- ============ PART 4 ============ -->
+  <div class="section" id="part4">
+    <div class="section-header"><span class="tag">Part 4</span> Key Word Transformation</div>
+    <div class="section-body">
+      <div class="instructions"><strong>Questions 25–30.</strong> Complete the second sentence so that it has a similar meaning to the first, using the word given. <strong>Do not change the word given.</strong> Use between two and five words, including the word given.</div>
+      <div id="p4-items"></div>
+    </div>
+  </div>
+
+  <!-- ============ FINISH ============ -->
+  <div class="sendoff" id="finish">
+    <div class="hello">How did you do?</div>
+    <p>Count your ticks. As a rough practice guide, out of 30 questions:</p>
+    <div class="scoreline">24–30: excellent, you are ready for the real thing &nbsp;·&nbsp; 18–23: solid B2, keep polishing &nbsp;·&nbsp; under 18: no drama, that is what practice is for</div>
+    <p style="font-size:.82rem;">In the real exam, Parts 1–3 score 1 mark per answer and Part 4 scores up to 2 marks per answer, so those long answers are worth the extra care.</p>
+    <p>For anything you missed, go back to the theory tables in Part A, then hide the answers and have another go. This page collects no personal data and sends nothing anywhere. Your answers are not stored by this page: they exist only while you practise, and no record of them is kept or shared.</p>
+  </div>
+
+  <footer>☐ Tick when correct &nbsp;|&nbsp; Click blurred text to reveal</footer>
+</div>
+
+<script>
+// ---------- PART 1 : multiple choice ----------
+const p1 = [
+  { n:1, opts:["A. lease","B. loan","C. rent","D. hire"], a:"A. lease", note:"fixed expression: a new lease of life" },
+  { n:2, opts:["A. give","B. put","C. set","D. look"], a:"A. give", note:"phrasal verb: to give up your time (= to offer it freely)" },
+  { n:3, opts:["A. lost","B. missed","C. dropped","D. forgotten"], a:"A. lost", note:"collocation: to lose the habit of doing something" },
+  { n:4, opts:["A. brought","B. carried","C. taken","D. fetched"], a:"A. brought", note:"phrasal verb: to bring something back to life" },
+  { n:5, opts:["A. cover","B. afford","C. face","D. supply"], a:"A. cover", note:"collocation: to cover the cost(s) of something" },
+  { n:6, opts:["A. go","B. get","C. move","D. run"], a:"A. go", note:"to go away = to leave (a place)" },
+  { n:7, opts:["A. raise","B. rise","C. lift","D. grow"], a:"A. raise", note:"collocation: to raise awareness of something" },
+  { n:8, opts:["A. make","B. do","C. create","D. cause"], a:"A. make", note:"collocation: to make a difference" }
+];
+
+// ---------- PART 2 : open cloze ----------
+const p2 = [
+  { n:9,  ctx:"students ____ are asked to teach a topic remember it", a:"who", note:"relative pronoun for people (also accept: that)" },
+  { n:10, ctx:"remember it far better ____ those who reread", a:"than", note:"comparison: better ... than" },
+  { n:11, ctx:"you have to organise ideas clearly, ____ forces your brain", a:"which", note:"comment clause: ', which' refers to the whole idea before it" },
+  { n:12, ctx:"there is ____ need for a real audience", a:"no", note:"fixed phrase: there is no need (for)" },
+  { n:13, ctx:"they performed better, ____ though they never taught anyone", a:"even", note:"contrast linker: even though" },
+  { n:14, ctx:"so ____ next time you prepare for an exam", a:"the", note:"fixed phrase: the next time" },
+  { n:15, ctx:"you will quickly discover how ____ you really understand", a:"much", note:"how much (uncountable: what you understand)" },
+  { n:16, ctx:"one of the most effective techniques ____ exists", a:"that", note:"relative pronoun after a superlative phrase: one of the best ... that exists" }
+];
+
+// ---------- PART 3 : word formation ----------
+const p3 = [
+  { n:17, ctx:"a new kind of library is proving surprisingly ____", base:"SUCCESS", a:"successful", note:"noun to adjective: success → successful" },
+  { n:18, ctx:"objects are bought at great ____", base:"EXPENSIVE", a:"expense", note:"fixed phrase: at great expense; adjective to noun" },
+  { n:19, ctx:"borrowing them is far more ____", base:"ECONOMY", a:"economical", note:"noun to adjective: economy → economical (= money-saving)" },
+  { n:20, ctx:"the ____ of members say they joined to save money", base:"MAJOR", a:"majority", note:"adjective to noun: major → majority" },
+  { n:21, ctx:"there is a ____ sense of community", base:"GROW", a:"growing", note:"verb to -ing adjective: grow → growing" },
+  { n:22, ctx:"several members have formed ____", base:"FRIEND", a:"friendships", note:"noun to noun, plural: friend → friendship(s)" },
+  { n:23, ctx:"the most ____ thing on offer", base:"VALUE", a:"valuable", note:"noun to adjective: value → valuable" },
+  { n:24, ctx:"a little ____ goes a long way", base:"KNOW", a:"knowledge", note:"verb to noun: know → knowledge" }
+];
+
+// ---------- PART 4 : key word transformation ----------
+const p4 = [
+  { n:25, q:"It's a pity I can't play the guitar.", key:"WISH", s1:"I ", s2:" the guitar.", a:"wish I could play", note:"wish + past tense for a regret about the present" },
+  { n:26, q:"The concert was cancelled because of the storm.", key:"CALLED", s1:"The concert ", s2:" because of the storm.", a:"was called off", note:"phrasal verb: to call off (= to cancel)" },
+  { n:27, q:"The police think Tom stole the bicycle.", key:"ACCUSED", s1:"Tom ", s2:" the bicycle.", a:"was accused of stealing", note:"accuse somebody of + -ing; passive here" },
+  { n:28, q:"You shouldn't stay up so late.", key:"BETTER", s1:"You ", s2:" up so late.", a:"had better not stay", note:"had better (not) + infinitive = should (not)" },
+  { n:29, q:"The film was so boring that I fell asleep.", key:"SUCH", s1:"It was ", s2:" that I fell asleep.", a:"such a boring film", note:"so + adjective → such a + adjective + noun" },
+  { n:30, q:"The rain didn't stop us enjoying the picnic.", key:"PREVENT", s1:"The rain did not ", s2:" the picnic.", a:"prevent us from enjoying", note:"prevent somebody from + -ing" }
+];
+
+const answers = {};
+
+function answerBlock(num, ans, note){
+  return '<div class="answer-row">' +
+    '<div class="check-cell"><input type="checkbox" title="Tick when correct"></div>' +
+    '<div class="answer-cell">' +
+      '<span class="alabel">Answer:</span>' +
+      '<span class="answer-text" id="ans-' + num + '" onclick="revealOne(' + num + ')">' + ans + '</span>' +
+      (note ? '<span class="anote">' + note + '</span>' : '') +
+      '<button class="reveal-btn" id="btn-' + num + '" onclick="revealOne(' + num + ')">Reveal</button>' +
+    '</div></div>';
+}
+
+// ---------- build Part 1 ----------
+function populateP1(){
+  const box = document.getElementById('p1-items');
+  box.innerHTML = p1.map(it => {
+    const opts = it.opts.map(o => {
+      const letter = o.split('.')[0];
+      return '<div class="mc-opt" data-q="' + it.n + '" data-letter="' + letter + '" onclick="chooseOpt(' + it.n + ', this)"><span class="letter">' + letter + '.</span>' + o.slice(3) + '</div>';
+    }).join('');
+    return '<div class="mc-item"><div class="item-head"><span class="item-num">' + it.n + '.</span>' +
+      '<span class="item-line">Gap ' + it.n + '</span></div>' +
+      '<div class="mc-options">' + opts + '</div>' +
+      answerBlock(it.n, it.a, it.note) + '</div>';
+  }).join('');
+}
+function chooseOpt(q, el){
+  document.querySelectorAll('.mc-opt[data-q="' + q + '"]').forEach(e => e.classList.remove('chosen'));
+  el.classList.add('chosen');
+  answers['q' + q] = el.dataset.letter;
+}
+
+// ---------- build Parts 2 & 3 ----------
+function buildGapItems(list, mountId, key, withBase){
+  const box = document.getElementById(mountId);
+  box.innerHTML = list.map(it => {
+    const cls = key === 'p2' ? 'of-item' : 'wf-item';
+    return '<div class="' + cls + '"><div class="item-head"><span class="item-num">' + it.n + '.</span>' +
+      '<span class="item-line">' + it.ctx.replace('____', '________') + (withBase ? ' &nbsp;<span class="wf-base">' + it.base + '</span>' : '') + '</span></div>' +
+      '<input class="type-answer" id="in-' + it.n + '" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Type your answer">' +
+      answerBlock(it.n, it.a, it.note) + '</div>';
+  }).join('');
+}
+
+// ---------- build Part 4 ----------
+function populateP4(){
+  const box = document.getElementById('p4-items');
+  box.innerHTML = p4.map(it =>
+    '<div class="kw-item"><div class="item-head"><span class="item-num">' + it.n + '.</span>' +
+    '<span class="item-line">' + it.q + '</span></div>' +
+    '<div class="kw-constraint"><span class="kw-key">' + it.key + '</span></div>' +
+    '<div class="item-line" style="margin-left:1.9rem;margin-bottom:.25rem;">' + it.s1 +
+    '<input class="type-answer" id="in-' + it.n + '" style="margin:0 .2rem;width:min(300px,60%);" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="gap">' + it.s2 + '</div>' +
+    answerBlock(it.n, it.a, it.note) + '</div>'
+  ).join('');
+}
+
+// ---------- reveal mechanics ----------
+function revealOne(num){
+  const el = document.getElementById('ans-' + num);
+  const btn = document.getElementById('btn-' + num);
+  if(el) el.classList.add('revealed');
+  if(btn) btn.classList.add('hidden');
+}
+function revealAll(show){
+  document.querySelectorAll('.answer-text').forEach(el => {
+    el.classList.toggle('revealed', show);
+  });
+  document.querySelectorAll('.reveal-btn').forEach(b => {
+    b.classList.toggle('hidden', show);
+  });
+}
+
+// ---------- timer ----------
+let tLeft = 45 * 60, tId = null;
+function fmt(s){
+  const m = Math.floor(Math.abs(s) / 60), ss = Math.abs(s) % 60;
+  return (s < 0 ? '-' : '') + String(m).padStart(2,'0') + ':' + String(ss).padStart(2,'0');
+}
+function drawClock(){
+  const c = document.getElementById('clock');
+  c.textContent = fmt(tLeft);
+  c.classList.toggle('over', tLeft < 0);
+}
+function toggleTimer(){
+  const btn = document.getElementById('t-start');
+  if(tId){
+    clearInterval(tId); tId = null;
+    btn.textContent = '▶ Start';
+  } else {
+    btn.textContent = '⏸ Pause';
+    tId = setInterval(() => {
+      tLeft--;
+      drawClock();
+      if(tLeft === 0){
+        alert('Time! Put your pencil down. Now check your answers and count your ticks.');
+      }
+    }, 1000);
+  }
+}
+function resetTimer(){
+  clearInterval(tId); tId = null;
+  tLeft = 45 * 60;
+  document.getElementById('t-start').textContent = '▶ Start';
+  drawClock();
+}
+
+
+
+populateP1();
+buildGapItems(p2, 'p2-items', 'p2', false);
+buildGapItems(p3, 'p3-items', 'p3', true);
+populateP4();
+drawClock();
+</script>
+
+</body>
+</html>
