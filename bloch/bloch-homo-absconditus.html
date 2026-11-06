@@ -1,0 +1,430 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ernst Bloch · Homo absconditus</title>
+<meta name="description" content="Lectura pausada sobre Ernst Bloch y la antropología de la esperanza: el hombre como un «todavía». Una página del blog Padre Eudosio.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0f2a44; --navy-2:#173a5c; --teal:#1f7a80; --teal-soft:#d9eef0;
+  --gold:#b8892b; --gold-soft:#f5ead2;
+  --bg:#faf8f3; --card:#ffffff; --ink:#1c2733; --muted:#5a6773; --line:#e3ddd0;
+  --fs:19px;
+}
+:root[data-theme="dark"]{
+  --bg:#0c1c2e; --card:#122a43; --ink:#e8edf2; --muted:#a3b2c0; --line:#24405c;
+  --teal:#5cc2c8; --teal-soft:#14384a; --gold:#e3b657; --gold-soft:#2b2a22; --navy:#e8edf2; --navy-2:#cfd9e3;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0c1c2e; --card:#122a43; --ink:#e8edf2; --muted:#a3b2c0; --line:#24405c;
+    --teal:#5cc2c8; --teal-soft:#14384a; --gold:#e3b657; --gold-soft:#2b2a22; --navy:#e8edf2; --navy-2:#cfd9e3;
+  }
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:76px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,sans-serif;font-size:var(--fs);line-height:1.75}
+h1,h2,h3{font-family:Fraunces,Georgia,serif;color:var(--navy);line-height:1.2;font-weight:600}
+a{color:var(--teal)}
+.wrap{max-width:720px;margin:0 auto;padding:0 16px}
+
+/* top bar */
+.bar{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.bar .wrap{display:flex;align-items:center;gap:10px;padding-top:8px;padding-bottom:8px;max-width:960px}
+.chips{display:flex;gap:6px;overflow-x:auto;flex:1;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chips a{font:500 12.5px/1 "IBM Plex Mono",monospace;text-decoration:none;color:var(--muted);padding:8px 11px;border:1px solid var(--line);border-radius:999px;white-space:nowrap}
+.chips a.on{background:var(--navy-2);color:var(--bg);border-color:var(--navy-2)}
+.tools{display:flex;gap:4px}
+.tools button{font:600 13px Inter,sans-serif;min-width:36px;height:36px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}
+.prog{height:3px;background:var(--gold);width:0;transition:width .15s}
+
+/* hero */
+.hero{background:linear-gradient(160deg,#0b2036,#15507a 70%,#1f7a80);color:#fff;padding:64px 0 56px}
+.hero .wrap{max-width:820px}
+.kicker{font:500 12.5px "IBM Plex Mono",monospace;letter-spacing:.12em;text-transform:uppercase;color:#e9cd8c}
+.hero h1{color:#fff;font-size:clamp(34px,7vw,58px);margin:14px 0 6px;font-weight:400}
+.hero h1 b{display:block;font-weight:600}
+.hero .sub{font-family:Fraunces,serif;font-style:italic;font-size:clamp(20px,3.6vw,26px);color:#cfe6ea;margin:8px 0 26px}
+.meta{font-size:14.5px;color:#c4d4e0;line-height:1.6}
+.meta strong{color:#fff;font-weight:600}
+.pill{display:inline-block;margin-top:22px;font:500 13px "IBM Plex Mono",monospace;padding:7px 14px;border:1px solid #e9cd8c;color:#e9cd8c;border-radius:999px}
+
+section{padding:56px 0 8px}
+.num{font:500 13px "IBM Plex Mono",monospace;color:var(--gold);letter-spacing:.1em}
+section h2{font-size:clamp(28px,5vw,38px);margin:6px 0 18px}
+p{margin:0 0 1.1em}
+.lead{font-family:Fraunces,serif;font-size:1.18em;line-height:1.6;color:var(--navy-2)}
+.term{font-family:Fraunces,serif;font-style:italic;color:var(--teal)}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 22px;margin:22px 0}
+.points{list-style:none;padding:0;margin:0}
+.points li{padding:12px 0 12px 22px;border-bottom:1px solid var(--line);position:relative}
+.points li:last-child{border:0}
+.points li::before{content:"";position:absolute;left:0;top:1.35em;width:8px;height:8px;border-radius:50%;background:var(--gold)}
+
+/* video */
+.vid .vidnote{font-size:.9em;color:var(--muted);margin:8px 0 14px}
+.vid video{width:100%;border-radius:10px;background:#000;display:block;aspect-ratio:16/9}
+.vidchips{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.vidchips button{font:500 13px "IBM Plex Mono",monospace;padding:9px 14px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}
+.vidchips button:hover{border-color:var(--teal);color:var(--teal)}
+
+/* pause */
+.pause{background:var(--gold-soft);border-left:4px solid var(--gold);border-radius:0 12px 12px 0;padding:18px 22px;margin:30px 0}
+.pause .tag{font:500 12px "IBM Plex Mono",monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--gold)}
+.pause p{font-family:Fraunces,serif;font-size:1.12em;margin:8px 0 12px;color:var(--ink)}
+.pause textarea{width:100%;min-height:84px;border:1px solid var(--line);border-radius:10px;padding:10px 12px;font:inherit;font-size:.9em;background:var(--card);color:var(--ink);resize:vertical}
+.pause small{display:block;color:var(--muted);font-size:.72em;margin-top:6px;line-height:1.4}
+
+/* path diagram */
+.path{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin:26px 0 10px;counter-reset:s}
+.path a{position:relative;text-decoration:none;text-align:center;padding:14px 6px;color:var(--muted);font:500 13px/1.3 "IBM Plex Mono",monospace}
+.path a::before{content:"";display:block;width:16px;height:16px;border-radius:50%;margin:0 auto 10px;background:var(--line);border:3px solid var(--bg);position:relative;z-index:1;transition:.2s}
+.path a::after{content:"";position:absolute;top:21px;left:50%;width:100%;height:2px;background:var(--line)}
+.path a:last-child::after{display:none}
+.path a.on{color:var(--ink)}
+.path a.on::before{background:var(--gold);transform:scale(1.35)}
+.path a.done::before{background:var(--teal)}
+
+/* dream toggle */
+.dreams{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.dream{border:1px solid var(--line);border-radius:14px;padding:18px;background:var(--card);cursor:pointer;text-align:left;font:inherit;color:inherit;transition:.2s}
+.dream h3{font-size:1.05em;margin:0 0 6px}
+.dream .dir{font:500 12px "IBM Plex Mono",monospace;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.dream p{font-size:.86em;line-height:1.55;margin:8px 0 0;color:var(--muted)}
+.dream.night{opacity:.7}
+.dream[aria-pressed="true"]{border-color:var(--teal);background:var(--teal-soft);opacity:1;box-shadow:0 0 0 2px var(--teal) inset}
+.dreams-note{font-size:.88em;color:var(--muted);margin-top:10px}
+
+/* glossary */
+details{border-bottom:1px solid var(--line)}
+details summary{cursor:pointer;padding:12px 0;font-family:Fraunces,serif;font-size:1.08em;list-style:none;display:flex;justify-content:space-between;gap:10px}
+details summary::-webkit-details-marker{display:none}
+details summary::after{content:"+";color:var(--gold);font-family:"IBM Plex Mono",monospace}
+details[open] summary::after{content:"–"}
+details p{font-size:.92em;color:var(--muted);margin:0 0 14px}
+
+/* windows */
+.windows{display:grid;gap:14px;margin-top:20px}
+.win{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 22px}
+.win h3{font-size:1.2em;margin:0 0 2px}
+.win .who{font:500 12px "IBM Plex Mono",monospace;color:var(--teal);text-transform:uppercase;letter-spacing:.08em}
+.win p{font-size:.93em;margin:10px 0 0}
+.win .lbl{font:600 11.5px "IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.08em;color:var(--gold);display:block;margin-bottom:2px}
+.draft{font-size:.8em;color:var(--muted);border:1px dashed var(--line);border-radius:10px;padding:8px 12px;margin-top:16px}
+
+.biblio{font-size:.82em;line-height:1.55;color:var(--muted);padding-left:18px}
+.biblio li{margin-bottom:8px}
+footer{margin-top:60px;background:var(--navy-2);color:#d5e1ea;padding:36px 0 44px;font-size:15px;line-height:1.6}
+:root[data-theme="dark"] footer{background:#0a1626}
+footer a{color:#e9cd8c}
+footer .wrap{max-width:820px}
+
+@media (max-width:560px){
+  .dreams{grid-template-columns:1fr}
+  .path a{font-size:11px}
+  .hero{padding:44px 0 40px}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+@media print{.bar,.pause textarea,.pause small{display:none}.hero{background:none;color:#000}.hero h1,.hero .sub,.meta,.meta strong,.kicker{color:#000}}
+</style>
+</head>
+<body>
+
+<div class="bar" role="navigation" aria-label="Secciones">
+  <div class="wrap">
+    <div class="chips" id="chips">
+      <a href="#entrada">Entrada</a>
+      <a href="#hambre">1 · Hambre</a>
+      <a href="#sueno">2 · Sueño</a>
+      <a href="#hogar">3 · Hogar</a>
+      <a href="#ventanas">Ventanas</a>
+      <a href="#biblio">Fuentes</a>
+    </div>
+    <div class="tools">
+      <button id="fsm" aria-label="Reducir tamaño del texto">A−</button>
+      <button id="fsp" aria-label="Aumentar tamaño del texto">A+</button>
+      <button id="th" aria-label="Cambiar tema claro u oscuro"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 1.5a6.5 6.5 0 0 1 0 13z" fill="currentColor"/></svg></button>
+    </div>
+  </div>
+  <div class="prog" id="prog"></div>
+</div>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <div class="kicker">Padre Eudosio · Filosofías y religiones</div>
+    <h1>Ernst Bloch <b>Homo absconditus</b></h1>
+    <p class="sub">El hombre, un «todavía»</p>
+    <div class="meta">
+      Ensayo de seminario de <strong>Antonio Eudosio Lozano</strong>,<br>
+      a partir de <em>Homo absconditus. La antropología de Ernst Bloch</em>, de Justo Pérez del Corral.
+    </div>
+    <span class="pill">Lectura pausada · unos 12 minutos</span>
+  </div>
+</header>
+
+<main class="wrap">
+
+<section id="entrada">
+  <div class="num">ANTES DE ENTRAR EN MATERIA</div>
+  <h2>Un hombre en busca de lo que aún no es</h2>
+  <p class="lead">Hay una pregunta tan antigua como el ser humano: ¿qué es lo que busco, aunque no sepa ponerle nombre? Ernst Bloch (1885–1977), filósofo alemán, hizo de esa pregunta el corazón de su obra mayor, <em>El principio esperanza</em>, escrita en el exilio.</p>
+  <p>Hay quien solo ve en él a un pensador que se despidió de Dios. Aquí proponemos otra lectura: la de un hombre que, desde fuera de la Iglesia, se tomó en serio lo que la Biblia dice de la esperanza, el éxodo, los profetas y el Reino, y se negó a dar la historia por cerrada. Defendió que la religión guarda un «excedente utópico» que no debe tirarse. Su hambre de lo que todavía no es le suena a cualquier creyente: es la inquietud de quien busca.</p>
+  <p><strong>Una aclaración honesta.</strong> Bloch no se declaraba creyente ni hablaba de «buscar a Dios»; esa es <em>nuestra</em> lectura, hecha desde la fe cristiana. Por eso hablamos de diálogo y no de apropiación: queremos escucharle bien y, desde ahí, ver qué nos dice a nosotros.</p>
+  <p>Esta página no te pide que estés de acuerdo. Te propone detenerte en cada idea y ver qué resuena con tu propia fe o tu propia búsqueda. No hay prisa: ve a tu ritmo y, si quieres, escribe lo que se te ocurra en los recuadros dorados.</p>
+  <div class="pause" data-key="p0">
+    <span class="tag">Para empezar</span>
+    <p>Antes de leer, una pregunta sencilla: ¿qué estás buscando tú en esta etapa de tu vida?</p>
+    <textarea aria-label="Tus notas antes de empezar" placeholder="Escribe aquí, si quieres…"></textarea>
+    <small>Lo que escribas se queda solo en este dispositivo.</small>
+  </div>
+
+  <div class="card">
+    <ul class="points">
+      <li><strong>Homo absconditus</strong> («hombre escondido o latente»): la idea central de su antropología. Lo más propio del ser humano está oculto, aún no ha salido a la luz.</li>
+      <li>El ser humano está <em>todavía por hacerse</em>, en un proceso histórico de transformación y en busca de un mundo mejor.</li>
+      <li>En una sola frase: <em>la esperanza y el proyecto de una humanidad auténtica, latente, que debe emerger mediante la acción política, la utopía y la superación de la alienación.</em></li>
+    </ul>
+  </div>
+
+  <p>El recorrido tiene cuatro etapas. Pulsa cualquiera para saltar a ella:</p>
+  <div class="path" id="path" aria-label="Recorrido del ensayo">
+    <a href="#hambre" data-t="hambre">Hambre y carencia</a>
+    <a href="#sueno" data-t="sueno">Sueño diurno</a>
+    <a href="#hogar" data-t="hogar">Hogar (Heimat)</a>
+    <a href="#ventanas" data-t="ventanas">Ventanas abiertas</a>
+  </div>
+
+  <div class="card vid">
+    <span class="num">VISTA RÁPIDA · 50 SEGUNDOS</span>
+    <p class="vidnote">El ensayo entero a vuelo de pájaro, tal como se presentó en clase. Va deprisa a propósito: es el mapa. El territorio está más abajo, para recorrerlo despacio.</p>
+    <video id="vid" controls preload="metadata" playsinline poster="bloch-cartel-v2.jpg" aria-label="Presentación de 50 segundos sobre Ernst Bloch">
+      <source src="bloch-video-v2.mp4" type="video/mp4">
+      Tu navegador no puede reproducir el vídeo.
+    </video>
+    <div class="vidchips" role="group" aria-label="Saltar a un capítulo del vídeo">
+      <button data-t="0">Inicio</button>
+      <button data-t="25">Hambre</button>
+      <button data-t="32">Sueño</button>
+      <button data-t="36">Hogar</button>
+    </div>
+  </div>
+
+  <p><strong>Un matiz de contexto.</strong> Bloch pertenece al llamado «marxismo esotérico»: frente a la corriente <em>fría</em>, centrada en la economía y la técnica, defiende una corriente <em>cálida</em>, atenta al entusiasmo y a la esperanza. Para ello mezcla marxismo, mesianismo judío, mística y filosofía clásica alemana (Hegel). Es un pensador de lo que aún no se ha manifestado, pero ya late en la historia.</p>
+</section>
+
+<section id="hambre">
+  <div class="num">1 · EL MOTOR</div>
+  <h2>El hambre y la carencia</h2>
+  <p class="lead">Para Bloch, el punto de partida del ser humano no es una idea ni un dogma: es una falta.</p>
+  <div class="card">
+    <ul class="points">
+      <li><strong>El hambre como impulso primario.</strong> No es solo necesidad física: es la toma de conciencia de que «nos falta algo».</li>
+      <li><strong>Carencia</strong> (<span class="term">Darben</span>): el vacío interior que nos impide quedarnos estáticos.</li>
+      <li><strong>De la necesidad a la esperanza.</strong> El hambre nos obliga a mirar hacia fuera y hacia adelante.</li>
+      <li><strong>El «no-todavía».</strong> La estructura del mundo es una posibilidad abierta, porque el ser humano siempre siente que no está completo.</li>
+    </ul>
+  </div>
+  <div class="pause" data-key="p1">
+    <span class="tag">Para meditar</span>
+    <p>¿Qué te falta hoy que, en el fondo, te pone en marcha? ¿Es una carencia que quieres llenar o una que prefieres escuchar?</p>
+    <textarea aria-label="Tus notas sobre la primera pregunta" placeholder="Escribe aquí, si quieres…"></textarea>
+    <small>Lo que escribas se queda solo en este dispositivo.</small>
+  </div>
+</section>
+
+<section id="sueno">
+  <div class="num">2 · LA HERRAMIENTA</div>
+  <h2>El sueño diurno <span class="term">(Tagtraum)</span></h2>
+  <p class="lead">Si la carencia nos pone en marcha, ¿con qué herramienta imaginamos hacia dónde? Bloch responde: con el sueño despierto.</p>
+  <p>Pulsa cada tarjeta para compararlos:</p>
+  <div class="dreams" id="dreams">
+    <button class="dream night" aria-pressed="false" data-d="n">
+      <span class="dir">← mira al pasado</span>
+      <h3>Sueño nocturno</h3>
+      <p>El de Freud: sentimientos reprimidos, deseos del pasado que buscan salida. Pasivo; nos «ocurre».</p>
+    </button>
+    <button class="dream" aria-pressed="true" data-d="d">
+      <span class="dir">mira al futuro →</span>
+      <h3>Sueño diurno</h3>
+      <p>El de Bloch: el «soñar hacia adelante» (<em>Vorausträumen</em>). Es un acto de voluntad, no una fantasía pasiva.</p>
+    </button>
+  </div>
+  <p class="dreams-note" id="dreamNote">Su <strong>función utópica</strong>: nos deja ver las «grietas» de la realidad actual y proyectar lo que «podría llegar a haber».</p>
+
+  <div class="pause" data-key="p2">
+    <span class="tag">Para meditar</span>
+    <p>Piensa en algo que hoy te parece imposible y que sin embargo deseas. ¿Es una fantasía que te evade o una posibilidad que ya asoma por una grieta?</p>
+    <textarea aria-label="Tus notas sobre la segunda pregunta" placeholder="Escribe aquí, si quieres…"></textarea>
+    <small>Lo que escribas se queda solo en este dispositivo.</small>
+  </div>
+</section>
+
+<section id="hogar">
+  <div class="num">3 · LA META</div>
+  <h2>Hacia la identidad buscada: el hogar</h2>
+  <p class="lead">Aquí está lo más sorprendente: para Bloch, nuestra verdadera esencia no está en el pasado, sino en el futuro.</p>
+  <div class="card">
+    <ul class="points">
+      <li><strong>La meta es el Origen.</strong> Nuestra esencia no está atrás (Adán), sino en la humanidad aún por completar.</li>
+      <li><strong>El concepto de Hogar</strong> (<span class="term">Heimat</span>): el fin de la historia sería que el ser humano, por fin, se siente «en casa» consigo mismo y con el mundo que lo rodea.</li>
+      <li><strong>La esperanza como motor.</strong> No es una espera pasiva, sino una construcción activa mediante la ética.</li>
+      <li><strong>Conclusión.</strong> El hombre, ¡al fin!, deja de ser un enigma para su propio yo.</li>
+    </ul>
+  </div>
+  <p>Es una idea que un cristiano lee con doble emoción. Por un lado, suena a casa conocida: una criatura inquieta que camina hacia un descanso. Por otro, Bloch plantea ese hogar sin recurrir a un Dios que lo prometa, como obra del esfuerzo humano. El creyente puede preguntarse si ese hambre no estará señalando a Quien puede saciarla. Lo exploramos en las «ventanas» de más abajo.</p>
+
+  <div class="pause" data-key="p3">
+    <span class="tag">Para meditar</span>
+    <p>Ojalá siempre sigamos teniendo ese hambre que nos impulsa a ir más allá. Y tú, ¿dónde sitúas tu «hogar»: en lo que fuiste, en lo que eres o en lo que aún esperas ser?</p>
+    <textarea aria-label="Tus notas sobre la tercera pregunta" placeholder="Escribe aquí, si quieres…"></textarea>
+    <small>Lo que escribas se queda solo en este dispositivo.</small>
+  </div>
+</section>
+
+<section id="ventanas">
+  <div class="num">4 · VENTANAS ABIERTAS</div>
+  <h2>Bloch en diálogo con otras tradiciones</h2>
+  <p class="lead">Una idea importante no se agota en quien la formula. Estas cuatro «ventanas» te invitan a asomarte desde otro lugar. Cada una señala una <strong>resonancia</strong> y una <strong>diferencia</strong>: a veces la diferencia enseña más que el parecido.</p>
+
+  <div class="windows">
+    <article class="win">
+      <span class="who">Cristianismo · teología</span>
+      <h3>Jürgen Moltmann</h3>
+      <p><span class="lbl">Resonancia</span>Su <em>Teología de la esperanza</em> nació en diálogo directo con <em>El principio esperanza</em>: también para él el cristianismo es, ante todo, orientación al futuro de Dios, y la fe no se instala, se pone en camino.</p>
+      <p><span class="lbl">Diferencia</span>Bloch construye el futuro desde el propio ser humano. Moltmann lo funda en una <em>promesa</em> que viene de fuera: la esperanza cristiana no es solo nuestro impulso, sino respuesta a Alguien que nos ha prometido.</p>
+    </article>
+
+    <article class="win">
+      <span class="who">Cristianismo · Agustín de Hipona</span>
+      <h3>«Inquieto está nuestro corazón»</h3>
+      <p><span class="lbl">Resonancia</span>El hambre y la carencia de Bloch tienen un parentesco evidente con la inquietud agustiniana del corazón, que no descansa hasta encontrar su reposo. Agustín llega a entender la vida cristiana como un ensanchar el deseo: la carencia no es un fallo, es el espacio donde cabe lo infinito.</p>
+      <p><span class="lbl">Diferencia</span>El <em>Heimat</em> de Bloch se edifica en la historia. El reposo de Agustín se recibe como don. ¿Se puede desear sin que nadie nos haya llamado antes?</p>
+    </article>
+
+    <article class="win">
+      <span class="who">Judaísmo · mesianismo</span>
+      <h3>La espera que obra</h3>
+      <p><span class="lbl">Resonancia</span>Bloch bebe del mesianismo judío: la historia no está cerrada y la redención es una posibilidad que se prepara. De ahí su insistencia en una esperanza activa, no resignada.</p>
+      <p><span class="lbl">Diferencia</span>En la tradición judía el Mesías sigue siendo esperado y la espera se vive dentro de la alianza y la práctica. Bloch traslada esa tensión al terreno secular y político.</p>
+    </article>
+
+    <article class="win">
+      <span class="who">Budismo</span>
+      <h3>Del deseo a su cese</h3>
+      <p><span class="lbl">Resonancia</span>El budismo comienza también por una carencia: <em>dukkha</em>, la insatisfacción que atraviesa la existencia. Ambos toman en serio el hecho de que el ser humano no está completo.</p>
+      <p><span class="lbl">Diferencia</span>Aquí el camino se invierte: para Bloch, la carencia se convierte en motor y se orienta hacia adelante; para el budismo, el sufrimiento nace del aferramiento del deseo, y la liberación pasa por soltarlo. Dos respuestas opuestas a la misma herida.</p>
+    </article>
+  </div>
+
+  <div class="pause" data-key="p4">
+    <span class="tag">Para meditar</span>
+    <p>¿Qué ventana te ha resultado más extraña? A menudo es la que más tiene que decirnos.</p>
+    <textarea aria-label="Tus notas sobre la última pregunta" placeholder="Escribe aquí, si quieres…"></textarea>
+    <small>Lo que escribas se queda solo en este dispositivo.</small>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-top:0;font-size:1.1em">Glosario de términos de Bloch</h3>
+    <details><summary>Homo absconditus</summary><p>«Hombre escondido o latente». Lo más propio del ser humano no está dado: está oculto y por realizarse.</p></details>
+    <details><summary>Darben (carencia)</summary><p>El vacío interior que nos impide quedarnos quietos y es el origen del impulso hacia delante.</p></details>
+    <details><summary>Tagtraum / Vorausträumen</summary><p>Sueño diurno y «soñar hacia adelante»: imaginar lo posible con voluntad, a diferencia del sueño nocturno pasivo.</p></details>
+    <details><summary>Noch-nicht («no-todavía»)</summary><p>La estructura abierta del mundo: lo real contiene posibilidades que aún no se han cumplido.</p></details>
+    <details><summary>Heimat (hogar)</summary><p>Término de la historia: el ser humano en casa consigo mismo y con el mundo, sin alienación.</p></details>
+  </div>
+
+  <p class="draft">Nota del autor: las cuatro «ventanas» son un primer boceto para abrir el diálogo, no una última palabra. Si ves un matiz que mejorar, escríbenos en los comentarios del blog.</p>
+</section>
+
+<section id="biblio">
+  <div class="num">FUENTES</div>
+  <h2>Bibliografía</h2>
+  <ul class="biblio">
+    <li>Bloch, E. <em>El principio esperanza</em>. Trotta, Madrid, 2004.</li>
+    <li>Id. <em>Ateísmo en el cristianismo</em>. Taurus, Madrid, 1977.</li>
+    <li>Id. <em>Sujeto-Objeto. El pensamiento de Hegel</em>. Fondo de Cultura Económica, México, 1983.</li>
+    <li>Corral, J. P. <em>Homo Absconditus. La antropología de Ernst Bloch</em>.</li>
+    <li>Habermas, J. (1987). «Ernst Bloch: Un marxista especulativo». En <em>Perfiles filosófico-políticos</em>. Madrid: Taurus. (Aporta la visión de la Escuela de Frankfurt).</li>
+    <li>Moltmann, J. (1965). <em>Teología de la esperanza</em>. Salamanca: Sígueme. (Es la obra teológica más importante influenciada directamente por Bloch).</li>
+    <li>Ortega y Gasset, J. <em>Historia como sistema</em>. El Arquero, Madrid, 1970.</li>
+  </ul>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <strong>Padre Eudosio</strong> · Un blog sin ánimo de lucro para pensar un poco y abrirse a otras ideas, desde una raíz cristiana.<br>
+    <a href="https://elpadreeudosio2025.blogspot.com" target="_top">Volver al blog</a>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var root=document.documentElement;
+  function get(k){try{return localStorage.getItem(k)}catch(e){return null}}
+  function set(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+
+  /* tamaño de texto y tema */
+  var fs=parseInt(get('bloch-fs')||'19',10);
+  function applyFs(){root.style.setProperty('--fs',fs+'px')}
+  applyFs();
+  document.getElementById('fsm').onclick=function(){fs=Math.max(15,fs-1);set('bloch-fs',fs);applyFs()};
+  document.getElementById('fsp').onclick=function(){fs=Math.min(26,fs+1);set('bloch-fs',fs);applyFs()};
+  var th=get('bloch-th'); if(th) root.setAttribute('data-theme',th);
+  document.getElementById('th').onclick=function(){
+    var dark=root.getAttribute('data-theme')==='dark' ||
+      (!root.getAttribute('data-theme') && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    var n=dark?'light':'dark'; root.setAttribute('data-theme',n); set('bloch-th',n);
+  };
+
+  /* notas locales */
+  document.querySelectorAll('.pause').forEach(function(p){
+    var k='bloch-'+p.dataset.key, ta=p.querySelector('textarea');
+    var v=get(k); if(v) ta.value=v;
+    ta.addEventListener('input',function(){set(k,ta.value)});
+  });
+
+  /* capítulos del vídeo */
+  var vid=document.getElementById('vid');
+  document.querySelectorAll('.vidchips button').forEach(function(b){b.onclick=function(){
+    vid.currentTime=parseFloat(b.dataset.t); vid.play().catch(function(){});
+  }});
+
+  /* sueños */
+  var notes={
+    n:'Para Freud el sueño nocturno es un archivo del pasado: lo reprimido que vuelve. Útil para entendernos, pero no nos mueve hacia ninguna parte.',
+    d:'Su <strong>función utópica</strong>: nos deja ver las «grietas» de la realidad actual y proyectar lo que «podría llegar a haber».'
+  };
+  var ds=document.querySelectorAll('.dream');
+  ds.forEach(function(b){b.onclick=function(){
+    ds.forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false')});
+    document.getElementById('dreamNote').innerHTML=notes[b.dataset.d];
+  }});
+
+  /* progreso y sección activa */
+  var ids=['entrada','hambre','sueno','hogar','ventanas','biblio'];
+  var chips=document.querySelectorAll('#chips a'), path=document.querySelectorAll('#path a');
+  function upd(){
+    var h=document.documentElement, sc=h.scrollTop||document.body.scrollTop;
+    document.getElementById('prog').style.width=Math.min(100,sc/(h.scrollHeight-h.clientHeight)*100)+'%';
+    var cur=0;
+    ids.forEach(function(id,i){var e=document.getElementById(id); if(e&&e.getBoundingClientRect().top<window.innerHeight*0.4) cur=i});
+    chips.forEach(function(c,i){c.classList.toggle('on',i===cur)});
+    var order=['hambre','sueno','hogar','ventanas'];
+    path.forEach(function(a){
+      var i=order.indexOf(a.dataset.t), ci=order.indexOf(ids[cur]);
+      a.classList.toggle('on',i===ci); a.classList.toggle('done',ci>=0&&i<ci);
+    });
+    var on=document.querySelector('#chips a.on'); if(on&&on.scrollIntoView&&window.innerWidth<700){var c=document.getElementById('chips');c.scrollLeft=on.offsetLeft-20}
+  }
+  window.addEventListener('scroll',upd,{passive:true}); upd();
+})();
+</script>
+</body>
+</html>
